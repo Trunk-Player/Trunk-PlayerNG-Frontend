@@ -1,5 +1,4 @@
 import {
-  BellIcon,
   CalendarIcon,
   ChartBarIcon,
   FolderIcon,
