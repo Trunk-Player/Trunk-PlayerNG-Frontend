@@ -1,9 +1,10 @@
-import DarkSidebarWithLightHeader from "components/application-shells/sidebars/DarkSidebarWithLightHeader";
+import CreateNewScanner from "components/ui/CreateNewScanner";
 
 function App() {
   return (
     <>
-      <DarkSidebarWithLightHeader />
+      <h1>Nothing Here</h1>
+      <p>How did you get here?</p>
     </>
   );
 }
