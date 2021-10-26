@@ -8,18 +8,18 @@ export default {
   component: CreateNewScanner,
 } as ComponentMeta<typeof CreateNewScanner>;
 
-const TemplateLightMode: ComponentStory<typeof CreateNewScanner> = (args) => (
+const TemplateLightMode: ComponentStory<typeof CreateNewScanner> = (_args) => (
   <div className="w-full h-screen flex justify-center items-center">
     <div className="w-4/12">
-      <CreateNewScanner {...args} />
+      <CreateNewScanner />
     </div>
   </div>
 );
 
-const TemplateDarkMode: ComponentStory<typeof CreateNewScanner> = (args) => (
+const TemplateDarkMode: ComponentStory<typeof CreateNewScanner> = (_args) => (
   <div className="dark bg-gray-800 w-full h-screen flex justify-center items-center">
     <div className="w-4/12">
-      <CreateNewScanner {...args} />
+      <CreateNewScanner />
     </div>
   </div>
 );
