@@ -1,5 +1,6 @@
+import { Navigation } from "types/Navigation";
+
 import {
-  CalendarIcon,
   ChartBarIcon,
   FolderIcon,
   HomeIcon,
@@ -7,13 +8,13 @@ import {
   UsersIcon,
 } from "@heroicons/react/outline";
 
-export const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
+export const navigation: Navigation = [
+  { name: "Overview", href: "#", icon: HomeIcon, current: true },
+  { name: "Scanners", href: "#", icon: FolderIcon, current: false },
+  { name: "Reports", href: "#", icon: ChartBarIcon, current: false, count: 3 },
+  { name: "Scan Lists", href: "#", icon: InboxIcon, current: false },
+  { name: "Talk Groups", href: "#", icon: InboxIcon, current: false },
+  { name: "Admin", href: "#", icon: UsersIcon, current: false },
 ];
 export const userNavigation = [
   { name: "Your Profile", href: "#" },

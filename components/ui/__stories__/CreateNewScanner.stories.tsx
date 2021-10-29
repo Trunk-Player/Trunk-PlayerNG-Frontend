@@ -16,7 +16,7 @@ const TemplateLightMode: ComponentStory<typeof CreateNewScanner> = (_args) => (
 );
 
 const TemplateDarkMode: ComponentStory<typeof CreateNewScanner> = (_args) => (
-  <div className="dark bg-gray-800 w-full h-screen flex justify-center items-center">
+  <div className="dark bg-gray-900 w-full h-screen flex justify-center items-center">
     <div className="w-4/12">
       <CreateNewScanner />
     </div>
