@@ -1,4 +1,4 @@
-import { Navigation } from "types/Navigation";
+import { Navigation } from "types/components/Navigation";
 import Header from "components/navigation/SidebarComponents/SidebarNavigationHeader";
 import Container from "components/navigation/SidebarComponents/SidebarNavigationContainer";
 import Items from "components/navigation/SidebarComponents/SidebarNavigationItems";
