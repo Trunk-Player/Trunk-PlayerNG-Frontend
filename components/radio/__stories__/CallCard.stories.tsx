@@ -62,7 +62,7 @@ const data: Call = {
     },
   ],
   active: false,
-  emergency: false,
+  emergency: true,
   encrypted: true,
   frequency: 855.555555,
   phase2: "unknown",

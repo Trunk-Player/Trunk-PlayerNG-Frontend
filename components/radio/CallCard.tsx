@@ -1,14 +1,20 @@
 import { Call } from "types/Call";
 import { Unit } from "types/Unit";
 
-const UnitDisplay = ({ data }: { data: Unit }) => (
+const UnitDisplay = ({
+  data,
+  emergency,
+}: {
+  data: Unit;
+  emergency: boolean;
+}) => (
   <a
     href="#"
     className={`underline ${
       // data.encrypted
       //   ? "text-red-500 dark:text-red-400 font-bold"
       //   : "text-blue-800 dark:text-blue-400"
-      "text-blue-800 dark:text-blue-400"
+      emergency ? "text-yellow-400" : "text-blue-800 dark:text-blue-400"
     }`}
     onClick={(e) => {
       e.preventDefault();
@@ -20,7 +26,13 @@ const UnitDisplay = ({ data }: { data: Unit }) => (
 
 const AudioCard = ({ data }: { data: Call }) => {
   return (
-    <div className="bg-gray-100 dark:bg-gray-800 px-4 py-5 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-300 sm:px-6 sm:rounded-lg sm:shadow flex justify-between">
+    <div
+      className={`${
+        data.emergency
+          ? "bg-red-800 dark:bg-red-400 text-white dark:text-black"
+          : "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-300"
+      } px-4 py-5 border border-gray-200 dark:border-gray-700 sm:px-6 sm:rounded-lg sm:shadow flex justify-between`}
+    >
       <div>
         <h3 className="text-2xl leading-6 font-medium">
           {data.talkgroup.alphaTag
@@ -35,7 +47,7 @@ const AudioCard = ({ data }: { data: Call }) => {
           {data.units.map((unit, i) => (
             <span>
               {i > 0 ? ", " : ""}
-              <UnitDisplay data={unit} />
+              <UnitDisplay data={unit} emergency={data.emergency} />
             </span>
           ))}
         </h4>
