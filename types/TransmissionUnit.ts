@@ -4,7 +4,10 @@ export interface TransmissionUnit {
   uuid: string;
   time: Date;
   unit: Unit;
-  frequency: number;
+  pos: number;
+  emergency: number;
+  signal_system: number;
+  tag: number;
   length: number;
 }
 

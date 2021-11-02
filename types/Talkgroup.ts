@@ -5,8 +5,8 @@ export interface Talkgroup {
   uuid: string;
   system: System;
   decimalID: number;
-  alphaTag: string;
-  commonName?: string;
+  alphaTag?: string;
+  commonName?: string; // Possibly deprecated
   description?: string;
   encrypted: boolean;
   agency: Agency;
