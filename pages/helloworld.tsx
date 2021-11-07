@@ -14,6 +14,15 @@ const HelloWorld = () => {
         <p className="mt-3 text-2xl text-red-700">
           This is a test page. The app is alive!
         </p>
+
+        <button
+          type="button"
+          onClick={() => {
+            throw new Error("Test Sentry Frontend Error");
+          }}
+        >
+          Throw error
+        </button>
       </main>
     </div>
   );
