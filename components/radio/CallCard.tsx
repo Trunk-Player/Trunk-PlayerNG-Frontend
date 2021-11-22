@@ -24,7 +24,7 @@ const UnitDisplay = ({
   </a>
 );
 
-const AudioCard = ({ data }: { data: Call }) => {
+const CallCard = ({ data }: { data: Call }) => {
   return (
     <div
       className={`${
@@ -57,4 +57,4 @@ const AudioCard = ({ data }: { data: Call }) => {
   );
 };
 
-export default AudioCard;
+export default CallCard;

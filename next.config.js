@@ -11,4 +11,11 @@ const SentryWebpackPluginOptions = {
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
+
+// The following disables Sentry during the build process as it is
+// only accessible on a private server
+
+module.exports =
+  process.env.npm_lifecycle_event && process.env.npm_lifecycle_event != "build"
+    ? withSentryConfig(moduleExports, SentryWebpackPluginOptions)
+    : moduleExports;
