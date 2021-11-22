@@ -22,8 +22,6 @@ export const getSecondaryNavigation = (): Navigation => {
   const isAdmin =
     store.getState().user.currentUser?.userProfile.siteAdmin || false;
 
-  console.log("isAdmin", isAdmin);
-
   return isAdmin
     ? [
         { name: "Admin Settings", href: "#", icon: UsersIcon, current: false },
