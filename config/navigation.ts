@@ -12,11 +12,11 @@ import {
 } from "@heroicons/react/outline";
 
 export const getPrimaryNavigation = (): Navigation => [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Scanners", href: "#", icon: FolderIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
-  { name: "Scan Lists", href: "#", icon: InboxIcon, current: false },
-  { name: "Talk Groups", href: "#", icon: InboxIcon, current: false },
+  { name: "Dashboard", href: "/", icon: HomeIcon, exact: true },
+  { name: "Scanners", href: "/scanners", icon: FolderIcon, exact: false },
+  { name: "Reports", href: "/reports", icon: ChartBarIcon, exact: false },
+  { name: "Scan Lists", href: "#", icon: InboxIcon, exact: false },
+  { name: "Talk Groups", href: "#", icon: InboxIcon, exact: false },
 ];
 export const getSecondaryNavigation = (): Navigation => {
   const isAdmin =
@@ -24,24 +24,24 @@ export const getSecondaryNavigation = (): Navigation => {
 
   return isAdmin
     ? [
-        { name: "Admin Settings", href: "#", icon: UsersIcon, current: false },
-        { name: "Account Settings", href: "#", icon: CogIcon, current: false },
-        { name: "Preferences", href: "#", icon: CogIcon, current: false },
+        { name: "Admin Settings", href: "#", icon: UsersIcon, exact: false },
+        { name: "Account Settings", href: "#", icon: CogIcon, exact: false },
+        { name: "Preferences", href: "#", icon: CogIcon, exact: false },
         {
           name: "Help",
           href: "#",
           icon: QuestionMarkCircleIcon,
-          current: false,
+          exact: false,
         },
       ]
     : [
-        { name: "Account Settings", href: "#", icon: CogIcon, current: false },
-        { name: "Preferences", href: "#", icon: CogIcon, current: false },
+        { name: "Account Settings", href: "#", icon: CogIcon, exact: false },
+        { name: "Preferences", href: "#", icon: CogIcon, exact: false },
         {
           name: `Help - ${isAdmin}`,
           href: "#",
           icon: QuestionMarkCircleIcon,
-          current: false,
+          exact: false,
         },
       ];
 };

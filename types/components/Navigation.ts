@@ -2,7 +2,7 @@ export interface NavigationItem {
   name: string;
   href: string;
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  current: boolean;
+  exact: boolean;
   count?: number;
 }
 
