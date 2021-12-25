@@ -7,7 +7,7 @@ import CreateNewScanner from "components/ui/CreateNewScanner";
 // import CallCard from "components/radio/CallCard";
 // import { dataEmergency, dataNormal } from "config/sampleData";
 
-export default function Home() {
+const Home = () => {
   return (
     <MainLayout>
       <Head>
@@ -42,4 +42,6 @@ export default function Home() {
       </PageContentContainer>
     </MainLayout>
   );
-}
+};
+
+export default Home;
