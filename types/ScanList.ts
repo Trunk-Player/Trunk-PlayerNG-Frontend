@@ -6,7 +6,7 @@ export interface ScanList {
   owner: UserProfile;
   name: string;
   description?: string;
-  public: boolean;
+  isPublic: boolean;
   talkgroups: Talkgroups;
 }
 
