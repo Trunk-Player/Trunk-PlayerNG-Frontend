@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-interface SidebarContainerProps {
+interface LogoContainerProps {
   children?: ReactNode;
 }
 
-const SidebarContainer = ({ children }: SidebarContainerProps) => {
+const LogoContainer = ({ children }: LogoContainerProps) => {
   return <div className="flex items-center flex-shrink-0 px-4">{children}</div>;
 };
 
-export default SidebarContainer;
+export default LogoContainer;
