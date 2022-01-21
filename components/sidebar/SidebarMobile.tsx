@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "state/store/hooks";
-import Logo from "./Logo";
+import LogoImage from "./LogoImage";
 import EnvBadge from "components/EnvBadge";
 import Navigation from "./Navigation";
 
@@ -11,7 +11,7 @@ import {
 } from "state/slices/layoutSlice";
 
 import { XIcon } from "@heroicons/react/outline";
-import SidebarContainer from "./SidebarContainer";
+import LogoContainer from "./LogoContainer";
 
 const SidebarMobile = () => {
   const dispatch = useAppDispatch();
@@ -69,10 +69,10 @@ const SidebarMobile = () => {
                 </button>
               </div>
             </Transition.Child>
-            <SidebarContainer>
-              <Logo />
+            <LogoContainer>
+              <LogoImage />
               <EnvBadge />
-            </SidebarContainer>
+            </LogoContainer>
             <Navigation />
           </div>
         </Transition.Child>
