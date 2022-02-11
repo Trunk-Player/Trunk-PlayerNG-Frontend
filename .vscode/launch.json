@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Next.js: debug full stack",
+      "name": "Full Stack",
       "type": "node-terminal",
       "request": "launch",
       "command": "npm run dev",
@@ -17,15 +17,17 @@
       }
     },
     {
-      "name": "Next.js: debug server-side",
+      "name": "Server-Side",
       "type": "node-terminal",
       "request": "launch",
       "command": "npm run dev"
     },
     {
-      "name": "Next.js: debug client-side",
+      "name": "Client-Side",
       "type": "pwa-chrome",
       "request": "launch",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
       "url": "http://localhost:3000"
     }
   ]

@@ -70,7 +70,7 @@ const SidebarMobile = () => {
               </div>
             </Transition.Child>
             <LogoContainer>
-              <LogoImage />
+              <LogoImage className="h-10 w-auto" />
               <EnvBadge />
             </LogoContainer>
             <Navigation />

@@ -19,3 +19,5 @@ module.exports =
   process.env.npm_lifecycle_event && process.env.npm_lifecycle_event != "build"
     ? withSentryConfig(moduleExports, SentryWebpackPluginOptions)
     : moduleExports;
+
+// module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);

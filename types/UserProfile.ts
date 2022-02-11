@@ -3,7 +3,6 @@ export interface UserProfile {
   siteAdmin: boolean;
   description?: string;
   siteTheme?: string;
-  feedAllowed: boolean;
 }
 
 export type UserProfiles = UserProfile[];
