@@ -4,7 +4,7 @@ import MainLayout from "components/layouts/MainLayout";
 import PageHeader from "components/headers";
 import DashboardHeader from "components/headers/DashboardHeader";
 import PageContentContainer from "components/PageContentContainer";
-import { Scanners as ScannersType } from "types/temp/Scanner";
+import { Scanners as ScannersType } from "types/Scanner";
 import { userAJosland, userWChevin } from "types/temp/dummyData";
 import { getFullName } from "utils/userUtils";
 
