@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from "react";
+import { Fragment } from "react";
 import { env } from "config/environment";
 
 const EnvBadge = (): JSX.Element => {
