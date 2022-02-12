@@ -1,12 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 import MainLayout from "components/layouts/MainLayout";
-import PageHeader from "components/headers";
-import DashboardHeader from "components/headers/DashboardHeader";
 import PageContentContainer from "components/PageContentContainer";
 import { Scanners as ScannersType } from "types/api/Scanner";
 import { userAJosland, userWChevin } from "types/temp/dummyData";
-import { getFullName } from "utils/userUtils";
 
 const Scanners = () => {
   const scanners: ScannersType = [
