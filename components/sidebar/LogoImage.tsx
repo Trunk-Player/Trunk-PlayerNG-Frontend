@@ -1,12 +1,12 @@
 interface LogoImageProps {
-    className?: string
+  className?: string;
 }
 
-const LogoImage = ({className}: LogoImageProps) => {
+const LogoImage = ({ className }: LogoImageProps) => {
   return (
     <span>
       <img
-        className="h-10 w-auto"
+        className={className}
         src="/images/logo.svg"
         alt="Trunk-Player NG logo"
       />

@@ -13,8 +13,8 @@ import {
 
 export const getPrimaryNavigation = (): Navigation => [
   { name: "Dashboard", href: "/", icon: HomeIcon, exact: true },
-  { name: "Scanners", href: "/scanners", icon: FolderIcon, exact: false },
   { name: "Reports", href: "/reports", icon: ChartBarIcon, exact: false },
+  { name: "Scanners", href: "/scanners", icon: FolderIcon, exact: false },
   { name: "Scan Lists", href: "#", icon: InboxIcon, exact: false },
   { name: "Talk Groups", href: "#", icon: InboxIcon, exact: false },
 ];
