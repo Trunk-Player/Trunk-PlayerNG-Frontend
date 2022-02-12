@@ -1,5 +1,5 @@
 import store from "state/store";
-import { APIAccessTokenRefresh } from "types/api/APIAccessTokenRefresh";
+import { AccessTokenRefresh } from "types/api/custom/AccessTokenRefresh";
 import { RefreshAuthTokenResults } from "types/lib/auth/RefreshAuthTokenResults";
 import Axios from "utils/axios";
 
@@ -28,7 +28,7 @@ export const isLoggedIn = async (): Promise<boolean> => {
 
 export const refreshAuthToken = async (): Promise<RefreshAuthTokenResults> => {
   try {
-    const refreshCall = await Axios.post<APIAccessTokenRefresh>(
+    const refreshCall = await Axios.post<AccessTokenRefresh>(
       "/auth/token/refresh/",
       {}
     );

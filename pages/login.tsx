@@ -5,9 +5,8 @@ import LogoImage from "components/sidebar/LogoImage";
 import classNames from "utils/classNames";
 import Axios from "utils/axios";
 import { useAppDispatch } from "state/store/hooks";
-import { LoginResponse } from "types/api/LoginResponse";
+import { LoginResponse } from "types/api/custom/LoginResponse";
 import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
-import { convertAPIUserToUser } from "utils/userUtils";
 import { useRouter } from "next/router";
 
 interface FormData {
@@ -51,7 +50,7 @@ const LoginPage = () => {
       dispatch(
         setAuthenticationToken({ accessToken: results.data.access_token })
       );
-      dispatch(setCurrentUser(convertAPIUserToUser(results.data.user)));
+      dispatch(setCurrentUser(results.data.user));
       router.replace("/");
     } catch (ex: any) {
       alert(`An error occurred while trying to login. Error: ${ex.message}`);

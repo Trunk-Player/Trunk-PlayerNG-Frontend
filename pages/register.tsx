@@ -5,10 +5,9 @@ import LogoImage from "components/sidebar/LogoImage";
 import classNames from "utils/classNames";
 import Axios from "utils/axios";
 import { useAppDispatch } from "state/store/hooks";
-import { LoginResponse } from "types/api/LoginResponse";
+import { LoginResponse } from "types/api/custom/LoginResponse";
 import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
-import { User } from "types/User";
-import { convertAPIUserToUser } from "utils/userUtils";
+import { User } from "types/api/User";
 import { useRouter } from "next/router";
 
 interface FormData {
@@ -53,7 +52,7 @@ const RegisterPage = () => {
 
         console.log(results);
         setAuthenticationToken({ accessToken: results.data.access_token });
-        dispatch(setCurrentUser(convertAPIUserToUser(results.data.user)));
+        dispatch(setCurrentUser(results.data.user));
         router.replace("/");
       } catch (ex: any) {
         alert(
