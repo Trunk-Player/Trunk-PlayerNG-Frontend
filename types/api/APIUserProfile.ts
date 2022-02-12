@@ -4,3 +4,5 @@ export interface APIUserProfile {
   description?: string;
   siteTheme?: string;
 }
+
+export type APIUserProfiles = APIUserProfile[];

@@ -1,9 +1,9 @@
-import { UserProfiles } from "types/UserProfile";
+import { APIUserProfiles } from "types/api/APIUserProfile";
 
 export interface APISystemACL {
   UUID: string;
   name: string;
-  users: UserProfiles;
+  users: APIUserProfiles;
   public: boolean;
 }
 
