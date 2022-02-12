@@ -17,12 +17,11 @@ const SampleCurrentUser = ({ children }: SampleCurrentUserProps) => {
           id: 1234,
           enabled: true,
           email: "sampleuser@somewhere.com",
-          firstName: "Sample",
-          lastName: "User",
+          first_name: "Sample",
+          last_name: "User",
           userProfile: {
-            uuid: "A123B456",
+            UUID: "A123B456",
             siteAdmin: true,
-            feedAllowed: true,
           },
         })
       );
