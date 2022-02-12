@@ -1,9 +1,9 @@
-import { APIUser } from "./../../types/api/APIUser";
+import { APIUser } from "../../types/api/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "types/state/UserState";
 import { User } from "types/User";
 import type { AppState } from "../store";
-import { AuthenticationToken } from "types/api/AuthenticationToken";
+import { AuthenticationToken } from "types/api/custom/AuthenticationToken";
 
 const initialState: UserState = {
   currentUser: null,

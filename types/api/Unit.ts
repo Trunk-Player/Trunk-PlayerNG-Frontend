@@ -1,7 +1,7 @@
-import { System } from "./System";
+import { System } from "types/api/System";
 
 export interface Unit {
-  uuid: string;
+  UUID: string;
   system: System;
   decimalID: number;
   description?: string;

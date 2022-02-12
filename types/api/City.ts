@@ -1,5 +1,5 @@
 export interface City {
-  uuid: string;
+  UUID: string;
   name: string;
   description?: string;
 }

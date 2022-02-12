@@ -1,9 +1,8 @@
 export interface GlobalEmailTemplate {
-  uuid: string;
+  UUID: string;
   name: string;
   type: "welcome" | "alert";
   enabled: boolean;
-  html: string;
+  HTML: string;
 }
-
 export type GlobalEmailTemplates = GlobalEmailTemplate[];

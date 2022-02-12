@@ -1,5 +1,5 @@
-import { AuthenticationToken } from "types/api/AuthenticationToken";
-import { User } from "types/User";
+import { AuthenticationToken } from "types/api/custom/AuthenticationToken";
+import { User } from "types/api/User";
 
 export interface UserState {
   currentUser?: User | null;

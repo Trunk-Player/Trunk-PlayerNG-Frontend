@@ -1,8 +1,8 @@
-export interface APIUserProfile {
+export interface UserProfile {
   UUID: string;
   siteAdmin: boolean;
   description?: string;
   siteTheme?: string;
 }
 
-export type APIUserProfiles = APIUserProfile[];
+export type UserProfiles = UserProfile[];
