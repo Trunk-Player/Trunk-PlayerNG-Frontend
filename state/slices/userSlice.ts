@@ -3,10 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "types/state/UserState";
 import { User } from "types/User";
 import type { AppState } from "../store";
+import { AuthenticationToken } from "types/api/AuthenticationToken";
 
 const initialState: UserState = {
   currentUser: null,
-  accessToken: undefined,
+  authenticationToken: undefined,
 };
 
 export const userSlice = createSlice({
@@ -17,14 +18,17 @@ export const userSlice = createSlice({
       state.currentUser = action.payload;
     },
     setCurrentUserFromAPI: (state, action: PayloadAction<APIUser>) => {},
-    setAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload;
+    setAuthenticationToken: (
+      state,
+      action: PayloadAction<AuthenticationToken>
+    ) => {
+      state.authenticationToken = action.payload;
     },
   },
   extraReducers: (_builder) => {},
 });
 
-export const { setCurrentUser, setAccessToken } = userSlice.actions;
+export const { setCurrentUser, setAuthenticationToken } = userSlice.actions;
 
 export const selectCurrentUser = (state: AppState) => state.user.currentUser;
 

@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const unauthenticatedAxios = axios.create({
-  baseURL: "https://panik.io/",
+const Axios = axios.create({
+  baseURL: "https://panik.io/api",
   timeout: 1000,
+  // withCredentials: true,
 });
 
-export { unauthenticatedAxios };
+export default Axios;

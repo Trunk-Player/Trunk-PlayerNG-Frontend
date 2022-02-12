@@ -7,17 +7,15 @@ import Axios from "utils/axios";
 import { useAppDispatch } from "state/store/hooks";
 import { LoginResponse } from "types/api/LoginResponse";
 import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
-import { User } from "types/User";
 import { convertAPIUserToUser } from "utils/userUtils";
 import { useRouter } from "next/router";
 
 interface FormData {
   email: string;
   password: string;
-  confirmpassword: string;
 }
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -42,26 +40,23 @@ const RegisterPage = () => {
     required: { value: true, message: "Password is required" },
   });
 
-  const onSubmit = handleSubmit(
-    async ({ email, password, confirmpassword }) => {
-      try {
-        const results = await Axios.post<LoginResponse>("/registration/", {
-          email,
-          password1: password,
-          password2: confirmpassword,
-        });
+  const onSubmit = handleSubmit(async ({ email, password }) => {
+    try {
+      const results = await Axios.post<LoginResponse>("/auth/login/", {
+        email,
+        password,
+      });
 
-        console.log(results);
-        setAuthenticationToken({ accessToken: results.data.access_token });
-        dispatch(setCurrentUser(convertAPIUserToUser(results.data.user)));
-        router.replace("/");
-      } catch (ex: any) {
-        alert(
-          `An error occurred while trying to register this account. Error: ${ex.message}`
-        );
-      }
+      console.log("Login results", results);
+      dispatch(
+        setAuthenticationToken({ accessToken: results.data.access_token })
+      );
+      dispatch(setCurrentUser(convertAPIUserToUser(results.data.user)));
+      router.replace("/");
+    } catch (ex: any) {
+      alert(`An error occurred while trying to login. Error: ${ex.message}`);
     }
-  );
+  });
 
   useEffect(() => {
     const htmlTag = document.querySelector("html");
@@ -72,7 +67,7 @@ const RegisterPage = () => {
   return (
     <>
       <Head>
-        <title>Register - Trunk-Player</title>
+        <title>Login - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -80,7 +75,7 @@ const RegisterPage = () => {
           <div>
             <LogoImage className="mx-auto h-48 w-auto" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Register a New Account
+              Login to Trunk-Player
             </h2>
           </div>
           <div className="mt-8">
@@ -141,49 +136,13 @@ const RegisterPage = () => {
                   )}
                 </div>
               </div>
-
-              <div className="space-y-1">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Confirm Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    {...register("confirmpassword", {
-                      required: {
-                        value: true,
-                        message: "You must confirm the password",
-                      },
-                      validate: (value) =>
-                        value === passwordRef?.current?.value ||
-                        "The passwords do not match.",
-                    })}
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    className={classNames(
-                      "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 sm:text-sm",
-                      errors.password ? "border-red-600" : ""
-                    )}
-                    tabIndex={3}
-                  />
-                  {errors.confirmpassword && (
-                    <p className="text-red-600">
-                      {errors.confirmpassword.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-
               <div>
                 <button
                   type="submit"
                   className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
                   tabIndex={4}
                 >
-                  Register
+                  Login
                 </button>
               </div>
             </form>
@@ -194,4 +153,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
