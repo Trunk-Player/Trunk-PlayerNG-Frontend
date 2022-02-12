@@ -1,29 +1,33 @@
 import Head from "next/head";
 import Link from "next/link";
 import MainLayout from "components/layouts/MainLayout";
-import PageHeader from "components/headers";
-import DashboardHeader from "components/headers/DashboardHeader";
 import PageContentContainer from "components/PageContentContainer";
-import { Scanners as ScannersType } from "types/temp/Scanner";
-import { userAJosland, userWChevin } from "types/temp/dummyData";
-import { getFullName } from "utils/userUtils";
+import { Scanners as ScannersType } from "types/api/Scanner";
 
 const Scanners = () => {
   const scanners: ScannersType = [
     {
-      uuid: "a4bb1ae1-531e-485d-bfbd-1ada745b6645",
+      UUID: "a4bb1ae1-531e-485d-bfbd-1ada745b6645",
       name: "Omaha Police Department Dispatch",
-      owner: userAJosland,
+      owner: {
+        UUID: "123",
+        siteAdmin: false,
+      },
       description: "All of the OPD dispatch talkgroups.",
-      isPublic: true,
+      public: true,
+      communityShared: true,
       scanlists: [],
     },
     {
-      uuid: "da9c21fe-90e3-4d31-bff5-063867a2f2d9",
+      UUID: "da9c21fe-90e3-4d31-bff5-063867a2f2d9",
       name: "Nebraska State Patrol Dispatch",
-      owner: userWChevin,
+      owner: {
+        UUID: "456",
+        siteAdmin: false,
+      },
       description: "All NSP troop dispatch talkgroups.",
-      isPublic: true,
+      public: true,
+      communityShared: true,
       scanlists: [],
     },
   ];
@@ -77,14 +81,14 @@ const Scanners = () => {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {scanners.map((scanner) => (
-                  <tr key={scanner.uuid}>
+                  <tr key={scanner.UUID}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 underline">
                       <Link href={``}>
                         <a>{scanner.name}</a>
                       </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {getFullName(scanner.owner)}
+                      Owner
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {scanner.description}

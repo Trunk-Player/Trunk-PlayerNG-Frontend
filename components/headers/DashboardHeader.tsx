@@ -85,7 +85,10 @@ const DashboardHeader = () => {
               </span>
               {/* )} */}
               <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
-                Good {greetingSubtext}, {`${user?.firstName} ${user?.lastName}`}
+                Good {greetingSubtext}
+                {user &&
+                  (user.first_name || user.last_name) &&
+                  `, ${user?.first_name} ${user?.last_name}`}
                 !
               </h1>
             </div>

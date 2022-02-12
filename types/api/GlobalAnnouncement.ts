@@ -1,6 +1,6 @@
 export interface GlobalAnnouncement {
-  uuid: string;
-  name: String;
+  UUID: string;
+  name: string;
   enabled: boolean;
   description: string;
 }

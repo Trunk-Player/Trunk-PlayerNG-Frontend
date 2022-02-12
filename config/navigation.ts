@@ -1,5 +1,5 @@
 import { Navigation } from "types/components/Navigation";
-import store, { StoreType } from "state/store";
+import store from "state/store";
 
 import {
   ChartBarIcon,

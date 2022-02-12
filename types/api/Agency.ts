@@ -1,10 +1,10 @@
-import { City } from "./City";
+import { Cities } from "types/api/City";
 
 export interface Agency {
-  uuid: string;
+  UUID: string;
   name: string;
   description?: string;
-  city: City;
+  city?: Cities;
 }
 
 export type Agencies = Agency[];

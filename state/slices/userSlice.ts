@@ -1,9 +1,8 @@
-import { APIUser } from "./../../types/api/APIUser";
+import { User } from "types/api/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "types/state/UserState";
-import { User } from "types/User";
 import type { AppState } from "../store";
-import { AuthenticationToken } from "types/api/AuthenticationToken";
+import { AuthenticationToken } from "types/api/custom/AuthenticationToken";
 
 const initialState: UserState = {
   currentUser: null,
@@ -17,7 +16,6 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
     },
-    setCurrentUserFromAPI: (state, action: PayloadAction<APIUser>) => {},
     setAuthenticationToken: (
       state,
       action: PayloadAction<AuthenticationToken>
