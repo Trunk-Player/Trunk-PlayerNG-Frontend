@@ -3,14 +3,16 @@ import Link from "next/link";
 import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import { Scanners as ScannersType } from "types/api/Scanner";
-import { userAJosland, userWChevin } from "types/temp/dummyData";
 
 const Scanners = () => {
   const scanners: ScannersType = [
     {
       UUID: "a4bb1ae1-531e-485d-bfbd-1ada745b6645",
       name: "Omaha Police Department Dispatch",
-      owner: userAJosland,
+      owner: {
+        UUID: "123",
+        siteAdmin: false,
+      },
       description: "All of the OPD dispatch talkgroups.",
       public: true,
       communityShared: true,
@@ -19,7 +21,10 @@ const Scanners = () => {
     {
       UUID: "da9c21fe-90e3-4d31-bff5-063867a2f2d9",
       name: "Nebraska State Patrol Dispatch",
-      owner: userWChevin,
+      owner: {
+        UUID: "456",
+        siteAdmin: false,
+      },
       description: "All NSP troop dispatch talkgroups.",
       public: true,
       communityShared: true,
