@@ -8,3 +8,5 @@ export interface APIUser {
   enabled: boolean;
   userProfile: APIUserProfile;
 }
+
+export type APIUsers = APIUser[];
