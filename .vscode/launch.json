@@ -10,9 +10,11 @@
       "request": "launch",
       "command": "npm run dev",
       "console": "integratedTerminal",
+      "sourceMaps": true,
       "serverReadyAction": {
         "pattern": "started server on .+, url: (https?://.+)",
         "uriFormat": "%s",
+        "webRoot": "${workspaceFolder}",
         "action": "debugWithChrome"
       }
     },
