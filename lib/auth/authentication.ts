@@ -27,6 +27,15 @@ export const isLoggedIn = async (): Promise<boolean> => {
   }
 };
 
+export const getAccessToken = (): string | undefined => {
+  const token = store.getState().user.authenticationToken?.accessToken;
+  if (token) {
+    return token;
+  } else {
+    return undefined;
+  }
+};
+
 export const apiLogout = async (): Promise<boolean> => {
   try {
     const logoutCall = await Axios.post<AccessTokenRefresh>(
