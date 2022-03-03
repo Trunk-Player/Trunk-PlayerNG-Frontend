@@ -3,7 +3,7 @@ import { UserProfiles } from "types/api/UserProfile";
 export interface SystemACL {
   UUID: string;
   name: string;
-  users: UserProfiles;
+  users?: UserProfiles;
   public: boolean;
 }
 

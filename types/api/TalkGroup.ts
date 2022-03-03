@@ -7,7 +7,7 @@ export interface TalkGroup {
   decimalID: number;
   alphaTag?: string;
   description?: string;
-  mode: "digital" | "analog" | "tdma";
+  mode: "digital" | "analog" | "tdma" | "mixed";
   encrypted?: boolean;
   agency?: Agencies;
 }

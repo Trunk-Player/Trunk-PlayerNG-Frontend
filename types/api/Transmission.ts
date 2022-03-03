@@ -14,10 +14,10 @@ export interface Transmission {
   talkgroup: TalkGroup;
   encrypted: boolean;
   emergency: boolean;
-  units: TransmissionUnits;
-  frequencys: TransmissionFreqs;
+  units?: TransmissionUnits;
+  frequencys?: TransmissionFreqs;
   frequency: number;
-  length: number;
+  length?: number;
   locked: boolean;
   transcript?: string;
 }
