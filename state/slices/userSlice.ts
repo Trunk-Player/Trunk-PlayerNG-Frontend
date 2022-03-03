@@ -22,11 +22,16 @@ export const userSlice = createSlice({
     ) => {
       state.authenticationToken = action.payload;
     },
+    doLogout: (state) => {
+      state.authenticationToken = undefined;
+      state.currentUser = null;
+    },
   },
   extraReducers: (_builder) => {},
 });
 
-export const { setCurrentUser, setAuthenticationToken } = userSlice.actions;
+export const { setCurrentUser, setAuthenticationToken, doLogout } =
+  userSlice.actions;
 
 export const selectCurrentUser = (state: AppState) => state.user.currentUser;
 

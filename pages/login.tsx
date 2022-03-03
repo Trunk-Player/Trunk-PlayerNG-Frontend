@@ -41,10 +41,17 @@ const LoginPage = () => {
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
     try {
-      const results = await Axios.post<LoginResponse>("/auth/login/", {
-        email,
-        password,
-      });
+      const results = await Axios.post<LoginResponse>(
+        //"/auth/login/",
+        "/auth/token/",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       console.log("Login results", results);
       dispatch(

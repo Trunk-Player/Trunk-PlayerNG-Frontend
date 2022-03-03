@@ -1,3 +1,4 @@
+import { doLogout } from "state/slices/userSlice";
 import store from "state/store";
 import { AccessTokenRefresh } from "types/api/custom/AccessTokenRefresh";
 import { RefreshAuthTokenResults } from "types/lib/auth/RefreshAuthTokenResults";
@@ -26,11 +27,37 @@ export const isLoggedIn = async (): Promise<boolean> => {
   }
 };
 
+export const apiLogout = async (): Promise<boolean> => {
+  try {
+    const logoutCall = await Axios.post<AccessTokenRefresh>(
+      "/auth/logout/",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    console.log("Logout", logoutCall);
+
+    if (logoutCall.status === 200) {
+      store.dispatch(doLogout());
+      return true;
+    } else {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+};
+
 export const refreshAuthToken = async (): Promise<RefreshAuthTokenResults> => {
   try {
     const refreshCall = await Axios.post<AccessTokenRefresh>(
       "/auth/token/refresh/",
-      {}
+      {},
+      {
+        withCredentials: true,
+      }
     );
 
     console.log("Refresh", refreshCall);
