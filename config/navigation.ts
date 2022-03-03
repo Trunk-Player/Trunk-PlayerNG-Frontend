@@ -17,6 +17,12 @@ export const getPrimaryNavigation = (): Navigation => [
   { name: "Scanners", href: "/scanners", icon: FolderIcon, exact: false },
   { name: "Scan Lists", href: "#", icon: InboxIcon, exact: false },
   { name: "Talk Groups", href: "#", icon: InboxIcon, exact: false },
+  {
+    name: "Transmissions",
+    href: "/transmissions",
+    icon: InboxIcon,
+    exact: false,
+  },
 ];
 export const getSecondaryNavigation = (): Navigation => {
   const isAdmin =
