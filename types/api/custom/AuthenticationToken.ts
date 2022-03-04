@@ -1,4 +1,4 @@
 export interface AuthenticationToken {
   accessToken: string;
-  expiration?: Date;
+  expiration?: string;
 }
