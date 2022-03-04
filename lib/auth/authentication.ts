@@ -15,8 +15,6 @@ export const isLoggedIn = async (): Promise<boolean> => {
       token: currentToken.accessToken,
     });
 
-    console.log("Verify", verifyCall);
-
     if (verifyCall.status === 200) {
       return true;
     } else {
@@ -46,8 +44,6 @@ export const apiLogout = async (): Promise<boolean> => {
       }
     );
 
-    console.log("Logout", logoutCall);
-
     if (logoutCall.status === 200) {
       store.dispatch(doLogout());
       return true;
@@ -69,14 +65,12 @@ export const refreshAuthToken = async (): Promise<RefreshAuthTokenResults> => {
       }
     );
 
-    console.log("Refresh", refreshCall);
-
     if (refreshCall.status === 200) {
       return {
         isSuccessful: true,
         authToken: {
           accessToken: refreshCall.data.access,
-          expiration: new Date(refreshCall.data.access_token_expiration),
+          expiration: refreshCall.data.access_token_expiration,
         },
       };
     } else {

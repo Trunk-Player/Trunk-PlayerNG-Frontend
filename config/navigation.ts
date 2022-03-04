@@ -38,7 +38,7 @@ export const getSecondaryNavigation = (): Navigation => {
         { name: "Account Settings", href: "#", icon: CogIcon, exact: false },
         { name: "Preferences", href: "#", icon: CogIcon, exact: false },
         {
-          name: `Help - ${isAdmin}`,
+          name: "Help",
           href: "#",
           icon: QuestionMarkCircleIcon,
           exact: false,
