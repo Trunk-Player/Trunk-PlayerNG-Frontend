@@ -1,13 +1,12 @@
 import { TransmissionFreqs } from "types/api/TransmissionFreq";
 import { TransmissionUnits } from "types/api/TransmissionUnit";
 import { TalkGroup } from "types/api/TalkGroup";
-import { SystemRecorder } from "types/api/SystemRecorder";
-import { System } from "types/api/System";
 
 export interface Transmission {
   UUID: string;
-  system: System;
-  recorder: SystemRecorder;
+  system: string;
+  system_name: string;
+  recorder: string;
   startTime: string; // actual type is a date
   endTime?: string; // actual type is a date
   audioFile: string;
