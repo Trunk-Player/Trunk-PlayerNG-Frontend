@@ -20,6 +20,7 @@
     "[typescript]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "editor.formatOnSave": true,
     "workbench.iconTheme": "vscode-icons",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "vsicons.dontShowNewVersionMessage": true,

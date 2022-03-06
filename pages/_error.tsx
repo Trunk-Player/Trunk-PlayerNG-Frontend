@@ -21,9 +21,8 @@ const AppError: NextPage<AppErrorProps> = ({
 };
 
 AppError.getInitialProps = async (ctx) => {
-  const errorInitialProps: AppErrorProps = await NextErrorComponent.getInitialProps(
-    ctx
-  );
+  const errorInitialProps: AppErrorProps =
+    await NextErrorComponent.getInitialProps(ctx);
 
   errorInitialProps.hasGetInitialPropsRun = true;
 

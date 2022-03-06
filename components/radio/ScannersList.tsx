@@ -138,7 +138,7 @@ const ScannersList = () => {
         {scannersData.map((scanner) => (
           <tr key={scanner.UUID}>
             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 underline">
-              <Link href={``}>
+              <Link href={""}>
                 <a>{scanner.name}</a>
               </Link>
             </td>
