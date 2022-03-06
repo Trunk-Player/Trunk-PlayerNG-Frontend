@@ -1,0 +1,67 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.222.0/containers/typescript-node
+{
+  "name": "Node.js & TypeScript",
+  "build": {
+    "dockerfile": "Dockerfile",
+    // Update 'VARIANT' to pick a Node version: 16, 14, 12.
+    // Append -bullseye or -buster to pin to an OS version.
+    // Use -bullseye variants on local on arm64/Apple Silicon.
+    "args": {
+      "VARIANT": "16-bullseye"
+    }
+  },
+
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.iconTheme": "vscode-icons",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "vsicons.dontShowNewVersionMessage": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.suggestSmartCommit": false,
+    "files.associations": {
+      "*.env.*": "env",
+      "*.env.development": "env",
+      "*.env.test": "env",
+      "*.env.production": "env",
+      "*.env.local": "env",
+      "*.env.*.local": "env"
+    }
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "irongeek.vscode-env",
+    "github.vscode-pull-request-github",
+    "ecmel.vscode-html-css",
+    "zignd.html-css-class-completion",
+    "bradlc.vscode-tailwindcss",
+    "austenc.tailwind-docs",
+    "netcorext.uuid-generator",
+    "eamodio.gitlens"
+  ],
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "appPort": ["3000:3000"],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "npm install",
+
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  "remoteUser": "node",
+  "features": {
+    "git": "os-provided",
+    "git-lfs": "latest",
+    "github-cli": "latest",
+    "python": "os-provided"
+  }
+}
