@@ -2,15 +2,10 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.222.0/containers/typescript-node
 {
   "name": "Node.js & TypeScript",
-  "build": {
-    "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 16, 14, 12.
-    // Append -bullseye or -buster to pin to an OS version.
-    // Use -bullseye variants on local on arm64/Apple Silicon.
-    "args": {
-      "VARIANT": "16-bullseye"
-    }
-  },
+  "service": "dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "forwardPorts": [8080, 3000],
+  "workspaceFolder": "/workspace",
 
   // Set *default* container specific settings.json values on container create.
   "settings": {
@@ -52,7 +47,7 @@
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "appPort": ["3000:3000"],
+  //"appPort": ["3000:3000"],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "npm install",
