@@ -16,9 +16,9 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run --config video=false",
     "cy:report": "cypress run report --config video=false",
-    "test:e2e": "start-server-and-test develop http://localhost:8000 cy:open",
-    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
-    "test:e2e:report": "start-server-and-test develop http://localhost:8000 cy:report"
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cy:open",
+    "test:e2e:ci": "start-server-and-test dev http://localhost:3000 cy:run",
+    "test:e2e:report": "start-server-and-test dev http://localhost:3000 cy:report"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
@@ -53,6 +53,7 @@
     "jest": "^27.3.1",
     "postcss": "^8.3.11",
     "react-test-renderer": "^17.0.2",
+    "start-server-and-test": "^1.14.0",
     "tailwindcss": "^2.2.17",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "^4.4.4"
