@@ -55,7 +55,7 @@ function App({ Component, pageProps }: AppProps) {
       router.events.off("routeChangeStart", hideContent);
       router.events.off("routeChangeComplete", authCheck);
     };
-  }, []);
+  }, []); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   return (
     <Provider store={store}>
