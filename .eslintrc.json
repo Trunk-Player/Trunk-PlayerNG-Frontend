@@ -1,6 +1,12 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "no-debugger": "error",
+    "no-unused-vars": "warn",
+    "prettier/prettier": ["error"]
   }
 }
