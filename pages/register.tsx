@@ -7,7 +7,6 @@ import Axios from "utils/axios";
 import { useAppDispatch } from "state/store/hooks";
 import { LoginResponse } from "types/api/custom/LoginResponse";
 import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
-import { User } from "types/api/User";
 import { useRouter } from "next/router";
 
 interface FormData {

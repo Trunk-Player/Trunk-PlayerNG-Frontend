@@ -7,6 +7,7 @@
     "quotes": ["error", "double"],
     "no-debugger": "error",
     "no-unused-vars": "warn",
+    "comma-dangle": ["error", "only-multiline"],
     "prettier/prettier": ["error"]
   }
 }
