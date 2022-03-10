@@ -3,5 +3,6 @@
   "semi": true,
   "printWidth": 80,
   "bracketSpacing": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "trailingComma": "es5"
 }
