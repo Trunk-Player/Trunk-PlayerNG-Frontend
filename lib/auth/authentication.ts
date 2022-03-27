@@ -1,28 +1,12 @@
-import { doLogout } from "state/slices/userSlice";
 import store from "state/store";
 import { AccessTokenRefresh } from "types/api/custom/AccessTokenRefresh";
 import { RefreshAuthTokenResults } from "types/lib/auth/RefreshAuthTokenResults";
 import Axios from "utils/axios";
 
-export const isLoggedIn = async (): Promise<boolean> => {
-  const currentToken = store.getState().user.authenticationToken;
-  if (!currentToken) {
-    return false;
-  }
-
-  try {
-    const verifyCall = await Axios.post("/auth/token/verify/", {
-      token: currentToken.accessToken,
-    });
-
-    if (verifyCall.status === 200) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch {
-    return false;
-  }
+export const isLoggedIn = (): boolean => {
+  const isAuthenticated = store.getState().authentication.authenticated;
+  console.log("isAuthenticated", isAuthenticated);
+  return isAuthenticated;
 };
 
 export const getAccessToken = (): string | undefined => {
@@ -45,7 +29,7 @@ export const apiLogout = async (): Promise<boolean> => {
     );
 
     if (logoutCall.status === 200) {
-      store.dispatch(doLogout());
+      //store.dispatch(doLogout());
       return true;
     } else {
       return false;
@@ -70,7 +54,7 @@ export const refreshAuthToken = async (): Promise<RefreshAuthTokenResults> => {
         isSuccessful: true,
         authToken: {
           accessToken: refreshCall.data.access,
-          expiration: refreshCall.data.access_token_expiration,
+          //expiration: refreshCall.data.access_token_expiration,
         },
       };
     } else {

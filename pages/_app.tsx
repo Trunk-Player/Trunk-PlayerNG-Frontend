@@ -4,7 +4,6 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { setAuthenticationToken } from "state/slices/userSlice";
 import store from "state/store";
 import "tailwindcss/tailwind.css";
 
@@ -12,27 +11,25 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
-  const authCheck = async (url: string) => {
+  const authCheck = (url: string) => {
     // redirect to login page if accessing a private page and not logged in
     const publicPaths = ["/login", "/register"];
     const path = url.split("?")[0];
-    const isLoggedIn = await authentication.isLoggedIn();
+    const isLoggedIn = authentication.isLoggedIn();
     if (!isLoggedIn && !publicPaths.includes(path)) {
       console.log("Not Logged In and not public path", path);
-      const refreshResults = await authentication.refreshAuthToken();
-
-      console.log("Refresh results", refreshResults);
-
-      if (!refreshResults.isSuccessful || !refreshResults.authToken) {
-        setAuthorized(false);
-        router.push({
-          pathname: "/login",
-          query: { returnUrl: router.asPath },
-        });
-      } else {
-        store.dispatch(setAuthenticationToken(refreshResults.authToken));
-        setAuthorized(true);
-      }
+      //   const refreshResults = await authentication.refreshAuthToken();
+      //   console.log("Refresh results", refreshResults);
+      //   if (!refreshResults.isSuccessful || !refreshResults.authToken) {
+      setAuthorized(false);
+      router.push({
+        pathname: "/login",
+        query: { returnUrl: router.asPath },
+      });
+      //   } else {
+      //     //store.dispatch(setAuthenticationToken(refreshResults.authToken));
+      //     setAuthorized(true);
+      //   }
     } else {
       console.log("Path is good", path);
       setAuthorized(true);
@@ -59,9 +56,7 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      {/* <SampleCurrentUser> */}
       {authorized && <Component {...pageProps} />}
-      {/* </SampleCurrentUser> */}
     </Provider>
   );
 }
