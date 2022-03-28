@@ -6,7 +6,6 @@ import classNames from "utils/classNames";
 import Axios from "utils/axios";
 import { useAppDispatch } from "state/store/hooks";
 import { LoginResponse } from "types/api/custom/LoginResponse";
-import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
 import { useRouter } from "next/router";
 
 interface FormData {
@@ -50,8 +49,8 @@ const RegisterPage = () => {
         });
 
         console.log(results);
-        setAuthenticationToken({ accessToken: results.data.access_token });
-        dispatch(setCurrentUser(results.data.user));
+        //dispatch(handleTokenRefresh(results.data));
+        //dispatch(setCurrentUser(results.data.user));
         router.replace("/");
       } catch (ex: any) {
         alert(
