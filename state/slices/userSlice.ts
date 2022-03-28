@@ -1,12 +1,33 @@
 import { User } from "types/api/User";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Axios from "utils/axios";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "types/state/UserState";
 import type { AppState } from "../store";
-import { AuthenticationToken } from "types/api/custom/AuthenticationToken";
+
+interface GetUserParams {
+  accessToken?: string;
+}
+
+export const retreiveCurrentUser = createAsyncThunk(
+  "user/retreiveCurrentUser",
+  async ({ accessToken }: GetUserParams) => {
+    const response = await Axios.get<User>("/auth/user/", {
+      withCredentials: true,
+      headers: accessToken
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        : undefined,
+    });
+
+    const data = response.data;
+
+    return data;
+  }
+);
 
 const initialState: UserState = {
   currentUser: null,
-  authenticationToken: undefined,
 };
 
 export const userSlice = createSlice({
@@ -16,22 +37,15 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
     },
-    setAuthenticationToken: (
-      state,
-      action: PayloadAction<AuthenticationToken>
-    ) => {
-      state.authenticationToken = action.payload;
-    },
-    doLogout: (state) => {
-      state.authenticationToken = undefined;
-      state.currentUser = null;
-    },
   },
-  extraReducers: (_builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(retreiveCurrentUser.fulfilled, (state, { payload }) => {
+      state.currentUser = payload;
+    });
+  },
 });
 
-export const { setCurrentUser, setAuthenticationToken, doLogout } =
-  userSlice.actions;
+export const { setCurrentUser } = userSlice.actions;
 
 export const selectCurrentUser = (state: AppState) => state.user.currentUser;
 

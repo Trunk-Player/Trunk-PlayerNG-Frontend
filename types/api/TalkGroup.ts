@@ -4,8 +4,8 @@ import { Agencies } from "types/api/Agency";
 export interface TalkGroup {
   UUID: string;
   system: System;
-  decimalID: number;
-  alphaTag?: string;
+  decimal_id: number;
+  alpha_tag?: string;
   description?: string;
   mode: "digital" | "analog" | "tdma" | "mixed";
   encrypted?: boolean;

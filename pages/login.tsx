@@ -1,13 +1,16 @@
 import Head from "next/head";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import LogoImage from "components/sidebar/LogoImage";
 import classNames from "utils/classNames";
-import Axios from "utils/axios";
-import { useAppDispatch } from "state/store/hooks";
-import { LoginResponse } from "types/api/custom/LoginResponse";
-import { setAuthenticationToken, setCurrentUser } from "state/slices/userSlice";
+import { useAppDispatch, useAppSelector } from "state/store/hooks";
 import { useRouter } from "next/router";
+import {
+  loginUser,
+  selectAuthenticationError,
+  selectIsAuthenticated,
+  selectIsAuthenticationLoading,
+} from "state/slices/authenticationSlice";
 
 interface FormData {
   email: string;
@@ -19,6 +22,9 @@ const LoginPage = () => {
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const isAuthLoading = useAppSelector(selectIsAuthenticationLoading);
+  const authError = useAppSelector(selectAuthenticationError);
 
   const {
     register,
@@ -41,24 +47,7 @@ const LoginPage = () => {
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
     try {
-      const results = await Axios.post<LoginResponse>(
-        //"/auth/login/",
-        "/auth/token/",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      console.log("Login results", results);
-      dispatch(
-        setAuthenticationToken({ accessToken: results.data.access_token })
-      );
-      dispatch(setCurrentUser(results.data.user));
-      router.replace("/");
+      await dispatch(loginUser({ email, password }));
     } catch (ex: any) {
       alert(`An error occurred while trying to login. Error: ${ex.message}`);
     }
@@ -70,6 +59,15 @@ const LoginPage = () => {
     htmlTag?.classList.add("bg-gray-50");
     emailRef?.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (!isAuthLoading) {
+      if (!authError && isAuthenticated) {
+        router.replace("/");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthLoading]);
   return (
     <>
       <Head>
@@ -107,6 +105,7 @@ const LoginPage = () => {
                       emailRef.current = e;
                     }}
                     tabIndex={1}
+                    value="test@test.com"
                   />
                   {errors.email && (
                     <p className="text-red-600">{errors.email.message}</p>
@@ -136,6 +135,7 @@ const LoginPage = () => {
                       passwordRef.current = e;
                     }}
                     tabIndex={2}
+                    value="abcabcabc123"
                   />
                   {errors.password && (
                     <p className="text-red-600">{errors.password.message}</p>

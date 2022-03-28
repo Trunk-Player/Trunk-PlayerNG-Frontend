@@ -7,9 +7,9 @@ export interface Transmission {
   system: string;
   system_name: string;
   recorder: string;
-  startTime: string; // actual type is a date
-  endTime?: string; // actual type is a date
-  audioFile: string;
+  start_time: string;
+  end_time?: string;
+  audio_file: string;
   talkgroup: TalkGroup;
   encrypted: boolean;
   emergency: boolean;

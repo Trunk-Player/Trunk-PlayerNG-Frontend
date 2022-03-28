@@ -1,14 +1,22 @@
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
-import { Transmissions } from "types/api/Transmission";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ExclamationIcon } from "@heroicons/react/solid";
+import { ResponseTransmissionsList } from "types/api/responses/ResponseTransmissionsList";
 
-const TransmissionsList = () => {
+interface TransmissionsListProps {
+  transmissionsFallback?: ResponseTransmissionsList;
+}
+
+const TransmissionsList = ({
+  transmissionsFallback,
+}: TransmissionsListProps) => {
   const { data: transmissionsData, error: transmissionsError } =
-    useSWR<Transmissions>("/radio/transmission/list", fetcher);
+    useSWR<ResponseTransmissionsList>("/radio/transmission/list", fetcher, {
+      fallbackData: transmissionsFallback,
+    });
 
   const skeletonNumberOfRows = 4; // How many rows for the loading skeleton
   const skeletonNumberOfCols = 4; // How many columns are in the table
@@ -79,11 +87,11 @@ const TransmissionsList = () => {
           </>
         )}
         {transmissionsData &&
-          transmissionsData.map((transmission) => (
+          transmissionsData.results.map((transmission) => (
             <tr key={transmission.UUID}>
               <td className="bg-white px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 underline">
                 <Link href={`/talkgroups/${transmission.talkgroup.UUID}`}>
-                  <a>{transmission.talkgroup.alphaTag}</a>
+                  <a>{transmission.talkgroup.alpha_tag}</a>
                 </Link>
               </td>
               <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -91,14 +99,14 @@ const TransmissionsList = () => {
               </td>
               <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                 <span
-                  title={new Date(transmission.startTime).toLocaleString(
+                  title={new Date(transmission.start_time).toLocaleString(
                     undefined,
                     {
                       hour12: false,
                     }
                   )}
                 >
-                  {new Date(transmission.startTime).toLocaleTimeString(
+                  {new Date(transmission.start_time).toLocaleTimeString(
                     undefined,
                     {
                       hour12: false,
@@ -107,16 +115,16 @@ const TransmissionsList = () => {
                 </span>
               </td>
               <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                {transmission.endTime ? (
+                {transmission.end_time ? (
                   <span
-                    title={new Date(transmission.endTime).toLocaleString(
+                    title={new Date(transmission.end_time).toLocaleString(
                       undefined,
                       {
                         hour12: false,
                       }
                     )}
                   >
-                    {new Date(transmission.endTime).toLocaleTimeString(
+                    {new Date(transmission.end_time).toLocaleTimeString(
                       undefined,
                       {
                         hour12: false,
