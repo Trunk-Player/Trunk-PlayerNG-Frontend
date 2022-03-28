@@ -1,7 +1,30 @@
 import { User } from "types/api/User";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Axios from "utils/axios";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "types/state/UserState";
 import type { AppState } from "../store";
+
+interface GetUserParams {
+  accessToken?: string;
+}
+
+export const retreiveCurrentUser = createAsyncThunk(
+  "user/retreiveCurrentUser",
+  async ({ accessToken }: GetUserParams) => {
+    const response = await Axios.get<User>("/auth/user/", {
+      withCredentials: true,
+      headers: accessToken
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        : undefined,
+    });
+
+    const data = response.data;
+
+    return data;
+  }
+);
 
 const initialState: UserState = {
   currentUser: null,
@@ -14,6 +37,11 @@ export const userSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(retreiveCurrentUser.fulfilled, (state, { payload }) => {
+      state.currentUser = payload;
+    });
   },
 });
 

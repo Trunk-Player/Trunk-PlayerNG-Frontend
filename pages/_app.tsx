@@ -1,9 +1,10 @@
-// import SampleCurrentUser from "components/sampledata/SampleCurrentUser";
 import * as authentication from "lib/auth/authentication";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
+import { handleTokenRefresh } from "state/slices/authenticationSlice";
+import { retreiveCurrentUser } from "state/slices/userSlice";
 import store from "state/store";
 import "tailwindcss/tailwind.css";
 
@@ -11,25 +12,41 @@ function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
-  const authCheck = (url: string) => {
+  const authCheck = async (url: string) => {
     // redirect to login page if accessing a private page and not logged in
     const publicPaths = ["/login", "/register"];
     const path = url.split("?")[0];
     const isLoggedIn = authentication.isLoggedIn();
     if (!isLoggedIn && !publicPaths.includes(path)) {
       console.log("Not Logged In and not public path", path);
-      //   const refreshResults = await authentication.refreshAuthToken();
-      //   console.log("Refresh results", refreshResults);
-      //   if (!refreshResults.isSuccessful || !refreshResults.authToken) {
-      setAuthorized(false);
-      router.push({
-        pathname: "/login",
-        query: { returnUrl: router.asPath },
-      });
-      //   } else {
-      //     //store.dispatch(setAuthenticationToken(refreshResults.authToken));
-      //     setAuthorized(true);
-      //   }
+      try {
+        const refreshTokens = await authentication.refreshAuthToken();
+        console.log("Refresh tokens", refreshTokens);
+        if (!refreshTokens) {
+          setAuthorized(false);
+          router.push({
+            pathname: "/login",
+            query: { returnUrl: router.asPath },
+          });
+        } else {
+          store.dispatch(handleTokenRefresh(refreshTokens));
+          store.dispatch(
+            retreiveCurrentUser({ accessToken: refreshTokens.access_token })
+          );
+          authentication.refreshServerTokens(
+            refreshTokens.access_token,
+            refreshTokens.access_token_expiration,
+            refreshTokens.CSRF_TOKEN
+          );
+          setAuthorized(true);
+        }
+      } catch (_ex) {
+        setAuthorized(false);
+        router.push({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
+      }
     } else {
       console.log("Path is good", path);
       setAuthorized(true);
