@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "state/store/hooks";
+import { useRouter } from "next/router";
+import { useAppSelector, useAppDispatch } from "state/store/hooks";
 import { selectCurrentUser } from "state/slices/userSlice";
 
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import PlaceholderAvatar from "components/icons/custom/PlaceholderAvatar";
-import { refreshAuthToken, apiLogout } from "lib/auth/authentication";
+import { logoutUser } from "state/slices/authenticationSlice";
 
 const DashboardHeader = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const user = useAppSelector(selectCurrentUser);
   const [greetingSubtext, setGreetingSubtext] = useState("day");
 
-  const doRefresh = async () => {
-    const results = await refreshAuthToken();
-    console.log("Auth refresh", results);
-  };
-
   const doLogout = async () => {
-    const results = await apiLogout();
-    console.log("Auth logout", results);
+    const results = await dispatch(logoutUser());
+    if (results.meta.requestStatus === "fulfilled") {
+      router.push("/login");
+    }
   };
 
   useEffect(() => {
@@ -127,9 +127,9 @@ const DashboardHeader = () => {
         <button
           type="button"
           className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-          onClick={doRefresh}
+          onClick={() => {}}
         >
-          Refresh Token
+          Unused Button
         </button>
       </div>
     </>
