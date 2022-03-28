@@ -1,11 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Axios from "utils/axios";
 import type { AppState } from "../store";
 import { retreiveCurrentUser } from "./userSlice";
-import { refreshAuthToken } from "lib/auth/authentication";
+import * as Authentication from "lib/auth/authentication";
 
 import { AuthenticationState } from "types/state/AuthenticationState";
-import { ResponseLogin } from "types/api/responses/ResponseLogin";
 import { ResponseRefreshToken } from "types/api/responses/ResponseRefreshToken";
 
 interface LoginParams {
@@ -16,18 +14,7 @@ interface LoginParams {
 export const loginUser = createAsyncThunk(
   "authentication/loginUser",
   async ({ email, password }: LoginParams, { dispatch }) => {
-    const response = await Axios.post<ResponseLogin>(
-      "/auth/token/",
-      {
-        email,
-        password,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-
-    const data = response.data;
+    const data = await Authentication.doLogin(email, password);
 
     if (data.access_token) {
       dispatch(retreiveCurrentUser({ accessToken: data.access_token }));
@@ -37,10 +24,21 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  "authentication/logoutUser",
+  async (_, { dispatch }) => {
+    const data = await Authentication.doLogout();
+
+    dispatch(resetAuthentication());
+
+    return data;
+  }
+);
+
 export const refreshToken = createAsyncThunk(
   "authentication/refreshToken",
   async () => {
-    return refreshAuthToken();
+    return Authentication.refreshAuthToken();
   }
 );
 
@@ -73,6 +71,7 @@ export const authenticationSlice = createSlice({
           "Did not receive an access token from the api server.";
       }
     },
+    resetAuthentication: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
@@ -99,6 +98,7 @@ export const authenticationSlice = createSlice({
       state.authenticationLoading = false;
       state.authenticationError = payload.error.message;
     });
+    builder.addCase(logoutUser.fulfilled, () => {});
     builder.addCase(refreshToken.pending, (state) => {
       state.authenticated = false;
       state.authenticationLoading = true;
@@ -126,7 +126,8 @@ export const authenticationSlice = createSlice({
   },
 });
 
-export const { handleTokenRefresh } = authenticationSlice.actions;
+export const { handleTokenRefresh, resetAuthentication } =
+  authenticationSlice.actions;
 
 export const selectIsAuthenticated = (state: AppState) =>
   state.authentication.authenticated;

@@ -8,11 +8,14 @@ import {
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import store from "state/store";
 
-const Axios = axios.create({
+const apiConfig: AxiosRequestConfig = {
   baseURL: "https://panik.io/api",
   timeout: 10000,
   withCredentials: true,
-});
+};
+
+const Axios = axios.create(apiConfig);
+const RefreshTokenAxios = axios.create(apiConfig);
 
 const ServerAxios = axios.create({
   baseURL: "/api",
@@ -47,8 +50,6 @@ Axios.interceptors.response.use(
   async (error: AxiosError) => {
     if (error.response) {
       if (error.response.status === 401) {
-        // Do something, call refreshToken() request for example;
-        // return a request
         const response = await refreshAuthToken();
         if (response.access_token) {
           axios.defaults.headers.common["Authorization"] =
@@ -65,14 +66,10 @@ Axios.interceptors.response.use(
         }
         return Axios(error.config);
       }
-      // if (error.response.status === ANOTHER_STATUS_CODE) {
-      //   // Do something
-      //   return Promise.reject(error.response.data);
-      // }
     }
     return Promise.reject(error);
   }
 );
 
-export { ServerAxios };
+export { ServerAxios, RefreshTokenAxios };
 export default Axios;

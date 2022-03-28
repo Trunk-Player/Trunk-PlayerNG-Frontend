@@ -1,8 +1,8 @@
 export interface UserProfile {
   UUID: string;
-  siteAdmin: boolean;
+  site_admin: boolean;
   description?: string;
-  siteTheme?: string;
+  site_theme?: string;
 }
 
 export type UserProfiles = UserProfile[];

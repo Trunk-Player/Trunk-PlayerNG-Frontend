@@ -26,7 +26,7 @@ export const getPrimaryNavigation = (): Navigation => [
 ];
 export const getSecondaryNavigation = (): Navigation => {
   const isAdmin =
-    store.getState().user.currentUser?.userProfile.siteAdmin || false;
+    store.getState().user.currentUser?.userProfile.site_admin || false;
 
   return isAdmin
     ? [
