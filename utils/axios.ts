@@ -9,7 +9,7 @@ import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import store from "state/store";
 
 const apiConfig: AxiosRequestConfig = {
-  baseURL: "https://panik.io/api",
+  baseURL: "https://dev-api.trunkplayer.io/api",
   timeout: 10000,
   withCredentials: true,
 };
