@@ -3,7 +3,7 @@ import fetcher from "utils/fetcher";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 import { classNames } from "utils/classNames";
 
@@ -13,7 +13,13 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/solid";
 
+const resultsLimit = 100; // Number of results to show
+const pagesToShowLeft = 3; // Total pages numbers to show on the left of current page
+const pagesToShowRight = 3; // Total pages numbers to show on the right of current page
+const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+
 interface TalkgroupsListProps {
+  scrollToTopOfPageOnChange: boolean;
   talkgroupsFallback?: ResponseTalkgroupsList;
 }
 
@@ -23,6 +29,7 @@ interface TablePaginationProps {
   limit: number;
   // eslint-disable-next-line no-unused-vars
   onGoToPage: (page: number) => void;
+  onScrollToTopOfTable: () => void;
 }
 
 const TablePagination = ({
@@ -30,10 +37,15 @@ const TablePagination = ({
   count,
   limit,
   onGoToPage,
+  onScrollToTopOfTable,
 }: TablePaginationProps) => {
-  const pagesToShow = 7;
   const totalPages =
     (count / limit) % limit === 0 ? count / limit : Math.ceil(count / limit);
+
+  const goToPage = (page: number) => {
+    onGoToPage(page);
+    onScrollToTopOfTable();
+  };
 
   const Separator = () => (
     <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
@@ -43,10 +55,11 @@ const TablePagination = ({
 
   interface PageProps {
     pageNumber: number;
+    title?: number;
     active: boolean;
   }
 
-  const Page = ({ pageNumber, active }: PageProps) => (
+  const Page = ({ pageNumber, active, title }: PageProps) => (
     <button
       className={classNames(
         active
@@ -54,7 +67,8 @@ const TablePagination = ({
           : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50",
         "relative inline-flex items-center px-4 py-2 border text-sm font-medium"
       )}
-      onClick={() => onGoToPage(pageNumber)}
+      title={title ? title.toString() : undefined}
+      onClick={() => goToPage(pageNumber)}
     >
       {pageNumber}
     </button>
@@ -63,12 +77,18 @@ const TablePagination = ({
   return (
     <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
       <div className="flex-1 flex justify-between sm:hidden">
-        <a
-          href="#"
-          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-        >
-          Previous
-        </a>
+        {currentPage > 1 ? (
+          <a
+            href="#"
+            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+          >
+            Previous
+          </a>
+        ) : (
+          <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-gray-100 text-gray-300 cursor-default">
+            Previous
+          </span>
+        )}
         <a
           href="#"
           className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
@@ -79,9 +99,17 @@ const TablePagination = ({
       <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">1</span> to{" "}
-            <span className="font-medium">10</span> of{" "}
-            <span className="font-medium">{count}</span> results
+            Showing{" "}
+            <span className="font-medium">
+              {currentPage * limit - limit + 1}
+            </span>{" "}
+            to{" "}
+            <span className="font-medium">
+              {currentPage === totalPages ? count : currentPage * limit}
+            </span>{" "}
+            of <span className="font-medium">{count}</span> results (Page{" "}
+            <span className="font-medium">{currentPage}</span> of{" "}
+            <span className="font-medium">{totalPages}</span>)
           </p>
         </div>
         <div>
@@ -103,51 +131,81 @@ const TablePagination = ({
                 <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
               </span>
             )}
-            {totalPages > pagesToShow && currentPage > pagesToShow && (
-              <Separator />
+            {totalPages > pagesToShow && currentPage > pagesToShowLeft + 1 && (
+              <>
+                <Page pageNumber={1} active={currentPage === 1} />
+                {currentPage > pagesToShowLeft + 2 && <Separator />}
+              </>
             )}
-            {/* Current: "z-10 bg-indigo-50 border-indigo-500 text-indigo-600", Default: "bg-white border-gray-300 text-gray-500 hover:bg-gray-50" */}
-            <a
-              href="#"
-              aria-current="page"
-              className="z-10 bg-cyan-50 border-cyan-500 text-cyan-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-            >
-              3
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"
-            >
-              8
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              9
-            </a>
-            <a
-              href="#"
-              className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-            >
-              10
-            </a>
+            {totalPages <= pagesToShow &&
+              [...Array(pagesToShow)].map((_, i) => (
+                <Page
+                  key={i + 1}
+                  pageNumber={i + 1}
+                  active={currentPage === i + 1}
+                />
+              ))}
+            {totalPages > pagesToShow && currentPage <= pagesToShowLeft + 1 && (
+              <>
+                {[...Array(pagesToShow)].map((_, i) => (
+                  <Page
+                    key={i + 1}
+                    pageNumber={i + 1}
+                    active={currentPage === i + 1}
+                  />
+                ))}
+              </>
+            )}
+            {totalPages > pagesToShow && currentPage > pagesToShowLeft + 1 && (
+              <>
+                {[...Array(pagesToShowLeft)].map((_, i) => {
+                  const iCorrected = i + 1;
+
+                  return (
+                    <Page
+                      key={(currentPage - i - 2 - currentPage) * -1}
+                      title={iCorrected}
+                      pageNumber={currentPage + i - pagesToShowLeft}
+                      active={
+                        currentPage === (currentPage - i - 2 - currentPage) * -1
+                      }
+                    />
+                  );
+                })}
+                <Page pageNumber={currentPage} active={true} />
+              </>
+            )}
             {totalPages > pagesToShow &&
-              currentPage < totalPages - pagesToShow && (
+              currentPage < totalPages - pagesToShowRight && (
                 <>
-                  <Separator />
+                  {[...Array(pagesToShowRight)].map((_, i) => (
+                    <Page
+                      key={currentPage + i + 1}
+                      pageNumber={currentPage + i + 1}
+                      active={currentPage === currentPage + i + 1}
+                    />
+                  ))}
+                </>
+              )}
+            {totalPages > pagesToShow &&
+              currentPage < totalPages &&
+              currentPage > totalPages - pagesToShowRight - 1 && (
+                <>
+                  {[...Array(totalPages - currentPage)].map((_, i) => (
+                    <Page
+                      key={currentPage + i + 1}
+                      pageNumber={currentPage + i + 1}
+                      active={currentPage === currentPage + i + 1}
+                    />
+                  ))}
+                </>
+              )}
+            {totalPages > pagesToShow &&
+              currentPage < totalPages - pagesToShowRight && (
+                <>
+                  {currentPage < totalPages - pagesToShowRight - 1 && (
+                    <Separator />
+                  )}
                   <Page pageNumber={totalPages} active={false} />
                 </>
               )}
@@ -165,11 +223,17 @@ const TablePagination = ({
   );
 };
 
-const TalkgroupsList = ({ talkgroupsFallback }: TalkgroupsListProps) => {
+const TalkgroupsList = ({
+  scrollToTopOfPageOnChange,
+  talkgroupsFallback,
+}: TalkgroupsListProps) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const refTable = useRef<HTMLTableElement>(null);
   const { data: talkgroupsData, error: talkgroupsError } =
     useSWR<ResponseTalkgroupsList>(
-      `/radio/talkgroup/list?offset=${pageIndex * 10}&limit=10`,
+      `/radio/talkgroup/list?offset=${
+        pageIndex * resultsLimit
+      }&limit=${resultsLimit}`,
       fetcher,
       {
         fallbackData: talkgroupsFallback,
@@ -180,6 +244,17 @@ const TalkgroupsList = ({ talkgroupsFallback }: TalkgroupsListProps) => {
     setPageIndex(page - 1);
   };
 
+  const onScrollToTopOfTable = () => {
+    if (scrollToTopOfPageOnChange) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      refTable?.current?.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+      });
+    }
+  };
+
   useEffect(() => {
     console.log("data", talkgroupsData);
   }, [talkgroupsData]);
@@ -188,7 +263,10 @@ const TalkgroupsList = ({ talkgroupsFallback }: TalkgroupsListProps) => {
   const skeletonNumberOfCols = 4; // How many columns are in the table
 
   return (
-    <table className="min-w-full max-w-6xl divide-y divide-gray-200">
+    <table
+      ref={refTable}
+      className="min-w-full max-w-6xl divide-y divide-gray-200"
+    >
       <thead className="bg-gradient-to-b from-cyan-800 to-cyan-700">
         <tr>
           <th
@@ -296,8 +374,9 @@ const TalkgroupsList = ({ talkgroupsFallback }: TalkgroupsListProps) => {
               <TablePagination
                 currentPage={pageIndex + 1}
                 count={talkgroupsData.count}
-                limit={10}
+                limit={resultsLimit}
                 onGoToPage={onGoToPage}
+                onScrollToTopOfTable={onScrollToTopOfTable}
               />
             )}
           </td>

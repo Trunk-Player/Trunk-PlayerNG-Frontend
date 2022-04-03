@@ -27,7 +27,10 @@ const TalkgroupsListPage = ({ talkgroups }: TransmissionsProps) => {
             <h2 className="my-8 text-lg leading-6 font-medium text-gray-900">
               Talk Groups
             </h2>
-            <TalkgroupsList talkgroupsFallback={talkgroups} />
+            <TalkgroupsList
+              scrollToTopOfPageOnChange={true}
+              talkgroupsFallback={talkgroups}
+            />
           </div>
         </div>
       </PageContentContainer>
