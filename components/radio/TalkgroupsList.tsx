@@ -107,9 +107,11 @@ const TablePagination = ({
             <span className="font-medium">
               {currentPage === totalPages ? count : currentPage * limit}
             </span>{" "}
-            of <span className="font-medium">{count}</span> results (Page{" "}
-            <span className="font-medium">{currentPage}</span> of{" "}
-            <span className="font-medium">{totalPages}</span>)
+            of <span className="font-medium">{count}</span> results (
+            <a href="#" className="font-medium underline">
+              Go to page
+            </a>
+            )
           </p>
         </div>
         <div>
@@ -176,6 +178,7 @@ const TablePagination = ({
               </>
             )}
             {totalPages > pagesToShow &&
+              !(currentPage <= pagesToShowLeft + 1) &&
               currentPage < totalPages - pagesToShowRight && (
                 <>
                   {[...Array(pagesToShowRight)].map((_, i) => (
@@ -209,13 +212,20 @@ const TablePagination = ({
                   <Page pageNumber={totalPages} active={false} />
                 </>
               )}
-            <a
-              href="#"
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <span className="sr-only">Next</span>
-              <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-            </a>
+            {currentPage < totalPages ? (
+              <a
+                href="#"
+                className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              >
+                <span className="sr-only">Next</span>
+                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              </a>
+            ) : (
+              <span className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-200 cursor-default">
+                <span className="sr-only">Next</span>
+                <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              </span>
+            )}
           </nav>
         </div>
       </div>
