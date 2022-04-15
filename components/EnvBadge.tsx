@@ -12,7 +12,7 @@ const EnvBadge = (): JSX.Element => {
     case "test":
       return (
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-black ml-2">
-          Staging
+          Stage
         </span>
       );
     default:
