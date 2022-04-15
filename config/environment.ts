@@ -1,1 +1,1 @@
-export const env = process.env.NODE_ENV;
+export const env = process.env.NODE_ENV ?? "production";
