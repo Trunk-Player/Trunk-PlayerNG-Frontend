@@ -14,8 +14,6 @@ import TableDisplay from "components/data/tableDisplay";
 import type { GetServerSideProps } from "next";
 import { TalkGroup } from "types/api/TalkGroup";
 
-import { PaperClipIcon } from "@heroicons/react/solid";
-
 interface GetTalkgroupPageProps {
   talkgroup?: TalkGroup;
 }
