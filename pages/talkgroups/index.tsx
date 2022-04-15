@@ -7,11 +7,11 @@ import Axios from "utils/axios";
 import type { GetServerSideProps } from "next";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 
-interface TransmissionsProps {
+interface TalkgroupsListPageProps {
   talkgroups?: ResponseTalkgroupsList;
 }
 
-const TalkgroupsListPage = ({ talkgroups }: TransmissionsProps) => {
+const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
   return (
     <MainLayout>
       <Head>
@@ -43,20 +43,31 @@ export default TalkgroupsListPage;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const accessToken = context.req.cookies["accesstoken"];
-    const response = await Axios.get<ResponseTalkgroupsList>(
-      "/radio/talkgroup/list?offset=0&limit=10",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    if (accessToken) {
+      const response = await Axios.get<ResponseTalkgroupsList>(
+        "/radio/talkgroup/list?offset=0&limit=10",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
-    return {
-      props: {
-        talkgroups: response.data,
-      },
-    };
+      return {
+        props: {
+          talkgroups: response.data,
+        },
+      };
+    } else {
+      console.log(
+        "Unable to get talk groups on the server-side as there is no accessToken saved"
+      );
+      return {
+        props: {
+          talkgroups: [],
+        },
+      };
+    }
   } catch (err: any) {
     console.log("Unable to get talk groups on the server-side", err.message);
     return {

@@ -7,6 +7,7 @@ import { handleTokenRefresh } from "state/slices/authenticationSlice";
 import { retreiveCurrentUser } from "state/slices/userSlice";
 import store from "state/store";
 import "tailwindcss/tailwind.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
