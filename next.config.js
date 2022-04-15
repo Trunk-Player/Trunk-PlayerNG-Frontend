@@ -1,6 +1,9 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
-const moduleExports = {};
+const moduleExports = {
+  poweredByHeader: false,
+  reactStrictMode: true,
+};
 
 const SentryWebpackPluginOptions = {
   silent: true, // Suppresses all logs
@@ -20,4 +23,5 @@ module.exports =
     ? withSentryConfig(moduleExports, SentryWebpackPluginOptions)
     : moduleExports;
 
+// This will use Sentry all the time (including build-time)
 // module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
