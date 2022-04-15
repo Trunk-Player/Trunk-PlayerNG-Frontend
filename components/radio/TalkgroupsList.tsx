@@ -2,7 +2,6 @@ import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect, useRef, useState } from "react";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 import { classNames } from "utils/classNames";
