@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import LogoImage from "components/sidebar/LogoImage";
 import classNames from "utils/classNames";
 import Axios from "utils/axios";
-import { useAppDispatch } from "state/store/hooks";
 import { LoginResponse } from "types/api/custom/LoginResponse";
 import { useRouter } from "next/router";
 
@@ -15,7 +14,6 @@ interface FormData {
 }
 
 const RegisterPage = () => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import LogoImage from "components/sidebar/LogoImage";
 import classNames from "utils/classNames";
