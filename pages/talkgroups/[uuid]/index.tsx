@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import MainLayout from "components/layouts/MainLayout";
+// import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import Axios from "utils/axios";
 import useSWR from "swr";
@@ -10,6 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/data/tableDisplay";
+import * as appLib from "lib/app/appLib";
 
 import type { GetServerSideProps } from "next";
 import { TalkGroup } from "types/api/TalkGroup";
@@ -34,7 +35,8 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
   };
 
   return (
-    <MainLayout>
+    <>
+      {/* <MainLayout> */}
       <Head>
         {(!talkgroupData && !talkgroupError) || talkgroupError ? (
           <title>Talk Groups - Trunk-Player</title>
@@ -158,13 +160,16 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
           </div>
         </div>
       </PageContentContainer>
-    </MainLayout>
+      {/* </MainLayout> */}
+    </>
   );
 };
 
 export default GetTalkgroupPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  appLib.setServerAPIBaseUrl(context.req);
+
   try {
     const { uuid } = context.query;
     const accessToken = context.req.cookies["accesstoken"];

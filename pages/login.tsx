@@ -39,10 +39,12 @@ const LoginPage = () => {
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
       message: "Invalid email address",
     },
+    value: "test@test.com",
   });
 
   const { ref: regPasswordRef, ...regPasswordRest } = register("password", {
     required: { value: true, message: "Password is required" },
+    value: "abcabcabc123",
   });
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
@@ -105,7 +107,6 @@ const LoginPage = () => {
                       emailRef.current = e;
                     }}
                     tabIndex={1}
-                    value="test@test.com"
                   />
                   {errors.email && (
                     <p className="text-red-600">{errors.email.message}</p>
@@ -135,7 +136,6 @@ const LoginPage = () => {
                       passwordRef.current = e;
                     }}
                     tabIndex={2}
-                    value="abcabcabc123"
                   />
                   {errors.password && (
                     <p className="text-red-600">{errors.password.message}</p>

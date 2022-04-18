@@ -1,5 +1,5 @@
 import Head from "next/head";
-import MainLayout from "components/layouts/MainLayout";
+// import MainLayout from "components/layouts/MainLayout";
 import PageHeader from "components/headers";
 import DashboardHeader from "components/headers/DashboardHeader";
 import PageContentContainer from "components/PageContentContainer";
@@ -9,7 +9,8 @@ import CreateNewScanner from "components/ui/CreateNewScanner";
 
 const Home = () => {
   return (
-    <MainLayout>
+    <>
+      {/* <MainLayout> */}
       <Head>
         <title>Dashboard - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
@@ -40,7 +41,8 @@ const Home = () => {
           </div>
         </div>
       </PageContentContainer>
-    </MainLayout>
+      {/* </MainLayout> */}
+    </>
   );
 };
 
