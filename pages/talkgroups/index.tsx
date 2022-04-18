@@ -1,8 +1,9 @@
 import Head from "next/head";
-import MainLayout from "components/layouts/MainLayout";
+// import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import TalkgroupsList from "components/radio/TalkgroupsList";
 import Axios from "utils/axios";
+import * as appLib from "lib/app/appLib";
 
 import type { GetServerSideProps } from "next";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
@@ -13,7 +14,8 @@ interface TalkgroupsListPageProps {
 
 const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
   return (
-    <MainLayout>
+    <>
+      {/* <MainLayout> */}
       <Head>
         <title>Talk Groups - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
@@ -34,13 +36,16 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
           </div>
         </div>
       </PageContentContainer>
-    </MainLayout>
+      {/* </MainLayout> */}
+    </>
   );
 };
 
 export default TalkgroupsListPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  appLib.setServerAPIBaseUrl(context.req);
+
   try {
     const accessToken = context.req.cookies["accesstoken"];
     if (accessToken) {

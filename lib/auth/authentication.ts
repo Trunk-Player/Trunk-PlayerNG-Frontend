@@ -2,7 +2,7 @@ import store from "state/store";
 import { AccessTokenRefresh } from "types/api/custom/AccessTokenRefresh";
 import { ResponseLogin } from "types/api/responses/ResponseLogin";
 import { ResponseRefreshToken } from "types/api/responses/ResponseRefreshToken";
-import Axios, { RefreshTokenAxios, ServerAxios } from "utils/axios";
+import Axios, { refreshTokenAxios, serverAxios } from "utils/axios";
 
 export const isLoggedIn = (): boolean => {
   const isAuthenticated = store.getState().authentication.authenticated;
@@ -76,7 +76,7 @@ export const refreshServerTokens = async (
   accessTokenExpiration: string,
   csrfToken: string
 ): Promise<void> => {
-  const response = await ServerAxios.post<void>("/auth/savetoken", {
+  const response = await serverAxios.post<void>("/auth/savetoken", {
     accessToken,
     accessTokenExpiration,
     csrfToken,
@@ -92,7 +92,7 @@ export const refreshServerTokens = async (
 };
 
 export const refreshAuthToken = async (): Promise<ResponseRefreshToken> => {
-  const response = await RefreshTokenAxios.post<ResponseRefreshToken>(
+  const response = await refreshTokenAxios.post<ResponseRefreshToken>(
     "/auth/token/refresh-token/"
   );
 

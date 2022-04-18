@@ -1,8 +1,9 @@
 import Head from "next/head";
-import MainLayout from "components/layouts/MainLayout";
+// import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import TransmissionsList from "components/radio/TransmissionsList";
 import Axios from "utils/axios";
+import * as appLib from "lib/app/appLib";
 
 import type { GetServerSideProps } from "next";
 import { Transmissions } from "types/api/Transmission";
@@ -14,7 +15,8 @@ interface TransmissionsProps {
 
 const Transmissions = ({ transmissions }: TransmissionsProps) => {
   return (
-    <MainLayout>
+    <>
+      {/* <MainLayout> */}
       <Head>
         <title>Transmissions - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
@@ -32,13 +34,16 @@ const Transmissions = ({ transmissions }: TransmissionsProps) => {
           </div>
         </div>
       </PageContentContainer>
-    </MainLayout>
+      {/* </MainLayout> */}
+    </>
   );
 };
 
 export default Transmissions;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  appLib.setServerAPIBaseUrl(context.req);
+
   try {
     const accessToken = context.req.cookies["accesstoken"];
     const response = await Axios.get<ResponseTransmissionsList>(

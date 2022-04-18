@@ -1,23 +1,26 @@
 import { retreiveCurrentUser } from "state/slices/userSlice";
 import { handleTokenRefresh } from "state/slices/authenticationSlice";
+import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
+import store from "state/store";
+import * as appLib from "lib/app/appLib";
 import {
   getAccessToken,
   refreshAuthToken,
   refreshServerTokens,
 } from "lib/auth/authentication";
-import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
-import store from "state/store";
 
 const apiConfig: AxiosRequestConfig = {
-  baseURL: "https://dev-api.trunkplayer.io/api",
+  baseURL: appLib?.getAPIBaseUrl
+    ? appLib.getAPIBaseUrl() ?? undefined
+    : undefined,
   timeout: 10000,
   withCredentials: true,
 };
 
 const Axios = axios.create(apiConfig);
-const RefreshTokenAxios = axios.create(apiConfig);
+const refreshTokenAxios = axios.create(apiConfig);
 
-const ServerAxios = axios.create({
+const serverAxios = axios.create({
   baseURL: "/api",
   timeout: 10000,
   withCredentials: true,
@@ -71,5 +74,9 @@ Axios.interceptors.response.use(
   }
 );
 
-export { ServerAxios, RefreshTokenAxios };
+const changeBaseApiUrl = (baseApiUrl: string) => {
+  Axios.defaults.baseURL = baseApiUrl;
+};
+
+export { serverAxios, refreshTokenAxios, changeBaseApiUrl };
 export default Axios;
