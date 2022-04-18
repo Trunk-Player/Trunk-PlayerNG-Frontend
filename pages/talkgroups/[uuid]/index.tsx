@@ -38,10 +38,15 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
     <>
       {/* <MainLayout> */}
       <Head>
-        {(!talkgroupData && !talkgroupError) || talkgroupError ? (
+        {!talkgroupData || talkgroupError ? (
           <title>Talk Groups - Trunk-Player</title>
         ) : (
-          <title>Bla - Trunk-Player</title>
+          <title>
+            {talkgroupData.alpha_tag
+              ? talkgroupData.alpha_tag
+              : talkgroupData.decimal_id}{" "}
+            - Trunk-Player
+          </title>
         )}
         <link rel="icon" href="/favicon.ico" />
       </Head>
