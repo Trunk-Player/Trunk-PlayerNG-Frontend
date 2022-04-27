@@ -7,7 +7,7 @@ describe("userUtils Utility Functions", () => {
       id: 1,
       enabled: true,
       email: "user@user.com",
-      userProfile: { UUID: "", siteAdmin: false },
+      userProfile: { UUID: "", site_admin: false },
       first_name: "Test",
       last_name: "User",
     };
@@ -19,7 +19,7 @@ describe("userUtils Utility Functions", () => {
       id: 1,
       enabled: true,
       email: "user@user.com",
-      userProfile: { UUID: "", siteAdmin: false },
+      userProfile: { UUID: "", site_admin: false },
       first_name: "Test",
     };
     expect(getFullName(user)).toBe("Test");
@@ -30,7 +30,7 @@ describe("userUtils Utility Functions", () => {
       id: 1,
       enabled: true,
       email: "user@user.com",
-      userProfile: { UUID: "", siteAdmin: false },
+      userProfile: { UUID: "", site_admin: false },
       last_name: "User",
     };
     expect(getFullName(user)).toBe("User");
@@ -41,7 +41,7 @@ describe("userUtils Utility Functions", () => {
       id: 1,
       enabled: true,
       email: "user@user.com",
-      userProfile: { UUID: "", siteAdmin: false },
+      userProfile: { UUID: "", site_admin: false },
     };
     expect(getFullName(user)).toBe("");
   });
