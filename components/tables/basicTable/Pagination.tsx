@@ -47,7 +47,7 @@ const Pagination = ({
     <>
       <GoToPageModal
         currentPage={currentPage}
-        maxPages={totalPages + 1}
+        maxPages={totalPages}
         isOpen={goToPageModalOpen}
         onClose={closeGoToPageModal}
         onGoToPage={goToPage}
@@ -55,23 +55,29 @@ const Pagination = ({
       <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
         <div className="flex-1 flex justify-between sm:hidden">
           {currentPage > 1 ? (
-            <a
-              href="#"
+            <button
               className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={() => goToPage(currentPage - 1)}
             >
               Previous
-            </a>
+            </button>
           ) : (
             <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-gray-100 text-gray-300 cursor-default">
               Previous
             </span>
           )}
-          <a
-            href="#"
-            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-          >
-            Next
-          </a>
+          {currentPage < totalPages ? (
+            <button
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={() => goToPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          ) : (
+            <span className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md bg-gray-100 text-gray-300 cursor-default">
+              Next
+            </span>
+          )}
         </div>
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
@@ -126,7 +132,7 @@ const Pagination = ({
                 </>
               )}
               {totalPages <= pagesToShow &&
-                [...Array(pagesToShow)].map((_, i) => (
+                [...Array(totalPages)].map((_, i) => (
                   <Page
                     key={i + 1}
                     pageNumber={i + 1}
