@@ -22,7 +22,7 @@
     "test:e2e:report": "start-server-and-test dev http://localhost:3000 cy:report"
   },
   "dependencies": {
-    "@headlessui/react": "^1.4.2",
+    "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.5",
     "@reduxjs/toolkit": "^1.6.2",
     "@sentry/nextjs": "^6.17.4",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.1.5",
-    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.2",
     "@types/cookie": "^0.4.1",
     "@types/luxon": "^2.0.5",
