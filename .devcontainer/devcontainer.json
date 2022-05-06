@@ -43,7 +43,8 @@
     "bradlc.vscode-tailwindcss",
     "austenc.tailwind-docs",
     "netcorext.uuid-generator",
-    "eamodio.gitlens"
+    "eamodio.gitlens",
+    "formulahendry.auto-rename-tag"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
