@@ -2,30 +2,28 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { classNames } from "utils/classNames";
 import { selectCurrentUser } from "state/slices/userSlice";
-import { useAppSelector } from "state/store/hooks";
+import { useAppDispatch, useAppSelector } from "state/store/hooks";
 
 import { ChevronDownIcon } from "@heroicons/react/solid";
-
-import PlaceholderAvatar from "components/icons/custom/PlaceholderAvatar";
+import { useRouter } from "next/router";
+import { logoutUser } from "state/slices/authenticationSlice";
 
 const ProfileDropdown = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const user = useAppSelector(selectCurrentUser);
+
+  const doLogout = async () => {
+    const results = await dispatch(logoutUser());
+    if (results.meta.requestStatus === "fulfilled") {
+      router.push("/login");
+    }
+  };
 
   return (
     <Menu as="div" className="ml-3 relative">
       <div>
         <Menu.Button className="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
-          {/* {user?.picture ? (
-            <img
-              src={user.picture}
-              className="h-8 w-8 rounded-full"
-              alt="User Profile"
-            />
-          ) : ( */}
-          <span className="inline-block h-8 w-8 rounded-full overflow-hidden bg-gray-100">
-            <PlaceholderAvatar />
-          </span>
-          {/* )} */}
           <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">
             <span className="sr-only">Open user menu for </span>
             {user && (user.first_name || user.last_name)
@@ -76,15 +74,15 @@ const ProfileDropdown = () => {
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
+              <button
                 className={classNames(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700"
+                  "block px-4 py-2 text-sm text-gray-700 w-full text-left"
                 )}
+                onClick={doLogout}
               >
                 Logout
-              </a>
+              </button>
             )}
           </Menu.Item>
         </Menu.Items>
