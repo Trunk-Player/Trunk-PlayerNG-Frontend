@@ -30,7 +30,7 @@ const Transmissions = ({ transmissions }: TransmissionsProps) => {
             <h2 className="my-8 text-lg leading-6 font-medium text-gray-900">
               Transmissions
             </h2>
-            <TransmissionsList transmissionsFallback={transmissions} />
+            {/* <TransmissionsList transmissionsFallback={transmissions} /> */}
           </div>
         </div>
       </PageContentContainer>
@@ -54,8 +54,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       }
     );
-
-    console.log("Transmissions", response.data);
 
     return {
       props: {
