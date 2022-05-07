@@ -1,5 +1,7 @@
 # Trunk-Player-NG
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop.svg)](https://results.pre-commit.ci/latest/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop)
+
 This is the front-end repository for Trunk-Player-NG. This project is still in development.
 
 ## About Project Branches
