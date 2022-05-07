@@ -52,7 +52,7 @@
   //"appPort": ["3000:3000"],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "brew install pre-commit && pre-commit install && pre-commit install --hook-type commit-msg && npm install",
 
   // Environment Variables
   "remoteEnv": {
@@ -65,6 +65,6 @@
     "git": "os-provided",
     "git-lfs": "latest",
     "github-cli": "latest",
-    "python": "os-provided"
+    "homebrew": "latest"
   }
 }
