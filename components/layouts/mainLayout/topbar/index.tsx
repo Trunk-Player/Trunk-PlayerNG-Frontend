@@ -1,40 +1,13 @@
-import OpenSidebarButton from "./OpenSidebarButton";
-import { setMobileNavbarOpen } from "state/slices/layoutSlice";
-import { useAppDispatch } from "state/store/hooks";
-
-import Search from "./Search";
-import SearchBar from "./SearchBar";
-import SearchBarItemContainer from "./SearchBarItemContainer";
-import NotificationButton from "./items/NotificationButton";
-import ProfileDropdown from "./items/ProfileDropdown";
+import { ReactNode } from "react";
 
 interface TopbarProps {
-  hasMobileNavbar?: boolean;
+  children: ReactNode;
 }
 
-const Topbar = ({ hasMobileNavbar = true }: TopbarProps) => {
-  const dispatch = useAppDispatch();
-
-  const setSidebarOpen = (value: boolean) => {
-    dispatch(setMobileNavbarOpen(value));
-  };
-
+const Topbar = ({ children }: TopbarProps) => {
   return (
     <div className="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:border-none">
-      {hasMobileNavbar && (
-        <OpenSidebarButton
-          onClick={() => {
-            setSidebarOpen(true);
-          }}
-        />
-      )}
-      <SearchBar>
-        <Search />
-        <SearchBarItemContainer>
-          <NotificationButton />
-          <ProfileDropdown />
-        </SearchBarItemContainer>
-      </SearchBar>
+      {children}
     </div>
   );
 };
