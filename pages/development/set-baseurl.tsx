@@ -52,7 +52,7 @@ const SetBaseURLPage = () => {
         <title>Development: Set API Base Url - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div>
             <LogoImage className="mx-auto h-48 w-auto" />
