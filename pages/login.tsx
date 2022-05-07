@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import LogoImage from "components/sidebar/LogoImage";
+import LogoImage from "components/layouts/mainLayout/sidebar/LogoImage";
 import classNames from "utils/classNames";
 import { useAppDispatch, useAppSelector } from "state/store/hooks";
 import { useRouter } from "next/router";
@@ -55,6 +55,10 @@ const LoginPage = () => {
     }
   });
 
+  const onRegister = () => {
+    router.push("/register");
+  };
+
   useEffect(() => {
     const htmlTag = document.querySelector("html");
     htmlTag?.classList.remove("bg-gray-100");
@@ -70,14 +74,15 @@ const LoginPage = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthLoading]);
+
   return (
     <>
       <Head>
         <title>Login - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
+      <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full">
           <div>
             <LogoImage className="mx-auto h-48 w-auto" />
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -142,10 +147,17 @@ const LoginPage = () => {
                   )}
                 </div>
               </div>
-              <div>
+              <div className="flex justify-evenly">
+                <button
+                  className="w-full flex justify-center mx-1 py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                  tabIndex={5}
+                  onClick={onRegister}
+                >
+                  Register
+                </button>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                  className="w-full flex justify-center mx-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
                   tabIndex={4}
                 >
                   Login

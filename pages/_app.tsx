@@ -11,7 +11,7 @@ import type { AppProps } from "next/app";
 
 import "tailwindcss/tailwind.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import MainLayout from "components/layouts/MainLayout";
+import { MainLayout } from "components/layouts";
 
 function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

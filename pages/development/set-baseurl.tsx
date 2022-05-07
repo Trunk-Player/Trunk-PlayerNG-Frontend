@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import LogoImage from "components/sidebar/LogoImage";
+import LogoImage from "components/layouts/mainLayout/sidebar/LogoImage";
 import classNames from "utils/classNames";
 import * as appLib from "lib/app/appLib";
 
