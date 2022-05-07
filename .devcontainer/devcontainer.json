@@ -44,7 +44,8 @@
     "austenc.tailwind-docs",
     "netcorext.uuid-generator",
     "eamodio.gitlens",
-    "formulahendry.auto-rename-tag"
+    "formulahendry.auto-rename-tag",
+    "atlassian.atlascode"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
