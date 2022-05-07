@@ -1,11 +1,8 @@
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Link from "next/link";
-import Skeleton from "react-loading-skeleton";
 import { useEffect, useRef, useState } from "react";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
-
-import { ExclamationIcon } from "@heroicons/react/solid";
 
 import { FilterIcon } from "@heroicons/react/outline";
 import BasicTable from "components/tables/basicTable";
@@ -70,129 +67,83 @@ const TalkgroupsList = ({
           Filter
         </button>
       </div>
-      <table
+      <BasicTable
         ref={refTable}
-        className="min-w-full max-w-6xl divide-y divide-gray-200"
-      >
-        <thead className="bg-gradient-to-b from-cyan-800 to-cyan-700">
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider"
-            >
+        Header={
+          <>
+            <BasicTable.HeaderColumn>
               Alpha Tag / Description
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider"
-            >
+            </BasicTable.HeaderColumn>
+            <BasicTable.HeaderColumn alignment="center">
               Decimal ID
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider"
-            >
+            </BasicTable.HeaderColumn>
+            <BasicTable.HeaderColumn alignment="center">
               Encrypted
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider"
-            >
+            </BasicTable.HeaderColumn>
+            <BasicTable.HeaderColumn alignment="center">
               Mode
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider"
-            >
+            </BasicTable.HeaderColumn>
+            <BasicTable.HeaderColumn alignment="center">
               System
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {talkgroupsError && (
-            <tr>
-              <td colSpan={100}>
-                <div className="bg-red-50 p-4">
-                  <div className="flex">
-                    <div className="flex-shrink-0">
-                      <ExclamationIcon
-                        className="h-5 w-5 text-red-400"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm text-red-700">
-                        There was a problem requesting talk groups from the
-                        server.
-                      </p>
-                    </div>
-                  </div>
+            </BasicTable.HeaderColumn>
+          </>
+        }
+        Footer={
+          <td colSpan={100}>
+            {talkgroupsData && (
+              <BasicTable.Pagination
+                currentPage={pageIndex + 1}
+                count={talkgroupsData.count}
+                limit={resultsLimit}
+                onGoToPage={onGoToPage}
+                onScrollToTopOfTable={onScrollToTopOfTable}
+                pagesToShow={pagesToShow}
+                pagesToShowLeft={pagesToShowLeft}
+                pagesToShowRight={pagesToShowRight}
+              />
+            )}
+          </td>
+        }
+      >
+        {talkgroupsError && (
+          <BasicTable.RowError>
+            There was a problem requesting talk groups from the server.
+          </BasicTable.RowError>
+        )}
+        {!talkgroupsError && !talkgroupsData && (
+          <BasicTable.RowSkeleton
+            rows={skeletonNumberOfRows}
+            cols={skeletonNumberOfCols}
+          />
+        )}
+        {talkgroupsData &&
+          talkgroupsData.results.map((talkgroup) => (
+            <BasicTable.Row key={talkgroup.UUID}>
+              <BasicTable.RowCell
+                textSize="none"
+                grayText={false}
+                alignment="none"
+              >
+                <div className="text-sm font-medium text-gray-900 underline">
+                  <Link href={`/talkgroups/${talkgroup.UUID}`}>
+                    <a>
+                      {talkgroup.alpha_tag
+                        ? talkgroup.alpha_tag
+                        : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
+                    </a>
+                  </Link>
                 </div>
-              </td>
-            </tr>
-          )}
-          {!talkgroupsError && !talkgroupsData && (
-            <>
-              {[...Array(skeletonNumberOfRows)].map((_, i1) => (
-                <tr key={i1}>
-                  {[...Array(skeletonNumberOfCols)].map((_, i2) => (
-                    <td key={i2} className="bg-white px-6 py-4">
-                      <Skeleton />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </>
-          )}
-          {talkgroupsData &&
-            talkgroupsData.results.map((talkgroup) => (
-              <tr key={talkgroup.UUID}>
-                <td className="bg-white px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 underline">
-                    <Link href={`/talkgroups/${talkgroup.UUID}`}>
-                      <a>
-                        {talkgroup.alpha_tag
-                          ? talkgroup.alpha_tag
-                          : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
-                      </a>
-                    </Link>
-                  </div>
-                  <div className="text-xs">{talkgroup.description}</div>
-                </td>
-                <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  {talkgroup.decimal_id}
-                </td>
-                <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  {talkgroup.encrypted ? "Yes" : "No"}
-                </td>
-                <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  {talkgroup.mode}
-                </td>
-                <td className="bg-white px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  {talkgroup.system.name}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-        <tfoot className="border-none">
-          <tr>
-            <td colSpan={100}>
-              {talkgroupsData && (
-                <BasicTable.Pagination
-                  currentPage={pageIndex + 1}
-                  count={talkgroupsData.count}
-                  limit={resultsLimit}
-                  onGoToPage={onGoToPage}
-                  onScrollToTopOfTable={onScrollToTopOfTable}
-                  pagesToShow={pagesToShow}
-                  pagesToShowLeft={pagesToShowLeft}
-                  pagesToShowRight={pagesToShowRight}
-                />
-              )}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+                <div className="text-xs">{talkgroup.description}</div>
+              </BasicTable.RowCell>
+              <BasicTable.RowCell>{talkgroup.decimal_id}</BasicTable.RowCell>
+              <BasicTable.RowCell>
+                {talkgroup.encrypted ? "Yes" : "No"}
+              </BasicTable.RowCell>
+              <BasicTable.RowCell>{talkgroup.mode}</BasicTable.RowCell>
+              <BasicTable.RowCell>{talkgroup.system.name}</BasicTable.RowCell>
+            </BasicTable.Row>
+          ))}
+      </BasicTable>
     </>
   );
 };
