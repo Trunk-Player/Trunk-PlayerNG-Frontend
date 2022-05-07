@@ -30,7 +30,7 @@ const TalkgroupsList = ({
     useSWR<ResponseTalkgroupsList>(
       `/radio/talkgroup/list?offset=${
         pageIndex * resultsLimit
-      }&limit=${resultsLimit}&encrypted=true`,
+      }&limit=${resultsLimit}`,
       fetcher,
       {
         fallbackData: talkgroupsFallback,
