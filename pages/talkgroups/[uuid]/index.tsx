@@ -9,7 +9,7 @@ import fetcher from "utils/fetcher";
 import Skeleton from "react-loading-skeleton";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
-import TableDisplay from "components/data/tableDisplay";
+import TableDisplay from "components/tables/tableDisplay";
 import * as appLib from "lib/app/appLib";
 
 import type { GetServerSideProps } from "next";
@@ -36,7 +36,6 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
 
   return (
     <>
-      {/* <MainLayout> */}
       <Head>
         {!talkgroupData || talkgroupError ? (
           <title>Talk Groups - Trunk-Player</title>
@@ -83,10 +82,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           System:
                         </TableDisplay.Column>
-                        <TableDisplay.Column
-                          className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                          onUpdate={() => {}}
-                        >
+                        <TableDisplay.Column className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
                           <Link href={`/systems/${talkgroupData.system.UUID}`}>
                             {talkgroupData.system.name}
                           </Link>
@@ -96,7 +92,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           Decimal ID:
                         </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
+                        <TableDisplay.Column>
                           {talkgroupData.decimal_id}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
@@ -104,7 +100,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           Alpha Tag:
                         </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
+                        <TableDisplay.Column>
                           {talkgroupData.alpha_tag}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
@@ -112,13 +108,13 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           Description:
                         </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
+                        <TableDisplay.Column>
                           {talkgroupData.description}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
                         <TableDisplay.Column heading>Mode:</TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
+                        <TableDisplay.Column>
                           {talkgroupData.mode}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
@@ -126,7 +122,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           Encrypted:
                         </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
+                        <TableDisplay.Column>
                           {talkgroupData.encrypted ? "Yes" : "No"}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
@@ -149,7 +145,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                                 {agency.name}
                               </Link>
                             </TableDisplay.Column>
-                            <TableDisplay.Column onUpdate={() => {}}>
+                            <TableDisplay.Column>
                               {agency.description}
                             </TableDisplay.Column>
                           </TableDisplay.Row>
@@ -165,7 +161,6 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
           </div>
         </div>
       </PageContentContainer>
-      {/* </MainLayout> */}
     </>
   );
 };
