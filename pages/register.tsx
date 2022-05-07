@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import LogoImage from "components/layouts/mainLayout/sidebar/LogoImage";
 import classNames from "utils/classNames";
@@ -12,6 +12,7 @@ import {
   selectIsAuthenticated,
   selectIsAuthenticationLoading,
 } from "state/slices/authenticationSlice";
+import LoadingDotsSpinner from "components/controls/LoadingDotsSpinner";
 
 interface FormData {
   email: string;
@@ -26,6 +27,7 @@ const RegisterPage = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const isAuthLoading = useAppSelector(selectIsAuthenticationLoading);
   const authError = useAppSelector(selectAuthenticationError);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const {
     register,
@@ -48,6 +50,8 @@ const RegisterPage = () => {
 
   const onSubmit = handleSubmit(
     async ({ email, password, confirmpassword }) => {
+      setSubmitLoading(true);
+
       try {
         const results = await Axios.post<LoginResponse>("/registration/", {
           email,
@@ -64,6 +68,8 @@ const RegisterPage = () => {
           `An error occurred while trying to register this account. Error: ${ex.message}`
         );
       }
+
+      setSubmitLoading(false);
     }
   );
 
@@ -210,6 +216,13 @@ const RegisterPage = () => {
                 >
                   Register
                 </button>
+              </div>
+              <div className="flex justify-center min-h-[100px]">
+                {submitLoading && (
+                  <div>
+                    <LoadingDotsSpinner />
+                  </div>
+                )}
               </div>
             </form>
           </div>

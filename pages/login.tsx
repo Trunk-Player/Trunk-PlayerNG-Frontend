@@ -11,6 +11,7 @@ import {
   selectIsAuthenticated,
   selectIsAuthenticationLoading,
 } from "state/slices/authenticationSlice";
+import LoadingDotsSpinner from "components/controls/LoadingDotsSpinner";
 
 interface FormData {
   email: string;
@@ -162,6 +163,13 @@ const LoginPage = () => {
                 >
                   Login
                 </button>
+              </div>
+              <div className="flex justify-center min-h-[100px]">
+                {isAuthLoading && (
+                  <div>
+                    <LoadingDotsSpinner />
+                  </div>
+                )}
               </div>
             </form>
           </div>
