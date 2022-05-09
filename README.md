@@ -1,8 +1,18 @@
 # Trunk-Player-NG
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop.svg)](https://results.pre-commit.ci/latest/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop)
-
 This is the front-end repository for Trunk-Player-NG. This project is still in development.
+
+## Build Statuses
+
+This current status of the frontend project.
+
+### Main Branch
+
+[![Main Branch](https://github.com/Trunk-Player/Trunk-PlayerNG-Frontend/actions/workflows/node.js-push.yml/badge.svg?branch=main)](https://github.com/Trunk-Player/Trunk-PlayerNG-Frontend/actions/workflows/node.js-push.yml) [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Trunk-Player/Trunk-PlayerNG-Frontend/main.svg)](https://results.pre-commit.ci/latest/github/Trunk-Player/Trunk-PlayerNG-Frontend/main)
+
+### Develop Branch
+
+[![Develop Branch](https://github.com/Trunk-Player/Trunk-PlayerNG-Frontend/actions/workflows/node.js-push.yml/badge.svg?branch=develop)](https://github.com/Trunk-Player/Trunk-PlayerNG-Frontend/actions/workflows/node.js-push.yml) [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop.svg)](https://results.pre-commit.ci/latest/github/Trunk-Player/Trunk-PlayerNG-Frontend/develop)
 
 ## About Project Branches
 
