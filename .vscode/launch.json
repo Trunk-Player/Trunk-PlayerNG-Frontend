@@ -25,6 +25,12 @@
       "command": "npm run dev"
     },
     {
+      "name": "Test Watch",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run test:watch"
+    },
+    {
       "name": "Client-Side",
       "type": "pwa-chrome",
       "request": "launch",

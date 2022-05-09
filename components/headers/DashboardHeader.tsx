@@ -1,24 +1,12 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useAppSelector, useAppDispatch } from "state/store/hooks";
+import { useAppSelector } from "state/store/hooks";
 import { selectCurrentUser } from "state/slices/userSlice";
 
 import { CheckCircleIcon } from "@heroicons/react/solid";
-import PlaceholderAvatar from "components/icons/custom/PlaceholderAvatar";
-import { logoutUser } from "state/slices/authenticationSlice";
 
 const DashboardHeader = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const user = useAppSelector(selectCurrentUser);
   const [greetingSubtext, setGreetingSubtext] = useState("day");
-
-  const doLogout = async () => {
-    const results = await dispatch(logoutUser());
-    if (results.meta.requestStatus === "fulfilled") {
-      router.push("/login");
-    }
-  };
 
   useEffect(() => {
     let tmrTimeOfDay: NodeJS.Timeout;
@@ -71,30 +59,8 @@ const DashboardHeader = () => {
       <div className="flex-1 min-w-0">
         {/* Profile */}
         <div className="flex items-center">
-          {/* {user?.picture ? (
-            <img
-              src={user.picture}
-              className="hidden h-16 w-16 rounded-full sm:block"
-              alt="User Profile"
-            />
-          ) : ( */}
-          <span className="hidden h-16 w-16 rounded-full overflow-hidden bg-gray-100 sm:block">
-            <PlaceholderAvatar />
-          </span>
-          {/* )} */}
           <div>
             <div className="flex items-center">
-              {/* {user?.picture ? (
-                <img
-                  src={user.picture}
-                  className="h-16 w-16 rounded-full sm:hidden"
-                  alt="User Profile"
-                />
-              ) : ( */}
-              <span className="inline-block h-16 w-16 rounded-full overflow-hidden bg-gray-100 sm:hidden">
-                <PlaceholderAvatar />
-              </span>
-              {/* )} */}
               <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:leading-9 sm:truncate">
                 Good {greetingSubtext}
                 {user &&
@@ -103,7 +69,7 @@ const DashboardHeader = () => {
                 !
               </h1>
             </div>
-            <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
+            <dl className="mt-1 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
               <dt className="sr-only">Account status</dt>
               <dd className="mt-3 flex items-center text-sm text-gray-500 font-medium sm:mr-6 sm:mt-0 capitalize">
                 <CheckCircleIcon
@@ -120,9 +86,9 @@ const DashboardHeader = () => {
         <button
           type="button"
           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-          onClick={doLogout}
+          onClick={() => {}}
         >
-          Logout
+          Unused Button
         </button>
         <button
           type="button"

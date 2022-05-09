@@ -1,9 +1,6 @@
-import { Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "state/store/hooks";
-import LogoImage from "./LogoImage";
-import EnvBadge from "components/EnvBadge";
-import Navigation from "./Navigation";
 
 import {
   selectMobileNavbarOpen,
@@ -11,9 +8,12 @@ import {
 } from "state/slices/layoutSlice";
 
 import { XIcon } from "@heroicons/react/outline";
-import LogoContainer from "./LogoContainer";
 
-const SidebarMobile = () => {
+interface SidebarMobileProps {
+  children: ReactNode;
+}
+
+const SidebarMobile = ({ children }: SidebarMobileProps) => {
   const dispatch = useAppDispatch();
   const sidebarOpen = useAppSelector(selectMobileNavbarOpen);
 
@@ -69,11 +69,7 @@ const SidebarMobile = () => {
                 </button>
               </div>
             </Transition.Child>
-            <LogoContainer>
-              <LogoImage className="h-10 w-auto" />
-              <EnvBadge />
-            </LogoContainer>
-            <Navigation />
+            {children}
           </div>
         </Transition.Child>
         <div className="flex-shrink-0 w-14" aria-hidden="true">

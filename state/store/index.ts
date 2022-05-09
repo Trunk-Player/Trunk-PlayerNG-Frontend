@@ -1,19 +1,5 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import authenticationReducer from "state/slices/authenticationSlice";
-import layoutReducer from "state/slices/layoutSlice";
-import userReducer from "state/slices/userSlice";
-
-export function makeStore() {
-  return configureStore({
-    reducer: {
-      authentication: authenticationReducer,
-      layout: layoutReducer,
-      user: userReducer,
-    },
-  });
-}
-
-const store = makeStore();
+import { store, makeStore } from "./store";
+import { ThunkAction, Action } from "@reduxjs/toolkit";
 
 export type AppState = ReturnType<typeof store.getState>;
 
@@ -26,6 +12,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
-export type StoreType = typeof store;
-
+export { makeStore };
 export default store;

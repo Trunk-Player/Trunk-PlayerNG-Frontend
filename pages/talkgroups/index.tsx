@@ -15,14 +15,10 @@ interface TalkgroupsListPageProps {
 const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
   return (
     <>
-      {/* <MainLayout> */}
       <Head>
         <title>Talk Groups - Trunk-Player</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <PageHeader>
-    <DashboardHeader />
-  </PageHeader> */}
       <PageContentContainer>
         <div className="mt-8">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +32,6 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
           </div>
         </div>
       </PageContentContainer>
-      {/* </MainLayout> */}
     </>
   );
 };
@@ -50,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const accessToken = context.req.cookies["accesstoken"];
     if (accessToken) {
       const response = await Axios.get<ResponseTalkgroupsList>(
-        "/radio/talkgroup/list?offset=0&limit=10",
+        "/radio/talkgroup/list?offset=0&limit=100",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

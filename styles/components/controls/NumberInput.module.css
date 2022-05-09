@@ -1,0 +1,5 @@
+.numberinput::-webkit-inner-spin-button,
+.numberinput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
