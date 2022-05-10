@@ -6,6 +6,7 @@ interface ColumnProps {
   className?: string;
   heading?: boolean;
   onUpdate?: () => void;
+  dataTestId?: string;
 }
 
 const Column = ({
@@ -13,9 +14,11 @@ const Column = ({
   className,
   onUpdate,
   heading = false,
+  dataTestId,
 }: ColumnProps) => {
   return heading ? (
     <dt
+      data-testid={dataTestId}
       className={classNames(
         className ?? "",
         "text-sm font-medium text-gray-500"
@@ -25,6 +28,7 @@ const Column = ({
     </dt>
   ) : (
     <dd
+      data-testid={dataTestId}
       className={classNames(
         className ?? "",
         "mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2"
@@ -45,4 +49,5 @@ const Column = ({
     </dd>
   );
 };
+
 export default Column;

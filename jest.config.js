@@ -3,6 +3,8 @@ module.exports = {
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
     "!**/node_modules/**",
+    "!**/.next/**",
+    "!**/cypress/**",
   ],
   moduleDirectories: ["node_modules", "."],
   moduleNameMapper: {

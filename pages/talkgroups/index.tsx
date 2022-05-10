@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const accessToken = context.req.cookies["accesstoken"];
     if (accessToken) {
       const response = await Axios.get<ResponseTalkgroupsList>(
-        "/radio/talkgroup/list?offset=0&limit=100",
+        "/radio/talkgroup/list?offset=0&ordering=decimal_id&limit=100",
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

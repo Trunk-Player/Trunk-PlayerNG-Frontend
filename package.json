@@ -14,6 +14,8 @@
     "format": "prettier --write .",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:coveragereport": "jest --coverage --coverageDirectory coverage --coverageReporters lcov",
     "cy:open": "cypress open",
     "cy:run": "cypress run --config video=false",
     "cy:report": "cypress run report --config video=false",

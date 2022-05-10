@@ -45,7 +45,8 @@
     "netcorext.uuid-generator",
     "eamodio.gitlens",
     "formulahendry.auto-rename-tag",
-    "atlassian.atlascode"
+    "atlassian.atlascode",
+    "ritwickdey.liveserver"
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
