@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 
 import { FilterIcon } from "@heroicons/react/outline";
@@ -27,7 +27,7 @@ const TalkgroupsList = ({
     useSWR<ResponseTalkgroupsList>(
       `/radio/talkgroup/list?offset=${
         pageIndex * resultsLimit
-      }&limit=${resultsLimit}`,
+      }&ordering=decimal_id&limit=${resultsLimit}`,
       fetcher,
       {
         fallbackData: talkgroupsFallback,
@@ -48,10 +48,6 @@ const TalkgroupsList = ({
       });
     }
   };
-
-  useEffect(() => {
-    console.log("data", talkgroupsData);
-  }, [talkgroupsData]);
 
   const skeletonNumberOfRows = 4; // How many rows for the loading skeleton
   const skeletonNumberOfCols = 4; // How many columns are in the table
