@@ -12,12 +12,16 @@ import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
 import * as appLib from "lib/app/appLib";
 import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
+import NumberInput from "components/controls/NumberInput";
+import Textbox from "components/controls/Textbox";
+import TalkgroupModeSelectMenu from "components/controls/radio/TalkgroupModeSelectMenu";
 
 import { RefreshIcon } from "@heroicons/react/solid";
 
 import type { GetServerSideProps } from "next";
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
+import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
 
 interface EditTalkgroupPageProps {
   talkgroup?: TalkGroup;
@@ -43,6 +47,11 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
   });
 
   const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
+  const [decimalId, setDecimalId] = useState<number | undefined>();
+  const [alphaTag, setAlphaTag] = useState<string | undefined>();
+  const [description, setDescription] = useState<string | undefined>();
+  const [mode, setMode] = useState<string | undefined>();
+  const [encrypted, setEncrypted] = useState<boolean | undefined>();
 
   const refreshData = () => {
     talkgroupMutate();
@@ -54,6 +63,11 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
 
   useEffect(() => {
     setSelectedSystem(talkgroupData ? talkgroupData.system.UUID : undefined);
+    setDecimalId(talkgroupData ? talkgroupData.decimal_id : undefined);
+    setAlphaTag(talkgroupData ? talkgroupData.alpha_tag : undefined);
+    setDescription(talkgroupData ? talkgroupData.description : undefined);
+    setMode(talkgroupData ? talkgroupData.mode : undefined);
+    setEncrypted(talkgroupData ? talkgroupData.encrypted : undefined);
   }, [talkgroupData]);
 
   return (
@@ -135,27 +149,6 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                               </div>
                             </>
                           )}
-                          {/* {systemsData ? (
-                            <select>
-                              {systemsData.results.map((system) => (
-                                <option
-                                  key={system.UUID}
-                                  selected={
-                                    system.UUID === talkgroupData.system.UUID
-                                  }
-                                  value={system.UUID}
-                                >
-                                  {system.name}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <Link
-                              href={`/systems/${talkgroupData.system.UUID}`}
-                            >
-                              {talkgroupData.system.name}
-                            </Link>
-                          )} */}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
@@ -163,7 +156,14 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           Decimal ID:
                         </TableDisplay.Column>
                         <TableDisplay.Column>
-                          {talkgroupData.decimal_id}
+                          {decimalId !== undefined && (
+                            <NumberInput
+                              minValue={0}
+                              positiveOnly
+                              value={decimalId}
+                              onNumberChange={setDecimalId}
+                            />
+                          )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
@@ -171,7 +171,15 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           Alpha Tag:
                         </TableDisplay.Column>
                         <TableDisplay.Column>
-                          {talkgroupData.alpha_tag}
+                          {alphaTag !== undefined && (
+                            <Textbox
+                              className="w-2/3"
+                              value={alphaTag}
+                              onChange={(e) => {
+                                setAlphaTag(e.target.value);
+                              }}
+                            />
+                          )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
@@ -179,13 +187,26 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           Description:
                         </TableDisplay.Column>
                         <TableDisplay.Column>
-                          {talkgroupData.description}
+                          {description !== undefined && (
+                            <Textbox
+                              className="w-2/3"
+                              value={description}
+                              onChange={(e) => {
+                                setDescription(e.target.value);
+                              }}
+                            />
+                          )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
                         <TableDisplay.Column heading>Mode:</TableDisplay.Column>
                         <TableDisplay.Column>
-                          {talkgroupData.mode}
+                          {mode && (
+                            <TalkgroupModeSelectMenu
+                              value={mode}
+                              onChangeSelection={setMode}
+                            />
+                          )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
@@ -193,7 +214,12 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           Encrypted:
                         </TableDisplay.Column>
                         <TableDisplay.Column>
-                          {talkgroupData.encrypted ? "Yes" : "No"}
+                          {encrypted !== undefined && (
+                            <EncryptedSwitch
+                              enabled={encrypted}
+                              setEnabled={setEncrypted}
+                            />
+                          )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                     </TableDisplay.Container>
