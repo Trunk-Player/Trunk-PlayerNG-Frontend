@@ -6,6 +6,7 @@ import classNames from "utils/classNames";
 interface SelectMenuSimpleProps {
   srText?: string;
   selectedUniqueId: string;
+  absoluteMenu?: boolean;
   onChangeSelection: Dispatch<SetStateAction<string | undefined>>;
   options: {
     uniqueId: string;
@@ -16,6 +17,7 @@ interface SelectMenuSimpleProps {
 const SelectMenuSimple = ({
   srText,
   selectedUniqueId,
+  absoluteMenu = true,
   onChangeSelection,
   options,
 }: SelectMenuSimpleProps) => {
@@ -59,7 +61,13 @@ const SelectMenuSimple = ({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="origin-top-right absolute z-10 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Listbox.Options
+                className={classNames(
+                  "origin-top-right",
+                  absoluteMenu ? "absolute" : "",
+                  "z-10 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                )}
+              >
                 {options.map((option) => (
                   <Listbox.Option
                     key={option.uniqueId}
