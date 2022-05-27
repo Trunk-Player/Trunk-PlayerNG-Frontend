@@ -21,7 +21,7 @@ const Column = ({
       data-testid={dataTestId}
       className={classNames(
         className ?? "",
-        "text-sm font-medium text-gray-500"
+        "text-sm font-medium text-gray-500 flex items-center"
       )}
     >
       {children}

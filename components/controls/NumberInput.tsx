@@ -57,7 +57,7 @@ const NumberInput = ({
   };
 
   return (
-    <div className="w-32 flex flex-col">
+    <div className="w-44 flex flex-col">
       {labelText && (
         <label
           htmlFor="custom-input-number"

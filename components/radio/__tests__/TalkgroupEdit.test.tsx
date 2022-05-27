@@ -19,9 +19,30 @@ describe("Talkgroup Edit Control", () => {
     const { getByTestId } = render(<TalkgroupEdit data={talkgroup} />);
 
     const system = getByTestId("system");
+    const decimalId = getByTestId("decimal_id");
+    const alphaTag = getByTestId("alpha_tag");
+    const description = getByTestId("description");
+    const mode = getByTestId("mode");
+    const encrypted = getByTestId("encrypted");
 
-    const systemName = getByText(system, talkgroup.system.name);
+    const systemNameText = getByText(system, talkgroup.system.name);
+    const decimalIdText = getByText(decimalId, talkgroup.decimal_id);
+    const alphaTagText = getByText(alphaTag, talkgroup.alpha_tag as string);
+    const descriptionText = getByText(
+      description,
+      talkgroup.description as string
+    );
+    const modeText = getByText(mode, talkgroup.mode);
+    const encryptedText = getByText(
+      encrypted,
+      talkgroup.encrypted ? "Yes" : "No"
+    );
 
-    expect(systemName).toBeInTheDocument();
+    expect(systemNameText).toBeInTheDocument();
+    expect(decimalIdText).toBeInTheDocument();
+    expect(alphaTagText).toBeInTheDocument();
+    expect(descriptionText).toBeInTheDocument();
+    expect(modeText).toBeInTheDocument();
+    expect(encryptedText).toBeInTheDocument();
   });
 });

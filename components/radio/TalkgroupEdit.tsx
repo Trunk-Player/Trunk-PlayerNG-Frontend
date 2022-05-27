@@ -33,19 +33,25 @@ const TalkgroupEdit = ({ data }: TalkgroupEditProps) => {
             </TableDisplay.Row>
             <TableDisplay.Row hasUpdate>
               <TableDisplay.Column heading>Alpha Tag:</TableDisplay.Column>
-              <TableDisplay.Column>{data.alpha_tag}</TableDisplay.Column>
+              <TableDisplay.Column dataTestId="alpha_tag">
+                {data.alpha_tag}
+              </TableDisplay.Column>
             </TableDisplay.Row>
             <TableDisplay.Row hasUpdate>
               <TableDisplay.Column heading>Description:</TableDisplay.Column>
-              <TableDisplay.Column>{data.description}</TableDisplay.Column>
+              <TableDisplay.Column dataTestId="description">
+                {data.description}
+              </TableDisplay.Column>
             </TableDisplay.Row>
             <TableDisplay.Row hasUpdate>
               <TableDisplay.Column heading>Mode:</TableDisplay.Column>
-              <TableDisplay.Column>{data.mode}</TableDisplay.Column>
+              <TableDisplay.Column dataTestId="mode">
+                {data.mode}
+              </TableDisplay.Column>
             </TableDisplay.Row>
             <TableDisplay.Row hasUpdate>
               <TableDisplay.Column heading>Encrypted:</TableDisplay.Column>
-              <TableDisplay.Column>
+              <TableDisplay.Column dataTestId="encrypted">
                 {data.encrypted ? "Yes" : "No"}
               </TableDisplay.Column>
             </TableDisplay.Row>
