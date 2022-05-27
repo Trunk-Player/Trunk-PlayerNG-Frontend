@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-// import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import Axios from "utils/axios";
 import useSWR from "swr";
@@ -11,16 +11,20 @@ import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
 import * as appLib from "lib/app/appLib";
-import LinkButton from "components/controls/LinkButton";
+import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
+
+import { RefreshIcon } from "@heroicons/react/solid";
 
 import type { GetServerSideProps } from "next";
 import type { TalkGroup } from "types/api/TalkGroup";
+import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
 
-interface GetTalkgroupPageProps {
+interface EditTalkgroupPageProps {
   talkgroup?: TalkGroup;
+  systems?: ResponseSystemsList;
 }
 
-const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
+const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
   const router = useRouter();
   const { uuid } = router.query;
   const {
@@ -30,22 +34,40 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
   } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher, {
     fallbackData: talkgroup,
   });
+  const {
+    data: systemsData,
+    mutate: systemsMutate,
+    error: systemsError,
+  } = useSWR<ResponseSystemsList>("/radio/system/list", fetcher, {
+    fallbackData: systems,
+  });
+
+  const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
 
   const refreshData = () => {
     talkgroupMutate();
   };
 
+  const refreshSystems = () => {
+    systemsMutate();
+  };
+
+  useEffect(() => {
+    setSelectedSystem(talkgroupData ? talkgroupData.system.UUID : undefined);
+  }, [talkgroupData]);
+
   return (
     <>
       <Head>
         {!talkgroupData || talkgroupError ? (
-          <title>Talk Group - Trunk-Player</title>
+          <title>Edit Talk Group - Trunk-Player</title>
         ) : (
           <title>
+            Edit{" "}
             {talkgroupData.alpha_tag
               ? talkgroupData.alpha_tag
               : talkgroupData.decimal_id}{" "}
-            - Trunk-Player
+            Talkgroup - Trunk-Player
           </title>
         )}
         <link rel="icon" href="/favicon.ico" />
@@ -69,15 +91,16 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
             {talkgroupData && (
               <>
                 <h1 className="my-8 text-4xl leading-6 font-medium text-gray-900">
+                  Edit{" "}
                   {talkgroupData.alpha_tag
                     ? talkgroupData.alpha_tag
                     : talkgroupData.decimal_id}
                 </h1>
-                <div className="mb-8">
+                {/* <div className="mb-8">
                   <LinkButton href={`/talkgroups/${talkgroupData.UUID}/edit`}>
                     Edit
                   </LinkButton>
-                </div>
+                </div> */}
                 <BasicCard>
                   <BasicCard.CardHeader divider>
                     Talkgroup Details
@@ -88,10 +111,51 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                         <TableDisplay.Column heading>
                           System:
                         </TableDisplay.Column>
-                        <TableDisplay.Column className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-                          <Link href={`/systems/${talkgroupData.system.UUID}`}>
-                            {talkgroupData.system.name}
-                          </Link>
+                        <TableDisplay.Column>
+                          {!systemsData && !systemsError && (
+                            <Skeleton width={200} />
+                          )}
+                          {systemsData && selectedSystem && (
+                            <>
+                              <div className="flex">
+                                <SelectMenuSimple
+                                  srText="Change system"
+                                  selectedUniqueId={selectedSystem}
+                                  onChangeSelection={setSelectedSystem}
+                                  options={systemsData.results.map(
+                                    (system) => ({
+                                      title: system.name,
+                                      uniqueId: system.UUID,
+                                    })
+                                  )}
+                                />{" "}
+                                <button onClick={refreshSystems}>
+                                  <RefreshIcon className="w-5 ml-3" />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                          {/* {systemsData ? (
+                            <select>
+                              {systemsData.results.map((system) => (
+                                <option
+                                  key={system.UUID}
+                                  selected={
+                                    system.UUID === talkgroupData.system.UUID
+                                  }
+                                  value={system.UUID}
+                                >
+                                  {system.name}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <Link
+                              href={`/systems/${talkgroupData.system.UUID}`}
+                            >
+                              {talkgroupData.system.name}
+                            </Link>
+                          )} */}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
                       <TableDisplay.Row hasUpdate>
@@ -171,7 +235,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
   );
 };
 
-export default GetTalkgroupPage;
+export default EditTalkgroupPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   appLib.setServerAPIBaseUrl(context.req);
@@ -185,13 +249,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     });
 
+    const responseSystems = await Axios.get<ResponseSystemsList>(
+      "/radio/system/list",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
     return {
       props: {
         talkgroup: response.data,
+        systems: responseSystems.data,
       },
     };
   } catch (err: any) {
-    console.log("Unable to get talk group on the server-side", err.message);
+    console.log(
+      "Unable to get talk group or systems on the server-side",
+      err.message
+    );
     return {
       props: {},
     };
