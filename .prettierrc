@@ -4,5 +4,6 @@
   "printWidth": 80,
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "singleAttributePerLine": true
 }
