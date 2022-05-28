@@ -45,7 +45,7 @@ const SelectMenuSimple = ({
                   <p className="ml-2.5 text-sm font-medium">{selected.title}</p>
                 </div>
                 <Listbox.Button className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-cyan-700 hover:bg-opacity-75 focus:outline-none focus:z-10 focus:ring-0 focus:ring-transparent">
-                  <span className="sr-only">Change published status</span>
+                  <span className="sr-only">{srText}</span>
                   <ChevronDownIcon
                     className="h-5 w-5 text-white"
                     aria-hidden="true"
