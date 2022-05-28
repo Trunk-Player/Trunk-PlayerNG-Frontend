@@ -48,7 +48,6 @@ export const setServerAPIBaseUrl = (req: any) => {
 
   if (envBaseApiUrl) {
     changeBaseApiUrl(envBaseApiUrl);
-    console.log("Set env base api url.");
     return;
   } else {
     const baseUrlCookie = req.cookies["baseapiurl"];

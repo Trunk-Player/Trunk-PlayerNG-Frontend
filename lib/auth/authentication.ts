@@ -6,7 +6,6 @@ import Axios, { refreshTokenAxios, serverAxios } from "utils/axios";
 
 export const isLoggedIn = (): boolean => {
   const isAuthenticated = store.getState().authentication.authenticated;
-  console.log("isAuthenticated", isAuthenticated);
   return isAuthenticated;
 };
 
