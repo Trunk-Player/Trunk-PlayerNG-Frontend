@@ -17,7 +17,10 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
     <>
       <Head>
         <title>Talk Groups - Trunk-Player</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
       </Head>
       <PageContentContainer>
         <div className="mt-8">

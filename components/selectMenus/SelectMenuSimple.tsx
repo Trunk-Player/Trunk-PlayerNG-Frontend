@@ -35,7 +35,10 @@ const SelectMenuSimple = ({
   const selected = options[defaultIndex];
 
   return (
-    <Listbox value={selectedUniqueId} onChange={onChangeSelection}>
+    <Listbox
+      value={selectedUniqueId}
+      onChange={onChangeSelection}
+    >
       {({ open }) => (
         <>
           <Listbox.Label className="sr-only">{srText}</Listbox.Label>
@@ -44,7 +47,10 @@ const SelectMenuSimple = ({
               <div className="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-cyan-700">
                 <div className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
                   {buttonIcon && (
-                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                    <CheckIcon
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                    />
                   )}
                   <p className="ml-2.5 text-sm font-medium">{selected.title}</p>
                 </div>

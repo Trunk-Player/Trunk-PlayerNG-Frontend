@@ -22,7 +22,10 @@ const GoToPageModal = ({
   const cancelButtonRef = useRef(null);
 
   return (
-    <Transition show={isOpen} as={Fragment}>
+    <Transition
+      show={isOpen}
+      as={Fragment}
+    >
       <Dialog
         as="div"
         className="relative z-10"

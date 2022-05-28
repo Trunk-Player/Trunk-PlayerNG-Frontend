@@ -59,7 +59,10 @@ const TalkgroupsList = ({
           type="button"
           className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
         >
-          <FilterIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+          <FilterIcon
+            className="-ml-0.5 mr-2 h-4 w-4"
+            aria-hidden="true"
+          />
           Filter
         </button>
       </div>
@@ -140,7 +143,10 @@ const TalkgroupsList = ({
                 alignment="none"
               >
                 <div className="flex items-center">
-                  <Link href={`/talkgroups/${talkgroup.UUID}`} passHref>
+                  <Link
+                    href={`/talkgroups/${talkgroup.UUID}`}
+                    passHref
+                  >
                     <a className="text-sm font-medium text-gray-900 underline">
                       {talkgroup.alpha_tag
                         ? talkgroup.alpha_tag
@@ -178,7 +184,10 @@ const TalkgroupsList = ({
                 {talkgroup.mode}
               </BasicTable.RowCell>
               <BasicTable.RowCell striped={i % 2 === 1}>
-                <Link href={`/systems/${talkgroup.system.UUID}`} passHref>
+                <Link
+                  href={`/systems/${talkgroup.system.UUID}`}
+                  passHref
+                >
                   <a className="text-sm text-gray-600 underline">
                     {talkgroup.system.name}
                   </a>

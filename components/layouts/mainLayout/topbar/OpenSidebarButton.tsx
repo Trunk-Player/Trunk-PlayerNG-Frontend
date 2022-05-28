@@ -13,7 +13,10 @@ const OpenSidebarButton = ({ onClick }: OpenSidebarButtonProps) => {
       onClick={onClick}
     >
       <span className="sr-only">Open sidebar</span>
-      <MenuAlt1Icon className="h-6 w-6" aria-hidden="true" />
+      <MenuAlt1Icon
+        className="h-6 w-6"
+        aria-hidden="true"
+      />
     </button>
   );
 };

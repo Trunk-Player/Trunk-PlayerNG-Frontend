@@ -26,7 +26,11 @@ const Navigation = () => {
     >
       <div className="px-2 space-y-1">
         {getPrimaryNavigation().map((item) => (
-          <Link key={item.name} href={item.href} passHref>
+          <Link
+            key={item.name}
+            href={item.href}
+            passHref
+          >
             <a
               className={classNames(
                 isCurrentHref(item.href, item.exact)
@@ -52,7 +56,11 @@ const Navigation = () => {
       <div className="mt-6 pt-6">
         <div className="px-2 space-y-1">
           {getSecondaryNavigation().map((item) => (
-            <Link key={item.name} href={item.href} passHref>
+            <Link
+              key={item.name}
+              href={item.href}
+              passHref
+            >
               <a
                 className={classNames(
                   isCurrentHref(item.href, item.exact)
