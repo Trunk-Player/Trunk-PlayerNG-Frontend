@@ -6,6 +6,7 @@ import classNames from "utils/classNames";
 interface SelectMenuSimpleProps {
   srText?: string;
   selectedUniqueId: string;
+  buttonIcon?: boolean;
   absoluteMenu?: boolean;
   onChangeSelection: Dispatch<SetStateAction<string | undefined>>;
   options: {
@@ -17,6 +18,7 @@ interface SelectMenuSimpleProps {
 const SelectMenuSimple = ({
   srText,
   selectedUniqueId,
+  buttonIcon = false,
   absoluteMenu = true,
   onChangeSelection,
   options,
@@ -41,7 +43,9 @@ const SelectMenuSimple = ({
             <div className="inline-flex shadow-sm rounded-md divide-x divide-cyan-700">
               <div className="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-cyan-700">
                 <div className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
-                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                  {buttonIcon && (
+                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                  )}
                   <p className="ml-2.5 text-sm font-medium">{selected.title}</p>
                 </div>
                 <Listbox.Button className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-cyan-700 hover:bg-opacity-75 focus:outline-none focus:z-10 focus:ring-0 focus:ring-transparent">
