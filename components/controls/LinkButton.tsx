@@ -11,7 +11,8 @@ interface LinkButtonProps {
   className?: string;
   defaultPadding?: boolean;
   defaultFontSize?: boolean;
-  href: Url;
+  href?: Url;
+  enabled?: boolean;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
@@ -21,9 +22,10 @@ const LinkButton = ({
   defaultPadding = true,
   defaultFontSize = true,
   href,
+  enabled = true,
   onClick,
 }: LinkButtonProps) => {
-  return (
+  return enabled && href ? (
     <Link
       href={href}
       passHref
@@ -40,6 +42,17 @@ const LinkButton = ({
         {children}
       </a>
     </Link>
+  ) : (
+    <span
+      className={classNames(
+        className ?? "",
+        defaultPadding ? "px-3 py-2" : "",
+        defaultFontSize ? "text-sm" : "",
+        "inline-flex cursor-default items-center border border-transparent shadow-sm leading-4 font-medium rounded-md text-gray-300 bg-cyan-600 bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+      )}
+    >
+      {children}
+    </span>
   );
 };
 

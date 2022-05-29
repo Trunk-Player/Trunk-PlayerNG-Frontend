@@ -10,18 +10,28 @@ import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
 import * as appLib from "lib/app/appLib";
-import LinkButton from "components/controls/LinkButton";
-
-import {
-  DatabaseIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-  LockOpenIcon,
-  PencilIcon,
-} from "@heroicons/react/solid";
 
 import type { GetServerSideProps } from "next";
 import type { TalkGroup } from "types/api/TalkGroup";
+import classNames from "utils/classNames";
+import { useState } from "react";
+import TalkgroupView from "components/radio/TalkgroupView";
+
+interface Tab {
+  id: string;
+  name: string;
+}
+
+const tabs: Tab[] = [
+  {
+    id: "details",
+    name: "Talk Group Details",
+  },
+  {
+    id: "transmissions",
+    name: "Transmissions",
+  },
+];
 
 interface GetTalkgroupPageProps {
   talkgroup?: TalkGroup;
@@ -29,6 +39,7 @@ interface GetTalkgroupPageProps {
 
 const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
   const router = useRouter();
+  const [currentTab, setCurrentTab] = useState("details");
   const { uuid } = router.query;
   const {
     data: talkgroupData,
@@ -81,120 +92,92 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
             )}
             {talkgroupData && (
               <>
-                <div className="flex flex-col sm:flex-row sm:justify-between items-center sm:items-start">
-                  <div className="flex flex-col items-center sm:items-start">
-                    <h1 className="mt-8 text-4xl leading-6 font-bold text-gray-900">
-                      {talkgroupData.alpha_tag
-                        ? talkgroupData.alpha_tag
-                        : talkgroupData.decimal_id}
-                    </h1>
-                    <div className="pt-4 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                      <div className="mt-2 flex items-center text-sm text-gray-500">
-                        {talkgroupData.encrypted ? (
-                          <>
-                            <LockClosedIcon
-                              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
-                            />{" "}
-                            Encrypted
-                          </>
-                        ) : (
-                          <>
-                            <LockOpenIcon
-                              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                              aria-hidden="true"
-                            />{" "}
-                            Not Encrypted
-                          </>
-                        )}
-                      </div>
-                      <div className="mt-2 flex items-center text-sm font-medium text-gray-700">
-                        <FingerPrintIcon
-                          className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-500"
-                          aria-hidden="true"
-                        />
-                        DEC: {talkgroupData.decimal_id} - HEX:{" "}
-                        {talkgroupData.decimal_id.toString(16).toUpperCase()}
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500">
-                        <DatabaseIcon
-                          className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <Link
-                          href={`/systems/${talkgroupData.system.UUID}`}
-                          passHref
+                <TalkgroupView data={talkgroupData} />
+                {tabs && (
+                  <div>
+                    <div className="sm:hidden">
+                      <label
+                        htmlFor="tabs"
+                        className="sr-only"
+                      >
+                        Select a tab
+                      </label>
+                      {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
+                      <select
+                        id="tabs"
+                        name="tabs"
+                        className="block w-full focus:ring-cyan-500 focus:border-cyan-500 border-gray-300 rounded-md"
+                        defaultValue={
+                          tabs.find((tab) => tab.id === currentTab)?.name
+                        }
+                      >
+                        {tabs.map((tab) => (
+                          <option key={tab.name}>{tab.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="hidden sm:block">
+                      <div className="border-b border-gray-200">
+                        <nav
+                          className="-mb-px flex"
+                          aria-label="Tabs"
                         >
-                          <a className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-                            {talkgroupData.system.name}
-                          </a>
-                        </Link>
+                          {tabs.map((tab) => (
+                            <button
+                              key={tab.name}
+                              className={classNames(
+                                tab.id === currentTab
+                                  ? "border-cyan-500 text-cyan-600"
+                                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                                "w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
+                              )}
+                              onClick={() => setCurrentTab(tab.id)}
+                              aria-current={
+                                tab.id === currentTab ? "page" : undefined
+                              }
+                            >
+                              {tab.name}
+                            </button>
+                          ))}
+                        </nav>
                       </div>
                     </div>
-                    <p className="mt-4 mb-8 text-sm font-medium text-gray-500">
-                      {talkgroupData.description}
-                    </p>
                   </div>
-
-                  <div className="mb-8 sm:mb-0 sm:mt-8">
-                    <LinkButton
-                      href={`/talkgroups/${talkgroupData.UUID}/edit`}
-                      defaultPadding={false}
-                      className="px-4 py-2"
-                    >
-                      <PencilIcon
-                        className="-ml-1 mr-2 h-5 w-5"
-                        aria-hidden="true"
-                      />
-                      Edit
-                    </LinkButton>
-                  </div>
-                </div>
-                <BasicCard>
-                  <BasicCard.CardHeader divider>
-                    Talkgroup Details
-                  </BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>Mode:</TableDisplay.Column>
-                        <TableDisplay.Column>
-                          {talkgroupData.mode}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
-                <BasicCard className="mt-5">
-                  <BasicCard.CardHeader divider>Agencies</BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      {talkgroupData.agency &&
-                      talkgroupData.agency.length > 0 ? (
-                        talkgroupData.agency.map((agency) => (
-                          <TableDisplay.Row
-                            key={agency.UUID}
-                            hasUpdate
-                          >
-                            <TableDisplay.Column
-                              heading
-                              className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                )}
+                {currentTab === "details" && (
+                  <BasicCard className="mt-5">
+                    <BasicCard.CardHeader divider>
+                      Agencies
+                    </BasicCard.CardHeader>
+                    <TableDisplay>
+                      <TableDisplay.Container>
+                        {talkgroupData.agency &&
+                        talkgroupData.agency.length > 0 ? (
+                          talkgroupData.agency.map((agency) => (
+                            <TableDisplay.Row
+                              key={agency.UUID}
+                              hasUpdate
                             >
-                              <Link href={`/agencies/${agency.UUID}`}>
-                                {agency.name}
-                              </Link>
-                            </TableDisplay.Column>
-                            <TableDisplay.Column>
-                              {agency.description}
-                            </TableDisplay.Column>
-                          </TableDisplay.Row>
-                        ))
-                      ) : (
-                        <TableDisplay.Row>No Agencies</TableDisplay.Row>
-                      )}
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
+                              <TableDisplay.Column
+                                heading
+                                className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                              >
+                                <Link href={`/agencies/${agency.UUID}`}>
+                                  {agency.name}
+                                </Link>
+                              </TableDisplay.Column>
+                              <TableDisplay.Column>
+                                {agency.description}
+                              </TableDisplay.Column>
+                            </TableDisplay.Row>
+                          ))
+                        ) : (
+                          <TableDisplay.Row>No Agencies</TableDisplay.Row>
+                        )}
+                      </TableDisplay.Container>
+                    </TableDisplay>
+                  </BasicCard>
+                )}
               </>
             )}
           </div>
