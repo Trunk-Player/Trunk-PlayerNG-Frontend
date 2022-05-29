@@ -25,7 +25,10 @@ const TableExample = () => {
         >
           {items.map((item) => (
             <li key={item.id}>
-              <a href="#" className="block px-4 py-4 bg-white hover:bg-gray-50">
+              <a
+                href="#"
+                className="block px-4 py-4 bg-white hover:bg-gray-50"
+              >
                 <span className="flex items-center space-x-4">
                   <span className="flex-1 flex space-x-2 truncate">
                     <span className="flex flex-col text-gray-500 text-sm truncate ml-5">
@@ -86,7 +89,10 @@ const TableExample = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {items.map((item) => (
-                    <tr key={item.id} className="bg-white">
+                    <tr
+                      key={item.id}
+                      className="bg-white"
+                    >
                       <td className="max-w-0 w-full px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <div className="flex">
                           <a

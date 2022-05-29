@@ -4,6 +4,7 @@ import classNames from "utils/classNames";
 interface RowCellProps {
   children?: ReactNode;
   className?: string;
+  striped?: boolean;
   whiteBg?: boolean;
   grayText?: boolean;
   defaultPadding?: boolean;
@@ -28,6 +29,7 @@ interface RowCellProps {
 const RowCell = ({
   children,
   className,
+  striped = false,
   whiteBg = true,
   grayText = true,
   defaultPadding = true,
@@ -93,8 +95,9 @@ const RowCell = ({
     <td
       className={classNames(
         className || "",
-        whiteBg ? "bg-white" : "",
-        defaultPadding ? "px-6 py-4" : "",
+        striped ? "bg-cyan-50 bg-opacity-50" : "",
+        whiteBg && !striped ? "bg-white" : "",
+        defaultPadding ? "px-6 py-2" : "",
         alignmentClass,
         noWrap ? "whitespace-nowrap" : "",
         textSizeClass,
@@ -105,4 +108,5 @@ const RowCell = ({
     </td>
   );
 };
+
 export default RowCell;

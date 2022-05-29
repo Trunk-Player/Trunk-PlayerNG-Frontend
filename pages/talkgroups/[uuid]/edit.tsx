@@ -14,7 +14,7 @@ import * as appLib from "lib/app/appLib";
 import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
 import NumberInput from "components/controls/NumberInput";
 import Textbox from "components/controls/Textbox";
-import TalkgroupModeSelectMenu from "components/controls/radio/TalkgroupModeSelectMenu";
+import TalkgroupModeSelection from "components/controls/radio/TalkgroupModeSelection";
 
 import { RefreshIcon } from "@heroicons/react/solid";
 
@@ -84,7 +84,10 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
             Talkgroup - Trunk-Player
           </title>
         )}
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
       </Head>
       <PageContentContainer>
         <div className="mt-8">
@@ -92,7 +95,10 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
             {talkgroupError && (
               <WarningAlert>
                 Error while requesting talk group data.{" "}
-                <button className="underline" onClick={refreshData}>
+                <button
+                  className="underline"
+                  onClick={refreshData}
+                >
                   Try again
                 </button>
               </WarningAlert>
@@ -174,7 +180,7 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           {alphaTag !== undefined && (
                             <Textbox
                               className="w-2/3"
-                              value={alphaTag}
+                              value={mode}
                               onChange={(e) => {
                                 setAlphaTag(e.target.value);
                               }}
@@ -202,8 +208,8 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                         <TableDisplay.Column heading>Mode:</TableDisplay.Column>
                         <TableDisplay.Column>
                           {mode && (
-                            <TalkgroupModeSelectMenu
-                              value={mode}
+                            <TalkgroupModeSelection
+                              selectedUniqueId={mode}
                               onChangeSelection={setMode}
                             />
                           )}
@@ -232,7 +238,10 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                       {talkgroupData.agency &&
                       talkgroupData.agency.length > 0 ? (
                         talkgroupData.agency.map((agency) => (
-                          <TableDisplay.Row key={agency.UUID} hasUpdate>
+                          <TableDisplay.Row
+                            key={agency.UUID}
+                            hasUpdate
+                          >
                             <TableDisplay.Column
                               heading
                               className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"

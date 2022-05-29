@@ -1,22 +1,23 @@
-import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
+import RadioGroupSmallCards from "../../radioGroups/RadioGroupSmallCards";
 
 import type { Dispatch, SetStateAction } from "react";
 
-interface TalkgroupModeSelectMenuProps {
-  value: string;
+interface TalkgroupModeSelectionProps {
+  srText?: string;
+  selectedUniqueId: string;
   onChangeSelection: Dispatch<SetStateAction<string | undefined>>;
 }
 
-const TalkgroupModeSelectMenu = ({
-  value,
+const TalkgroupModeSelection = ({
+  srText,
+  selectedUniqueId,
   onChangeSelection,
-}: TalkgroupModeSelectMenuProps) => {
+}: TalkgroupModeSelectionProps) => {
   return (
-    <SelectMenuSimple
-      srText="Select Talkgroup Mode"
-      selectedUniqueId={value}
+    <RadioGroupSmallCards
+      srText={srText}
+      selectedUniqueId={selectedUniqueId}
       onChangeSelection={onChangeSelection}
-      absoluteMenu={false}
       options={[
         { title: "analog", uniqueId: "analog" },
         { title: "digital", uniqueId: "digital" },
@@ -26,4 +27,4 @@ const TalkgroupModeSelectMenu = ({
     />
   );
 };
-export default TalkgroupModeSelectMenu;
+export default TalkgroupModeSelection;

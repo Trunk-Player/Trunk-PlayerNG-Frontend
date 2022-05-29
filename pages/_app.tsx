@@ -23,10 +23,8 @@ function App({ Component, pageProps }: AppProps) {
     const path = url.split("?")[0];
     const isLoggedIn = authentication.isLoggedIn();
     if (!isLoggedIn && !publicPaths.includes(path)) {
-      console.log("Not Logged In and not public path", path);
       try {
         const refreshTokens = await authentication.refreshAuthToken();
-        console.log("Refresh tokens", refreshTokens);
         if (!refreshTokens) {
           setAuthorized(false);
           router.push({
@@ -53,7 +51,6 @@ function App({ Component, pageProps }: AppProps) {
         });
       }
     } else {
-      console.log("Path is good", path);
       setAuthorized(true);
     }
   };

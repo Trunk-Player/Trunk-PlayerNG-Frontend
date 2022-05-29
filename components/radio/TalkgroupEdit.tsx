@@ -58,13 +58,19 @@ const TalkgroupEdit = ({ data }: TalkgroupEditProps) => {
           </TableDisplay.Container>
         </TableDisplay>
       </BasicCard>
-      <BasicCard dataTestId="agenciesDetails" className="mt-5">
+      <BasicCard
+        dataTestId="agenciesDetails"
+        className="mt-5"
+      >
         <BasicCard.CardHeader divider>Agencies</BasicCard.CardHeader>
         <TableDisplay>
           <TableDisplay.Container>
             {data.agency && data.agency.length > 0 ? (
               data.agency.map((agency) => (
-                <TableDisplay.Row key={agency.UUID} hasUpdate>
+                <TableDisplay.Row
+                  key={agency.UUID}
+                  hasUpdate
+                >
                   <TableDisplay.Column
                     heading
                     className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"

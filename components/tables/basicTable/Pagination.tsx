@@ -116,12 +116,18 @@ const Pagination = ({
                   onClick={() => goToPage(currentPage - 1)}
                 >
                   <span className="sr-only">Previous</span>
-                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                  <ChevronLeftIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
                 </button>
               ) : (
                 <span className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-200 cursor-default">
                   <span className="sr-only">Previous</span>
-                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                  <ChevronLeftIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
                 </span>
               )}
               {totalPages > pagesToShow && currentPage > pagesToShowLeft + 1 && (
@@ -227,12 +233,18 @@ const Pagination = ({
                   onClick={() => goToPage(currentPage + 1)}
                 >
                   <span className="sr-only">Next</span>
-                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                  <ChevronRightIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
                 </button>
               ) : (
                 <span className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-200 cursor-default">
                   <span className="sr-only">Next</span>
-                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                  <ChevronRightIcon
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  />
                 </span>
               )}
             </nav>
