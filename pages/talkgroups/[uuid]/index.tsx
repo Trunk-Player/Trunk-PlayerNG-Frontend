@@ -25,7 +25,7 @@ interface Tab {
 const tabs: Tab[] = [
   {
     id: "details",
-    name: "Talk Group Details",
+    name: "Details",
   },
   {
     id: "transmissions",
