@@ -14,12 +14,16 @@ interface TalkgroupViewProps {
   data: TalkGroup;
   showEdit?: boolean;
   allowEdit?: boolean;
+  showDelete?: boolean;
+  allowDelete?: boolean;
 }
 
 const TalkgroupView = ({
   data,
   showEdit = true,
   allowEdit = true,
+  showDelete = true,
+  allowDelete = true,
 }: TalkgroupViewProps) => {
   return (
     <div className="flex flex-col sm:flex-row sm:justify-between items-center sm:items-start">
@@ -80,27 +84,25 @@ const TalkgroupView = ({
         </p>
       </div>
 
-      {showEdit && (
-        <div className="mb-8 sm:mb-0 sm:mt-8">
-          {showEdit && allowEdit && (
+      {(showEdit || showDelete) && (
+        <div className="mb-8 sm:mb-0 sm:mt-8 flex">
+          {showDelete && (
             <LinkButton
-              href={`/talkgroups/${data.UUID}/edit`}
+              href={allowEdit ? `/talkgroups/${data.UUID}/delete` : undefined}
               defaultPadding={false}
-              className="px-4 py-2"
+              className="mx-1 px-4 py-2"
+              enabled={allowDelete}
+              buttonType="tertiary"
             >
-              <PencilIcon
-                className="-ml-1 mr-2 h-5 w-5"
-                aria-hidden="true"
-              />
-              Edit
+              Delete
             </LinkButton>
           )}
-          {showEdit && !allowEdit && (
+          {showEdit && (
             <LinkButton
-              href={`/talkgroups/${data.UUID}/edit`}
+              href={allowEdit ? `/talkgroups/${data.UUID}/edit` : undefined}
               defaultPadding={false}
               className="px-4 py-2"
-              enabled={false}
+              enabled={allowEdit}
             >
               <PencilIcon
                 className="-ml-1 mr-2 h-5 w-5"
