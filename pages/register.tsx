@@ -97,7 +97,10 @@ const RegisterPage = () => {
     <>
       <Head>
         <title>Register - Trunk-Player</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
       </Head>
       <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
@@ -108,7 +111,10 @@ const RegisterPage = () => {
             </h2>
           </div>
           <div className="mt-8">
-            <form className="space-y-6" onSubmit={onSubmit}>
+            <form
+              className="space-y-6"
+              onSubmit={onSubmit}
+            >
               <div>
                 <label
                   htmlFor="email"

@@ -22,7 +22,10 @@ const SidebarMobile = ({ children }: SidebarMobileProps) => {
   };
 
   return (
-    <Transition.Root show={sidebarOpen} as={Fragment}>
+    <Transition.Root
+      show={sidebarOpen}
+      as={Fragment}
+    >
       <Dialog
         as="div"
         className="fixed inset-0 flex z-40 lg:hidden"
@@ -65,14 +68,20 @@ const SidebarMobile = ({ children }: SidebarMobileProps) => {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <span className="sr-only">Close sidebar</span>
-                  <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                  <XIcon
+                    className="h-6 w-6 text-white"
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             </Transition.Child>
             {children}
           </div>
         </Transition.Child>
-        <div className="flex-shrink-0 w-14" aria-hidden="true">
+        <div
+          className="flex-shrink-0 w-14"
+          aria-hidden="true"
+        >
           {/* Dummy element to force sidebar to shrink to fit close icon */}
         </div>
       </Dialog>

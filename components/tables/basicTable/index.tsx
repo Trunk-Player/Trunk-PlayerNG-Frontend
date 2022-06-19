@@ -29,7 +29,10 @@ const BasicTable = ({
   Footer,
 }: BasicTableProps): BasicTableComponent => {
   return (
-    <table ref={ref} className="min-w-full max-w-6xl divide-y divide-gray-200">
+    <table
+      ref={ref}
+      className="min-w-full max-w-6xl divide-y divide-gray-200"
+    >
       <thead className="bg-gradient-to-b from-cyan-800 to-cyan-700">
         <tr>{Header}</tr>
       </thead>

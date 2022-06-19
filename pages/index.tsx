@@ -13,7 +13,10 @@ const Home = () => {
       {/* <MainLayout> */}
       <Head>
         <title>Dashboard - Trunk-Player</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
       </Head>
       <PageHeader>
         <DashboardHeader />

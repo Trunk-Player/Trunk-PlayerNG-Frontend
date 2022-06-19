@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 
 import { FilterIcon } from "@heroicons/react/outline";
@@ -27,7 +27,7 @@ const TalkgroupsList = ({
     useSWR<ResponseTalkgroupsList>(
       `/radio/talkgroup/list?offset=${
         pageIndex * resultsLimit
-      }&limit=${resultsLimit}`,
+      }&ordering=decimal_id&limit=${resultsLimit}`,
       fetcher,
       {
         fallbackData: talkgroupsFallback,
@@ -49,10 +49,6 @@ const TalkgroupsList = ({
     }
   };
 
-  useEffect(() => {
-    console.log("data", talkgroupsData);
-  }, [talkgroupsData]);
-
   const skeletonNumberOfRows = 4; // How many rows for the loading skeleton
   const skeletonNumberOfCols = 4; // How many columns are in the table
 
@@ -63,7 +59,10 @@ const TalkgroupsList = ({
           type="button"
           className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
         >
-          <FilterIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+          <FilterIcon
+            className="-ml-0.5 mr-2 h-4 w-4"
+            aria-hidden="true"
+          />
           Filter
         </button>
       </div>
@@ -72,15 +71,33 @@ const TalkgroupsList = ({
         Header={
           <>
             <BasicTable.HeaderColumn>
-              Alpha Tag / Description
+              <span className="block md:hidden">
+                Alpha Tag / ID / Description
+              </span>
+              <span className="hidden md:block">Alpha Tag / Description</span>
             </BasicTable.HeaderColumn>
-            <BasicTable.HeaderColumn alignment="center">
-              Decimal ID
+            <BasicTable.HeaderColumn
+              alignment="center"
+              className="hidden md:table-cell"
+            >
+              DEC
             </BasicTable.HeaderColumn>
-            <BasicTable.HeaderColumn alignment="center">
+            <BasicTable.HeaderColumn
+              alignment="center"
+              className="hidden lg:table-cell"
+            >
+              HEX
+            </BasicTable.HeaderColumn>
+            <BasicTable.HeaderColumn
+              alignment="center"
+              className="hidden md:table-cell"
+            >
               Encrypted
             </BasicTable.HeaderColumn>
-            <BasicTable.HeaderColumn alignment="center">
+            <BasicTable.HeaderColumn
+              alignment="center"
+              className="hidden sm:table-cell"
+            >
               Mode
             </BasicTable.HeaderColumn>
             <BasicTable.HeaderColumn alignment="center">
@@ -117,30 +134,65 @@ const TalkgroupsList = ({
           />
         )}
         {talkgroupsData &&
-          talkgroupsData.results.map((talkgroup) => (
+          talkgroupsData.results.map((talkgroup, i) => (
             <BasicTable.Row key={talkgroup.UUID}>
               <BasicTable.RowCell
                 textSize="none"
+                striped={i % 2 === 1}
                 grayText={false}
                 alignment="none"
               >
-                <div className="text-sm font-medium text-gray-900 underline">
-                  <Link href={`/talkgroups/${talkgroup.UUID}`}>
-                    <a>
+                <div className="flex items-center">
+                  <Link
+                    href={`/talkgroups/${talkgroup.UUID}`}
+                    passHref
+                  >
+                    <a className="text-sm font-medium text-gray-900 underline">
                       {talkgroup.alpha_tag
                         ? talkgroup.alpha_tag
                         : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
                     </a>
                   </Link>
+                  <span className="block md:hidden ml-2 text-[0.65rem] text-gray-500">
+                    DEC: {talkgroup.decimal_id}
+                  </span>
                 </div>
                 <div className="text-xs">{talkgroup.description}</div>
               </BasicTable.RowCell>
-              <BasicTable.RowCell>{talkgroup.decimal_id}</BasicTable.RowCell>
-              <BasicTable.RowCell>
+              <BasicTable.RowCell
+                className="hidden md:table-cell"
+                striped={i % 2 === 1}
+              >
+                {talkgroup.decimal_id}
+              </BasicTable.RowCell>
+              <BasicTable.RowCell
+                className="hidden lg:table-cell uppercase"
+                striped={i % 2 === 1}
+              >
+                {talkgroup.decimal_id.toString(16)}
+              </BasicTable.RowCell>
+              <BasicTable.RowCell
+                className="hidden md:table-cell"
+                striped={i % 2 === 1}
+              >
                 {talkgroup.encrypted ? "Yes" : "No"}
               </BasicTable.RowCell>
-              <BasicTable.RowCell>{talkgroup.mode}</BasicTable.RowCell>
-              <BasicTable.RowCell>{talkgroup.system.name}</BasicTable.RowCell>
+              <BasicTable.RowCell
+                className="hidden sm:table-cell"
+                striped={i % 2 === 1}
+              >
+                {talkgroup.mode}
+              </BasicTable.RowCell>
+              <BasicTable.RowCell striped={i % 2 === 1}>
+                <Link
+                  href={`/systems/${talkgroup.system.UUID}`}
+                  passHref
+                >
+                  <a className="text-sm text-gray-600 underline">
+                    {talkgroup.system.name}
+                  </a>
+                </Link>
+              </BasicTable.RowCell>
             </BasicTable.Row>
           ))}
       </BasicTable>

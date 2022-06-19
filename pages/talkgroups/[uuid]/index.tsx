@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
-// import MainLayout from "components/layouts/MainLayout";
 import PageContentContainer from "components/PageContentContainer";
 import Axios from "utils/axios";
 import useSWR from "swr";
@@ -9,11 +8,30 @@ import fetcher from "utils/fetcher";
 import Skeleton from "react-loading-skeleton";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
-import TableDisplay from "components/data/tableDisplay";
+import TableDisplay from "components/tables/tableDisplay";
 import * as appLib from "lib/app/appLib";
 
 import type { GetServerSideProps } from "next";
-import { TalkGroup } from "types/api/TalkGroup";
+import type { TalkGroup } from "types/api/TalkGroup";
+import classNames from "utils/classNames";
+import { useState } from "react";
+import TalkgroupView from "components/radio/TalkgroupView";
+
+interface Tab {
+  id: string;
+  name: string;
+}
+
+const tabs: Tab[] = [
+  {
+    id: "details",
+    name: "Details",
+  },
+  {
+    id: "transmissions",
+    name: "Transmissions",
+  },
+];
 
 interface GetTalkgroupPageProps {
   talkgroup?: TalkGroup;
@@ -21,6 +39,7 @@ interface GetTalkgroupPageProps {
 
 const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
   const router = useRouter();
+  const [currentTab, setCurrentTab] = useState("details");
   const { uuid } = router.query;
   const {
     data: talkgroupData,
@@ -36,10 +55,9 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
 
   return (
     <>
-      {/* <MainLayout> */}
       <Head>
         {!talkgroupData || talkgroupError ? (
-          <title>Talk Groups - Trunk-Player</title>
+          <title>Talk Group - Trunk-Player</title>
         ) : (
           <title>
             {talkgroupData.alpha_tag
@@ -48,7 +66,10 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
             - Trunk-Player
           </title>
         )}
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+        />
       </Head>
       <PageContentContainer>
         <div className="mt-8">
@@ -56,7 +77,10 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
             {talkgroupError && (
               <WarningAlert>
                 Error while requesting talk group data.{" "}
-                <button className="underline" onClick={refreshData}>
+                <button
+                  className="underline"
+                  onClick={refreshData}
+                >
                   Try again
                 </button>
               </WarningAlert>
@@ -68,104 +92,97 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
             )}
             {talkgroupData && (
               <>
-                <h1 className="my-8 text-4xl leading-6 font-medium text-gray-900">
-                  {talkgroupData.alpha_tag
-                    ? talkgroupData.alpha_tag
-                    : talkgroupData.decimal_id}
-                </h1>
-                <BasicCard>
-                  <BasicCard.CardHeader divider>
-                    Talkgroup Details
-                  </BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>
-                          System:
-                        </TableDisplay.Column>
-                        <TableDisplay.Column
-                          className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                          onUpdate={() => {}}
+                <TalkgroupView data={talkgroupData} />
+                {tabs && (
+                  <div>
+                    <div className="sm:hidden">
+                      <label
+                        htmlFor="tabs"
+                        className="sr-only"
+                      >
+                        Select a tab
+                      </label>
+                      {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
+                      <select
+                        id="tabs"
+                        name="tabs"
+                        className="block w-full focus:ring-cyan-500 focus:border-cyan-500 border-gray-300 rounded-md"
+                        defaultValue={
+                          tabs.find((tab) => tab.id === currentTab)?.name
+                        }
+                      >
+                        {tabs.map((tab) => (
+                          <option key={tab.name}>{tab.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="hidden sm:block">
+                      <div className="border-b border-gray-200">
+                        <nav
+                          className="-mb-px flex"
+                          aria-label="Tabs"
                         >
-                          <Link href={`/systems/${talkgroupData.system.UUID}`}>
-                            {talkgroupData.system.name}
-                          </Link>
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>
-                          Decimal ID:
-                        </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
-                          {talkgroupData.decimal_id}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>
-                          Alpha Tag:
-                        </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
-                          {talkgroupData.alpha_tag}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>
-                          Description:
-                        </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
-                          {talkgroupData.description}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>Mode:</TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
-                          {talkgroupData.mode}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                      <TableDisplay.Row hasUpdate>
-                        <TableDisplay.Column heading>
-                          Encrypted:
-                        </TableDisplay.Column>
-                        <TableDisplay.Column onUpdate={() => {}}>
-                          {talkgroupData.encrypted ? "Yes" : "No"}
-                        </TableDisplay.Column>
-                      </TableDisplay.Row>
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
-                <BasicCard className="mt-5">
-                  <BasicCard.CardHeader divider>Agencies</BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      {talkgroupData.agency &&
-                      talkgroupData.agency.length > 0 ? (
-                        talkgroupData.agency.map((agency) => (
-                          <TableDisplay.Row key={agency.UUID} hasUpdate>
-                            <TableDisplay.Column
-                              heading
-                              className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                          {tabs.map((tab) => (
+                            <button
+                              key={tab.name}
+                              className={classNames(
+                                tab.id === currentTab
+                                  ? "border-cyan-500 text-cyan-600"
+                                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                                "w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
+                              )}
+                              onClick={() => setCurrentTab(tab.id)}
+                              aria-current={
+                                tab.id === currentTab ? "page" : undefined
+                              }
                             >
-                              <Link href={`/agencies/${agency.UUID}`}>
-                                {agency.name}
-                              </Link>
-                            </TableDisplay.Column>
-                            <TableDisplay.Column onUpdate={() => {}}>
-                              {agency.description}
-                            </TableDisplay.Column>
-                          </TableDisplay.Row>
-                        ))
-                      ) : (
-                        <TableDisplay.Row>No Agencies</TableDisplay.Row>
-                      )}
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
+                              {tab.name}
+                            </button>
+                          ))}
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {currentTab === "details" && (
+                  <BasicCard className="mt-5">
+                    <BasicCard.CardHeader divider>
+                      Agencies
+                    </BasicCard.CardHeader>
+                    <TableDisplay>
+                      <TableDisplay.Container>
+                        {talkgroupData.agency &&
+                        talkgroupData.agency.length > 0 ? (
+                          talkgroupData.agency.map((agency) => (
+                            <TableDisplay.Row
+                              key={agency.UUID}
+                              hasUpdate
+                            >
+                              <TableDisplay.Column
+                                heading
+                                className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                              >
+                                <Link href={`/agencies/${agency.UUID}`}>
+                                  {agency.name}
+                                </Link>
+                              </TableDisplay.Column>
+                              <TableDisplay.Column>
+                                {agency.description}
+                              </TableDisplay.Column>
+                            </TableDisplay.Row>
+                          ))
+                        ) : (
+                          <TableDisplay.Row>No Agencies</TableDisplay.Row>
+                        )}
+                      </TableDisplay.Container>
+                    </TableDisplay>
+                  </BasicCard>
+                )}
               </>
             )}
           </div>
         </div>
       </PageContentContainer>
-      {/* </MainLayout> */}
     </>
   );
 };

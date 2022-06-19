@@ -23,7 +23,10 @@ const WarningAlert = ({
     >
       <div className="flex">
         <div className="flex-shrink-0 flex flex-col justify-center">
-          <XCircleIcon className="h-8 w-8 text-red-400" aria-hidden="true" />
+          <XCircleIcon
+            className="h-8 w-8 text-red-400"
+            aria-hidden="true"
+          />
         </div>
         <div className="ml-3 flex flex-col justify-center">
           {title && <h3 className="text-sm font-bold text-red-800">{title}</h3>}
