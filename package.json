@@ -47,7 +47,7 @@
     "swr": "^1.2.2"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.1.5",
+    "@next/eslint-plugin-next": "^12.1.6",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.2",
     "@types/cookie": "^0.4.1",
