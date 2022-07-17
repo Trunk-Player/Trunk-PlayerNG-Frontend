@@ -50,7 +50,7 @@ const TalkgroupsList = ({
   };
 
   const skeletonNumberOfRows = 4; // How many rows for the loading skeleton
-  const skeletonNumberOfCols = 4; // How many columns are in the table
+  const skeletonNumberOfCols = 6; // How many columns are in the table
 
   return (
     <>
@@ -68,13 +68,16 @@ const TalkgroupsList = ({
       </div>
       <BasicTable
         ref={refTable}
+        className="table-fixed"
         Header={
           <>
-            <BasicTable.HeaderColumn>
-              <span className="block md:hidden">
+            <BasicTable.HeaderColumn className="max-w-[150px]">
+              <span className="table-cell md:hidden">
                 Alpha Tag / ID / Description
               </span>
-              <span className="hidden md:block">Alpha Tag / Description</span>
+              <span className="hidden md:table-cell">
+                Alpha Tag / Description
+              </span>
             </BasicTable.HeaderColumn>
             <BasicTable.HeaderColumn
               alignment="center"
@@ -141,6 +144,7 @@ const TalkgroupsList = ({
                 striped={i % 2 === 1}
                 grayText={false}
                 alignment="none"
+                className="max-w-[150px]"
               >
                 <div className="flex items-center">
                   <Link
@@ -153,7 +157,7 @@ const TalkgroupsList = ({
                         : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
                     </a>
                   </Link>
-                  <span className="block md:hidden ml-2 text-[0.65rem] text-gray-500">
+                  <span className="table-cell md:hidden ml-2 text-[0.65rem] text-gray-500">
                     DEC: {talkgroup.decimal_id}
                   </span>
                 </div>

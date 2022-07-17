@@ -1,4 +1,5 @@
 import { LegacyRef, ReactElement, ReactNode } from "react";
+import classNames from "utils/classNames";
 import Column from "./Column";
 import Pagination from "./Pagination";
 import Row from "./Row";
@@ -11,6 +12,7 @@ interface BasicTableProps {
   Header: ReactNode;
   children: ReactNode;
   Footer: ReactNode;
+  className?: string;
 }
 
 type BasicTableComponent = ReactElement & {
@@ -27,11 +29,15 @@ const BasicTable = ({
   Header,
   children,
   Footer,
+  className,
 }: BasicTableProps): BasicTableComponent => {
   return (
     <table
       ref={ref}
-      className="min-w-full max-w-6xl divide-y divide-gray-200"
+      className={classNames(
+        className ? className : "",
+        "min-w-full max-w-6xl divide-y divide-gray-200"
+      )}
     >
       <thead className="bg-gradient-to-b from-cyan-800 to-cyan-700">
         <tr>{Header}</tr>
