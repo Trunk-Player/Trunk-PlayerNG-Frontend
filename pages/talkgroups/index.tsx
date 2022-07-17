@@ -41,40 +41,40 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
 
 export default TalkgroupsListPage;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  appLib.setServerAPIBaseUrl(context.req);
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   appLib.setServerAPIBaseUrl(context.req);
 
-  try {
-    const accessToken = context.req.cookies["accesstoken"];
-    if (accessToken) {
-      const response = await Axios.get<ResponseTalkgroupsList>(
-        "/radio/talkgroup/list?offset=0&ordering=decimal_id&limit=100",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+//   try {
+//     const accessToken = context.req.cookies["accesstoken"];
+//     if (accessToken) {
+//       const response = await Axios.get<ResponseTalkgroupsList>(
+//         "/radio/talkgroup/list?offset=0&ordering=decimal_id&limit=100",
+//         {
+//           headers: {
+//             Authorization: `Bearer ${accessToken}`,
+//           },
+//         }
+//       );
 
-      return {
-        props: {
-          talkgroups: response.data,
-        },
-      };
-    } else {
-      console.log(
-        "Unable to get talk groups on the server-side as there is no accessToken saved"
-      );
-      return {
-        props: {
-          talkgroups: [],
-        },
-      };
-    }
-  } catch (err: any) {
-    console.log("Unable to get talk groups on the server-side", err.message);
-    return {
-      props: {},
-    };
-  }
-};
+//       return {
+//         props: {
+//           //talkgroups: response.data,
+//         },
+//       };
+//     } else {
+//       console.log(
+//         "Unable to get talk groups on the server-side as there is no accessToken saved"
+//       );
+//       return {
+//         props: {
+//           talkgroups: [],
+//         },
+//       };
+//     }
+//   } catch (err: any) {
+//     console.log("Unable to get talk groups on the server-side", err.message);
+//     return {
+//       props: {},
+//     };
+//   }
+// };
