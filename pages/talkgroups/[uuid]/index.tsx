@@ -1,21 +1,19 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import Link from "next/link";
-import PageContentContainer from "components/PageContentContainer";
-import Axios from "utils/axios";
 import useSWR from "swr";
-import fetcher from "utils/fetcher";
+import classNames from "utils/classNames";
 import Skeleton from "react-loading-skeleton";
+import fetcher from "utils/fetcher";
+
+import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
-import * as appLib from "lib/app/appLib";
-
-import type { GetServerSideProps } from "next";
-import type { TalkGroup } from "types/api/TalkGroup";
-import classNames from "utils/classNames";
-import { useState } from "react";
 import TalkgroupView from "components/radio/TalkgroupView";
+
+import type { TalkGroup } from "types/api/TalkGroup";
 
 interface Tab {
   id: string;
@@ -33,11 +31,7 @@ const tabs: Tab[] = [
   },
 ];
 
-interface GetTalkgroupPageProps {
-  talkgroup?: TalkGroup;
-}
-
-const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
+const GetTalkgroupPage = () => {
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState("details");
   const { uuid } = router.query;
@@ -45,9 +39,7 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
     data: talkgroupData,
     mutate: talkgroupMutate,
     error: talkgroupError,
-  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher, {
-    fallbackData: talkgroup,
-  });
+  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher);
 
   const refreshData = () => {
     talkgroupMutate();
@@ -188,28 +180,3 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
 };
 
 export default GetTalkgroupPage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  appLib.setServerAPIBaseUrl(context.req);
-
-  try {
-    const { uuid } = context.query;
-    const accessToken = context.req.cookies["accesstoken"];
-    const response = await Axios.get<TalkGroup>(`/radio/talkgroup/${uuid}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    return {
-      props: {
-        talkgroup: response.data,
-      },
-    };
-  } catch (err: any) {
-    console.log("Unable to get talk group on the server-side", err.message);
-    return {
-      props: {},
-    };
-  }
-};

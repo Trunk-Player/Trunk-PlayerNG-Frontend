@@ -1,53 +1,42 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import PageContentContainer from "components/PageContentContainer";
 import Axios from "utils/axios";
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Skeleton from "react-loading-skeleton";
+
+import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
-import * as appLib from "lib/app/appLib";
 import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
 import NumberInput from "components/controls/NumberInput";
 import Textbox from "components/controls/Textbox";
 import TalkgroupModeSelection from "components/controls/radio/TalkgroupModeSelection";
-
-import { RefreshIcon } from "@heroicons/react/solid";
-
-import type { GetServerSideProps } from "next";
-import type { TalkGroup } from "types/api/TalkGroup";
-import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
 import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
 import Button from "components/controls/Button";
 import LinkButton from "components/controls/LinkButton";
-import { AxiosError } from "axios";
 
-interface EditTalkgroupPageProps {
-  talkgroup?: TalkGroup;
-  systems?: ResponseSystemsList;
-}
+import { RefreshIcon } from "@heroicons/react/solid";
 
-const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
+import type { TalkGroup } from "types/api/TalkGroup";
+import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
+import type { AxiosError } from "axios";
+
+const EditTalkgroupPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
   const {
     data: talkgroupData,
     mutate: talkgroupMutate,
     error: talkgroupError,
-  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher, {
-    fallbackData: talkgroup,
-  });
+  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher);
   const {
     data: systemsData,
     mutate: systemsMutate,
     error: systemsError,
-  } = useSWR<ResponseSystemsList>("/radio/system/list", fetcher, {
-    fallbackData: systems,
-  });
+  } = useSWR<ResponseSystemsList>("/radio/system/list", fetcher);
 
   const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
   const [decimalId, setDecimalId] = useState<number | undefined>();
@@ -270,41 +259,3 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
 };
 
 export default EditTalkgroupPage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  appLib.setServerAPIBaseUrl(context.req);
-
-  try {
-    const { uuid } = context.query;
-    const accessToken = context.req.cookies["accesstoken"];
-    const response = await Axios.get<TalkGroup>(`/radio/talkgroup/${uuid}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const responseSystems = await Axios.get<ResponseSystemsList>(
-      "/radio/system/list",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    return {
-      props: {
-        talkgroup: response.data,
-        systems: responseSystems.data,
-      },
-    };
-  } catch (err: any) {
-    console.log(
-      "Unable to get talk group or systems on the server-side",
-      err.message
-    );
-    return {
-      props: {},
-    };
-  }
-};
