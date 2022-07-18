@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { classNames } from "utils/classNames";
 
 interface ColumnProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   heading?: boolean;
   onUpdate?: () => void;

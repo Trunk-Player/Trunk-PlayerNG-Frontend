@@ -22,6 +22,9 @@ import type { GetServerSideProps } from "next";
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
 import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
+import Button from "components/controls/Button";
+import LinkButton from "components/controls/LinkButton";
+import { AxiosError } from "axios";
 
 interface EditTalkgroupPageProps {
   talkgroup?: TalkGroup;
@@ -59,6 +62,17 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
 
   const refreshSystems = () => {
     systemsMutate();
+  };
+
+  const saveData = async () => {
+    try {
+      const response = await Axios.put(`/radio/talkgroup/${uuid}`, {
+        decimal_id: "abc",
+      });
+      console.log("Respnse", response);
+    } catch (ex) {
+      console.log("Error", ex as AxiosError);
+    }
   };
 
   useEffect(() => {
@@ -180,7 +194,7 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           {alphaTag !== undefined && (
                             <Textbox
                               className="w-2/3"
-                              value={mode}
+                              value={alphaTag}
                               onChange={(e) => {
                                 setAlphaTag(e.target.value);
                               }}
@@ -228,36 +242,21 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
-                <BasicCard className="mt-5">
-                  <BasicCard.CardHeader divider>Agencies</BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      {talkgroupData.agency &&
-                      talkgroupData.agency.length > 0 ? (
-                        talkgroupData.agency.map((agency) => (
-                          <TableDisplay.Row
-                            key={agency.UUID}
-                            hasUpdate
-                          >
-                            <TableDisplay.Column
-                              heading
-                              className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                      <TableDisplay.Row hasUpdate>
+                        <TableDisplay.Column heading></TableDisplay.Column>
+                        <TableDisplay.Column>
+                          <div className="flex justify-end w-full">
+                            <LinkButton
+                              buttonType="secondary"
+                              className="mr-3"
+                              href={`/talkgroups/${uuid}`}
                             >
-                              <Link href={`/agencies/${agency.UUID}`}>
-                                {agency.name}
-                              </Link>
-                            </TableDisplay.Column>
-                            <TableDisplay.Column>
-                              {agency.description}
-                            </TableDisplay.Column>
-                          </TableDisplay.Row>
-                        ))
-                      ) : (
-                        <TableDisplay.Row>No Agencies</TableDisplay.Row>
-                      )}
+                              Cancel
+                            </LinkButton>
+                            <Button onClick={saveData}>Save</Button>
+                          </div>
+                        </TableDisplay.Column>
+                      </TableDisplay.Row>
                     </TableDisplay.Container>
                   </TableDisplay>
                 </BasicCard>
