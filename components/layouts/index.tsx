@@ -18,6 +18,7 @@ import SearchBar from "./mainLayout/topbar/SearchBar";
 import SearchBarItemContainer from "./mainLayout/topbar/SearchBarItemContainer";
 import NotificationButton from "./mainLayout/topbar/items/NotificationButton";
 import ProfileDropdown from "./mainLayout/topbar/items/ProfileDropdown";
+import AppNotificationsContainer from "components/notifications/AppNotificationsContainer";
 
 export interface MainLayoutProps {
   children?: ReactNode;
@@ -46,14 +47,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <>
       <div className="min-h-full">
         {isLoggedIn && (
-          <>
+          <nav>
             <SidebarMobile>
               <SidebarContents />
             </SidebarMobile>
             <SidebarDesktop>
               <SidebarContents />
             </SidebarDesktop>
-          </>
+          </nav>
         )}
         <div
           className={classNames(
@@ -64,22 +65,27 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           )}
         >
           {isLoggedIn && (
-            <Topbar>
-              <OpenSidebarButton
-                onClick={() => {
-                  setSidebarOpen(true);
-                }}
-              />
-              <SearchBar>
-                <Search />
-                <SearchBarItemContainer>
-                  <NotificationButton />
-                  <ProfileDropdown />
-                </SearchBarItemContainer>
-              </SearchBar>
-            </Topbar>
+            <header>
+              <Topbar>
+                <OpenSidebarButton
+                  onClick={() => {
+                    setSidebarOpen(true);
+                  }}
+                />
+                <SearchBar>
+                  <Search />
+                  <SearchBarItemContainer>
+                    <NotificationButton />
+                    <ProfileDropdown />
+                  </SearchBarItemContainer>
+                </SearchBar>
+              </Topbar>
+            </header>
           )}
-          {children}
+          <main>
+            <AppNotificationsContainer />
+            {children}
+          </main>
         </div>
       </div>
     </>

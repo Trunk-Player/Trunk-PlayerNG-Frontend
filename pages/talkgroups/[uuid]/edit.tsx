@@ -23,9 +23,15 @@ import { RefreshIcon } from "@heroicons/react/solid";
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
 import type { AxiosError } from "axios";
+import { useAppDispatch } from "state/store/hooks";
+import {
+  addOrUpdateAppNotification,
+  removeAppNotification,
+} from "state/slices/appNotificationsSlice";
 
 const EditTalkgroupPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { uuid } = router.query;
   const {
     data: talkgroupData,
@@ -54,13 +60,84 @@ const EditTalkgroupPage = () => {
   };
 
   const saveData = async () => {
+    const talkgroupModifications: any = {};
+
+    if (selectedSystem !== talkgroupData?.system.UUID) {
+      talkgroupModifications["system"] = selectedSystem;
+    }
+
+    if (decimalId !== talkgroupData?.decimal_id) {
+      talkgroupModifications["decimal_id"] = decimalId;
+    }
+
+    if (alphaTag !== talkgroupData?.alpha_tag) {
+      talkgroupModifications["alpha_tag"] = alphaTag;
+    }
+
+    if (description !== talkgroupData?.description) {
+      talkgroupModifications["description"] = description;
+    }
+
+    if (mode !== talkgroupData?.mode) {
+      talkgroupModifications["mode"] = mode;
+    }
+
+    if (encrypted !== talkgroupData?.encrypted) {
+      talkgroupModifications["encrypted"] = encrypted;
+    }
+
     try {
-      const response = await Axios.put(`/radio/talkgroup/${uuid}`, {
-        decimal_id: "abc",
-      });
-      console.log("Respnse", response);
+      dispatch(removeAppNotification("EDITTALKGROUPSAVE"));
+      const response = await Axios.put(
+        `/radio/talkgroup/${uuid}`,
+        talkgroupModifications
+      );
+
+      if (response.status !== 200) {
+        console.log("Edit Talk Group Server Response", response);
+        dispatch(
+          addOrUpdateAppNotification({
+            uniqueId: "EDITTALKGROUPSAVE",
+            title: "Error while trying to update talk group",
+            titleBold: true,
+            description:
+              "The server did not return an okay status code while trying to update the talk group.",
+            notificationType: "Error",
+            dismissable: true,
+            hasBorder: true,
+            hasIcon: true,
+          })
+        );
+        globalThis.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+      router.push(`/talkgroups/${uuid}`);
     } catch (ex) {
-      console.log("Error", ex as AxiosError);
+      const err = ex as AxiosError;
+      console.log("Error", err);
+      dispatch(
+        addOrUpdateAppNotification({
+          uniqueId: "EDITTALKGROUPSAVE",
+          title: "Error while trying to update talk group",
+          titleBold: true,
+          description:
+            "The server returned an error while trying to update the talk group.",
+          extraInformation: `${err.message}${
+            err.response?.data && ` - ${JSON.stringify(err.response.data)}`
+          }`,
+          notificationType: "Error",
+          dismissable: true,
+          hasBorder: true,
+          hasIcon: true,
+        })
+      );
+      globalThis.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
