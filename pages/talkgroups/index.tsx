@@ -1,18 +1,26 @@
 import Head from "next/head";
-// import MainLayout from "components/layouts/MainLayout";
+import { useState } from "react";
+import useSWRImmutable from "swr/immutable";
+import fetcher from "utils/fetcher";
 import PageContentContainer from "components/PageContentContainer";
 import TalkgroupsList from "components/radio/TalkgroupsList";
-import Axios from "utils/axios";
-import * as appLib from "lib/app/appLib";
 
-import type { GetServerSideProps } from "next";
-import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 
-interface TalkgroupsListPageProps {
-  talkgroups?: ResponseTalkgroupsList;
-}
+const resultsLimit = 100; // Number of results to show
+const pagesToShowLeft = 3; // Total pages numbers to show on the left of current page
+const pagesToShowRight = 3; // Total pages numbers to show on the right of current page
+const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
 
-const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
+const TalkgroupsListPage = () => {
+  const [pageIndex, setPageIndex] = useState(0);
+  const { data, error } = useSWRImmutable<ResponseTalkgroupsList>(
+    `/radio/talkgroup/list?offset=${
+      pageIndex * resultsLimit
+    }&ordering=decimal_id&limit=${resultsLimit}`,
+    fetcher
+  );
+
   return (
     <>
       <Head>
@@ -30,7 +38,14 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
             </h2>
             <TalkgroupsList
               scrollToTopOfPageOnChange={true}
-              talkgroupsFallback={talkgroups}
+              pageIndex={pageIndex}
+              setPageIndex={setPageIndex}
+              talkgroupsAPIData={data}
+              talkgroupsAPIError={error}
+              resultsLimit={resultsLimit}
+              pagesToShow={pagesToShow}
+              pagesToShowLeft={pagesToShowLeft}
+              pagesToShowRight={pagesToShowRight}
             />
           </div>
         </div>
@@ -40,41 +55,3 @@ const TalkgroupsListPage = ({ talkgroups }: TalkgroupsListPageProps) => {
 };
 
 export default TalkgroupsListPage;
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   appLib.setServerAPIBaseUrl(context.req);
-
-//   try {
-//     const accessToken = context.req.cookies["accesstoken"];
-//     if (accessToken) {
-//       const response = await Axios.get<ResponseTalkgroupsList>(
-//         "/radio/talkgroup/list?offset=0&ordering=decimal_id&limit=100",
-//         {
-//           headers: {
-//             Authorization: `Bearer ${accessToken}`,
-//           },
-//         }
-//       );
-
-//       return {
-//         props: {
-//           //talkgroups: response.data,
-//         },
-//       };
-//     } else {
-//       console.log(
-//         "Unable to get talk groups on the server-side as there is no accessToken saved"
-//       );
-//       return {
-//         props: {
-//           talkgroups: [],
-//         },
-//       };
-//     }
-//   } catch (err: any) {
-//     console.log("Unable to get talk groups on the server-side", err.message);
-//     return {
-//       props: {},
-//     };
-//   }
-// };

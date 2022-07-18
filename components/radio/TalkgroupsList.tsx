@@ -1,38 +1,37 @@
-import useSWR from "swr";
-import fetcher from "utils/fetcher";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import { useRef } from "react";
 
-import { FilterIcon } from "@heroicons/react/outline";
 import BasicTable from "components/tables/basicTable";
 
-const resultsLimit = 100; // Number of results to show
-const pagesToShowLeft = 3; // Total pages numbers to show on the left of current page
-const pagesToShowRight = 3; // Total pages numbers to show on the right of current page
-const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+import { FilterIcon } from "@heroicons/react/outline";
+
+import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 
 interface TalkgroupsListProps {
   scrollToTopOfPageOnChange: boolean;
-  talkgroupsFallback?: ResponseTalkgroupsList;
+  pageIndex: number;
+  // eslint-disable-next-line no-unused-vars
+  setPageIndex: (index: number) => void;
+  talkgroupsAPIData?: ResponseTalkgroupsList;
+  talkgroupsAPIError?: any;
+  resultsLimit: number;
+  pagesToShow: number;
+  pagesToShowLeft: number;
+  pagesToShowRight: number;
 }
 
 const TalkgroupsList = ({
   scrollToTopOfPageOnChange,
-  talkgroupsFallback,
+  pageIndex,
+  setPageIndex,
+  talkgroupsAPIData,
+  talkgroupsAPIError,
+  resultsLimit,
+  pagesToShow,
+  pagesToShowLeft,
+  pagesToShowRight,
 }: TalkgroupsListProps) => {
-  const [pageIndex, setPageIndex] = useState(0);
   const refTable = useRef<HTMLTableElement>(null);
-  const { data: talkgroupsData, error: talkgroupsError } =
-    useSWR<ResponseTalkgroupsList>(
-      `/radio/talkgroup/list?offset=${
-        pageIndex * resultsLimit
-      }&ordering=decimal_id&limit=${resultsLimit}`,
-      fetcher,
-      {
-        fallbackData: talkgroupsFallback,
-      }
-    );
 
   const onGoToPage = (page: number) => {
     setPageIndex(page - 1);
@@ -110,10 +109,10 @@ const TalkgroupsList = ({
         }
         Footer={
           <td colSpan={100}>
-            {talkgroupsData && (
+            {talkgroupsAPIData && (
               <BasicTable.Pagination
                 currentPage={pageIndex + 1}
-                count={talkgroupsData.count}
+                count={talkgroupsAPIData.count}
                 limit={resultsLimit}
                 onGoToPage={onGoToPage}
                 onScrollToTopOfTable={onScrollToTopOfTable}
@@ -125,19 +124,19 @@ const TalkgroupsList = ({
           </td>
         }
       >
-        {talkgroupsError && (
+        {talkgroupsAPIError && (
           <BasicTable.RowError>
             There was a problem requesting talk groups from the server.
           </BasicTable.RowError>
         )}
-        {!talkgroupsError && !talkgroupsData && (
+        {!talkgroupsAPIError && !talkgroupsAPIData && (
           <BasicTable.RowSkeleton
             rows={skeletonNumberOfRows}
             cols={skeletonNumberOfCols}
           />
         )}
-        {talkgroupsData &&
-          talkgroupsData.results.map((talkgroup, i) => (
+        {talkgroupsAPIData &&
+          talkgroupsAPIData.results.map((talkgroup, i) => (
             <BasicTable.Row key={talkgroup.UUID}>
               <BasicTable.RowCell
                 textSize="none"
