@@ -3,11 +3,7 @@ import { handleTokenRefresh } from "state/slices/authenticationSlice";
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import store from "state/store";
 import * as appLib from "lib/app/appLib";
-import {
-  getAccessToken,
-  refreshAuthToken,
-  refreshServerTokens,
-} from "lib/auth/authentication";
+import { getAccessToken, refreshAuthToken } from "lib/auth/authentication";
 
 const apiConfig: AxiosRequestConfig = {
   baseURL: appLib?.getAPIBaseUrl
@@ -19,12 +15,6 @@ const apiConfig: AxiosRequestConfig = {
 
 const Axios = axios.create(apiConfig);
 const refreshTokenAxios = axios.create(apiConfig);
-
-const serverAxios = axios.create({
-  baseURL: "/api",
-  timeout: 10000,
-  withCredentials: true,
-});
 
 Axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
@@ -61,11 +51,6 @@ Axios.interceptors.response.use(
           store.dispatch(
             retreiveCurrentUser({ accessToken: response.access_token })
           );
-          refreshServerTokens(
-            response.access_token,
-            response.access_token_expiration,
-            response.CSRF_TOKEN
-          );
         }
         return Axios(error.config);
       }
@@ -78,5 +63,5 @@ const changeBaseApiUrl = (baseApiUrl: string) => {
   Axios.defaults.baseURL = baseApiUrl;
 };
 
-export { serverAxios, refreshTokenAxios, changeBaseApiUrl };
+export { refreshTokenAxios, changeBaseApiUrl };
 export default Axios;

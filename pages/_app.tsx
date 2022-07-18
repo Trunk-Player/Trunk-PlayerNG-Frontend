@@ -36,11 +36,6 @@ function App({ Component, pageProps }: AppProps) {
           store.dispatch(
             retreiveCurrentUser({ accessToken: refreshTokens.access_token })
           );
-          authentication.refreshServerTokens(
-            refreshTokens.access_token,
-            refreshTokens.access_token_expiration,
-            refreshTokens.CSRF_TOKEN
-          );
           setAuthorized(true);
         }
       } catch (_ex) {
