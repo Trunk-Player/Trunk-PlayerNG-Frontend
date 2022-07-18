@@ -31,7 +31,7 @@ const LinkButton = ({
     switch (buttonType) {
       case "secondary":
         return enabled
-          ? "cursor-pointer border border-cyan-600 shadow-sm text-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+          ? "cursor-pointer border border-cyan-600 shadow-sm text-cyan-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
           : "cursor-not-allowed border border-cyan-600 border-opacity-60 shadow-sm text-cyan-600 text-opacity-60";
       case "tertiary":
         return enabled

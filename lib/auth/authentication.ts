@@ -2,7 +2,7 @@ import store from "state/store";
 import { AccessTokenRefresh } from "types/api/custom/AccessTokenRefresh";
 import { ResponseLogin } from "types/api/responses/ResponseLogin";
 import { ResponseRefreshToken } from "types/api/responses/ResponseRefreshToken";
-import Axios, { refreshTokenAxios, serverAxios } from "utils/axios";
+import Axios, { refreshTokenAxios } from "utils/axios";
 
 export const isLoggedIn = (): boolean => {
   const isAuthenticated = store.getState().authentication.authenticated;
@@ -65,26 +65,6 @@ export const doLogout = async (): Promise<void> => {
 
   if (response.status !== 200) {
     throw Error("The frontend server was unable to logout from the api.");
-  }
-
-  return response.data;
-};
-
-export const refreshServerTokens = async (
-  accessToken: string,
-  accessTokenExpiration: string,
-  csrfToken: string
-): Promise<void> => {
-  const response = await serverAxios.post<void>("/auth/savetoken", {
-    accessToken,
-    accessTokenExpiration,
-    csrfToken,
-  });
-
-  if (response.status !== 200) {
-    throw Error(
-      "The frontend server was unable to save the tokens from the api."
-    );
   }
 
   return response.data;
