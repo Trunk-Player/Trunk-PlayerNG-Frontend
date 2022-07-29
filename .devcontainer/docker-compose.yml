@@ -12,7 +12,6 @@ services:
     command: sleep infinity
 
   nginx:
-    restart: always
     image: trunkplayer/trunkplayer-ng-nginx:latest
     ports:
       - 8080:80
@@ -24,7 +23,6 @@ services:
       - ${MEDIA_VOLUME_PATH}:/code/mediafiles
 
   trunk-player:
-    restart: always
     image: trunkplayer/trunkplayer-ng:latest
     command: "bash -c 'sleep 10; python -m gevent.monkey manage.py migrate; python -m gevent.monkey manage.py createsuperuser --noinput; python -m gevent.monkey manage.py collectstatic --no-input; uwsgi --ini /code/uwsgi.conf'"
     environment:
@@ -62,7 +60,6 @@ services:
       - rabbitmq
 
   trunk-player-worker:
-    restart: always
     image: trunkplayer/trunkplayer-ng:latest
     command: celery -A trunkplayer_ng worker -l info --pool=gevent --concurrency 100 -Q default,transmission_forwarding,radio_refrence,radio_alerts,transmission_ingest,tranmission_push
     environment:
@@ -98,7 +95,6 @@ services:
       - rabbitmq
 
   trunk-player-beat:
-    restart: always
     image: trunkplayer/trunkplayer-ng:latest
     command: celery -A trunkplayer_ng beat -l info
     environment:
@@ -135,7 +131,6 @@ services:
 
   database:
     image: mysql
-    restart: always
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
@@ -149,7 +144,6 @@ services:
 
   rabbitmq:
     image: "rabbitmq:management"
-    restart: always
     ports:
       - "15672:15672"
     environment:
