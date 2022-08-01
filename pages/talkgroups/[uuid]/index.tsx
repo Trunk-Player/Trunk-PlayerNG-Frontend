@@ -210,21 +210,13 @@ const GetTalkgroupPage = () => {
                     )}
                     <div className="mt-5 flex flex-col gap-y-3">
                       {transmissionsData &&
-                        transmissionsData.results.map((transmission, i) => {
-                          const tempTransmission = transmission;
-
-                          if (i === 3) {
-                            tempTransmission.units[0].emergency = true;
-                          }
-
-                          return (
-                            <TransmissionPlayer
-                              key={transmission.UUID}
-                              audioBaseUrl={baseAudioUrl}
-                              transmission={tempTransmission}
-                            />
-                          );
-                        })}
+                        transmissionsData.results.map((transmission) => (
+                          <TransmissionPlayer
+                            key={transmission.UUID}
+                            audioBaseUrl={baseAudioUrl}
+                            transmission={transmission}
+                          />
+                        ))}
                     </div>
                   </BasicCard>
                 )}
