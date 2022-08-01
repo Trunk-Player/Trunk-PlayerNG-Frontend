@@ -4,10 +4,10 @@
 
 This section lists the versions that are supported for security updates.
 
-| Version   | Supported            | Notes                                                                             |
-| :-------: | :------------------: | :-------------------------------------------------------------------------------- |
-| 1.0.x     | :white_check_mark:   | This is the first release (not currently available)                               |
-| < 1.0     | :x:                  | Current WIP. Follow reporting below but running this version is at your own risk. |
+| Version |     Supported      | Notes                                                                             |
+| :-----: | :----------------: | :-------------------------------------------------------------------------------- |
+|  1.0.x  | :white_check_mark: | This is the first release (not currently available)                               |
+|  < 1.0  |        :x:         | Current WIP. Follow reporting below but running this version is at your own risk. |
 
 ## Reporting a Vulnerability
 
