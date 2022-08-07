@@ -1,4 +1,4 @@
-// import { useAudioPlayer } from "lib/hooks/useAudioPlayer";
+// import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import Link from "next/link";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -19,6 +19,7 @@ import {
   PauseIcon,
   VolumeUpIcon,
   DownloadIcon,
+  StopIcon,
 } from "@heroicons/react/solid";
 
 import type { TransmissionUnits } from "types/api/TransmissionUnit";
@@ -47,11 +48,13 @@ export interface AudioPlayerProps {
   units?: TransmissionUnits;
 }
 
+type AudioState = "Stopped" | "Playing" | "Paused";
+
 const AudioPlayer = ({
   children,
   src,
   start,
-  end,
+  //end,
   size,
   // detailedTitle,
   // detailedAuthor,
@@ -67,7 +70,7 @@ const AudioPlayer = ({
 }: AudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [rendered, setRendered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentState, setCurrentState] = useState<AudioState>("Stopped");
   const [currentTime, setCurrentTime] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
 
@@ -88,7 +91,15 @@ const AudioPlayer = ({
   }, []);
 
   const onAudioChange = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
-    setIsPlaying(!e.currentTarget.paused);
+    let currentState: AudioState = "Stopped";
+
+    if (e.currentTarget.paused && e.currentTarget.currentTime > 0) {
+      currentState = "Paused";
+    } else if (!e.currentTarget.paused) {
+      currentState = "Playing";
+    }
+
+    setCurrentState(currentState);
     setCurrentTime(e.currentTarget.currentTime);
     setDuration(e.currentTarget.duration);
   };
@@ -99,16 +110,30 @@ const AudioPlayer = ({
     }
   };
 
+  const doStopAudio = () => {
+    if (audioRef.current !== null) {
+      audioRef.current.pause();
+      // eslint-disable-next-line no-self-assign
+      audioRef.current.src = audioRef.current.src;
+    }
+  };
+
+  const doPauseAudio = () => {
+    if (audioRef.current !== null) {
+      audioRef.current.pause();
+    }
+  };
+
   return size === "minimal" ? (
     <div
       className={classNames(
         className ? className : "",
         isEmergency
           ? "border-red-600 bg-red-200"
-          : isPlaying
-          ? "border-cyan-600 bg-cyan-50"
+          : currentState === "Playing"
+          ? "ring-4 ring-cyan-600 border-cyan-600 bg-cyan-50"
           : "border-gray-300 bg-gray-50",
-        "py-3 px-5 border rounded-3xl bg-opacity-30 w-full flex flex-col"
+        "border py-3 px-5 rounded-3xl bg-opacity-30 w-full flex flex-col"
       )}
     >
       <div className="flex justify-between items-center gap-x-3">
@@ -116,14 +141,25 @@ const AudioPlayer = ({
           <>
             {hasPlayPause && (
               <>
-                {!isPlaying ? (
+                {currentState === "Stopped" ? (
                   <button onClick={doPlayAudio}>
                     <PlayIcon className="w-8 text-cyan-600 hover:text-cyan-700" />
                   </button>
                 ) : (
-                  <button onClick={doPlayAudio}>
-                    <PauseIcon className="w-8 text-cyan-600 hover:text-cyan-700" />
-                  </button>
+                  <span>
+                    {currentState === "Paused" ? (
+                      <button onClick={doPlayAudio}>
+                        <PlayIcon className="w-8 text-cyan-600 hover:text-cyan-700" />
+                      </button>
+                    ) : (
+                      <button onClick={doPauseAudio}>
+                        <PauseIcon className="w-8 text-cyan-600 hover:text-cyan-700" />
+                      </button>
+                    )}
+                    <button onClick={doStopAudio}>
+                      <StopIcon className="w-8 text-cyan-600 hover:text-cyan-700" />
+                    </button>
+                  </span>
                 )}
               </>
             )}
@@ -179,7 +215,11 @@ const AudioPlayer = ({
             <span>
               {units.map((tunit, i) => {
                 const keyId = tunit.pos + tunit.UUID;
-                let displayText = `(${tunit.unit})`; // `(${tunit.unit.decimal_id})`;
+                const displayText = `(${
+                  tunit.unit.decimal_id === -1
+                    ? "unknown"
+                    : tunit.unit.decimal_id.toString()
+                })`; // `(${tunit.unit.decimal_id})`;
 
                 return (
                   <span key={keyId}>
@@ -187,19 +227,35 @@ const AudioPlayer = ({
                     {tunit.emergency && (
                       <span className="font-bold text-red-600">EMERGENCY:</span>
                     )}
-                    <Link
-                      href={`/transmissionunits/${tunit.UUID}`}
-                      passHref
-                    >
-                      <a
+                    {tunit.unit.decimal_id === -1 ? (
+                      <span
                         className={classNames(
                           tunit.emergency ? "font-bold text-red-600" : "",
-                          "underline"
+                          "underline text-gray-300"
                         )}
+                        title="Trunk Recorder failed to decode this unit's ID."
                       >
-                        {tunit.tag ? tunit.tag : displayText}
-                      </a>
-                    </Link>
+                        {tunit.unit.description
+                          ? tunit.unit?.description
+                          : displayText}
+                      </span>
+                    ) : (
+                      <Link
+                        href={`/units/${tunit.unit.UUID}`}
+                        passHref
+                      >
+                        <a
+                          className={classNames(
+                            tunit.emergency ? "font-bold text-red-600" : "",
+                            "underline"
+                          )}
+                        >
+                          {tunit.unit.description
+                            ? tunit.unit?.description
+                            : displayText}
+                        </a>
+                      </Link>
+                    )}
                   </span>
                 );
               })}
@@ -208,7 +264,9 @@ const AudioPlayer = ({
           <div>
             <span>
               {dayjs(start).format(
-                display24H ? "MMM DD, YYYY HH:mm z" : "MMM DD, YYYY hh:mm A z"
+                display24H
+                  ? "MMM DD, YYYY HH:mm:ss z"
+                  : "MMM DD, YYYY hh:mm:ss A z"
               )}
             </span>
           </div>
