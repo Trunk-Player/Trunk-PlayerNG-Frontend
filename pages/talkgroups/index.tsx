@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSWRImmutable from "swr/immutable";
 import fetcher from "utils/fetcher";
 import PageContentContainer from "components/PageContentContainer";
@@ -16,8 +16,10 @@ const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left
 const TalkgroupsListPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
-  const [filterBySystemName, setFilterBySystemName] = useState<
+  const [selectedSystem, setSelectedSystem] = useState<string | undefined>(
+    "-1"
+  );
+  const [filterBySystemUUID, setFilterBySystemUUID] = useState<
     string | undefined
   >(undefined);
   const {
@@ -25,12 +27,17 @@ const TalkgroupsListPage = () => {
     error: systemsError,
     mutate: systemsMutate,
   } = useSystemsData();
-  const { data, error } = useSWRImmutable<ResponseTalkgroupsList>(
-    `/radio/talkgroup/list?offset=${
-      pageIndex * resultsLimit
-    }&ordering=decimal_id&limit=${resultsLimit}${
-      filterBySystemName ? `&system__name=${filterBySystemName}` : ""
-    }`,
+  const talkgroupListUrl = useMemo(
+    () =>
+      `/radio/talkgroup/list?offset=${
+        pageIndex * resultsLimit
+      }&ordering=decimal_id&limit=${resultsLimit}${
+        filterBySystemUUID ? `&system__UUID=${filterBySystemUUID}` : ""
+      }`,
+    [pageIndex, filterBySystemUUID]
+  );
+  const { data, mutate, error } = useSWRImmutable<ResponseTalkgroupsList>(
+    talkgroupListUrl,
     fetcher
   );
 
@@ -39,23 +46,14 @@ const TalkgroupsListPage = () => {
   };
 
   const onSelectedSystemChange = (value: string | undefined) => {
-    setSelectedSystem(value);
+    setSelectedSystem(value !== "-1" ? value : undefined);
     setPageIndex(0);
-    try {
-      if (systemsData) {
-        if (value) {
-          setFilterBySystemName(
-            systemsData.results.find((system) => system.UUID === value)?.name
-          );
-        } else {
-          setFilterBySystemName(undefined);
-        }
-      } else {
-        setFilterBySystemName(undefined);
-      }
-      // eslint-disable-next-line no-empty
-    } catch {}
+    setFilterBySystemUUID(value !== "-1" ? value : undefined);
   };
+
+  useEffect(() => {
+    mutate(fetcher(talkgroupListUrl));
+  }, [mutate, talkgroupListUrl]);
 
   return (
     <>
