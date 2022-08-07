@@ -34,9 +34,9 @@ const TalkgroupView = ({
         <div className="pt-4 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
           <div className="mt-2 flex items-center text-sm">
             {data.encrypted ? (
-              <span className="flex items-center font-medium text-red-500">
+              <span className="flex items-center font-bold text-red-500">
                 <LockClosedIcon
-                  className="flex-shrink-0 mr-1.5 h-5 w-5 font-medium text-red-400"
+                  className="flex-shrink-0 mr-1.5 h-5 w-5 font-bold text-red-500"
                   aria-hidden="true"
                 />{" "}
                 Encrypted
