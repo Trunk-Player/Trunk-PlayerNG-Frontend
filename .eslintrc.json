@@ -5,6 +5,7 @@
     "semi": ["error", "always"],
     "quotes": ["error", "double"],
     "no-debugger": "error",
+    "no-unused-vars": "warn",
     "comma-dangle": ["error", "only-multiline"]
   },
   "overrides": [
@@ -13,8 +14,8 @@
       "env": { "browser": true, "es6": true, "node": true },
       "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended"
       ],
       "plugins": ["@typescript-eslint"],
       "parser": "@typescript-eslint/parser",
@@ -29,7 +30,6 @@
         "semi": ["error", "always"],
         "quotes": ["error", "double"],
         "no-debugger": "error",
-        "no-unused-vars": "warn",
         "comma-dangle": ["error", "only-multiline"],
         "no-empty": "warn",
         "@typescript-eslint/no-explicit-any": "off",

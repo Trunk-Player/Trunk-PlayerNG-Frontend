@@ -24,7 +24,7 @@ const NumberInput = ({
   const numRef = useRef<HTMLInputElement>(null);
 
   const goToNumber = (newValue: number | string) => {
-    if (typeof newValue === "string" && !/^[\-0-9][0-9]*$/.test(newValue)) {
+    if (typeof newValue === "string" && !/^[-0-9][0-9]*$/.test(newValue)) {
       return;
     }
 
