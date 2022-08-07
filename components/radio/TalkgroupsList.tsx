@@ -56,13 +56,22 @@ const TalkgroupsList = ({
 }: TalkgroupsListProps) => {
   const refTable = useRef<HTMLTableElement>(null);
   const systemsOptions = useMemo(() => {
+    const noSelection = {
+      title: "--- No System Selected ---",
+      uniqueId: "-1",
+    };
+
     if (systemsData && systemsData.results) {
-      return systemsData.results.map((system) => ({
+      const resultsMapped = systemsData.results.map((system) => ({
         title: system.name,
         uniqueId: system.UUID,
       }));
+
+      resultsMapped.unshift(noSelection);
+
+      return resultsMapped;
     } else {
-      return [];
+      return [noSelection];
     }
   }, [systemsData]);
 
