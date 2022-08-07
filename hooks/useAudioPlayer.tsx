@@ -35,6 +35,8 @@ export const useAudioPlayer = (
         const t = new StereoPannerNode(context, { pan: 0 });
         t.connect(context.destination);
         setTrack(t);
+        // TODO: Handle error with notification.
+        // eslint-disable-next-line no-empty
       } catch {}
     }
 

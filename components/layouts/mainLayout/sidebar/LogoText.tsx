@@ -5,7 +5,7 @@ interface LogoTextProps {
 }
 
 const LogoText = ({ color = "white" }: LogoTextProps) => {
-  let cssColor = useMemo(() => {
+  const cssColor = useMemo(() => {
     switch (color) {
       case "white":
         return "text-white";

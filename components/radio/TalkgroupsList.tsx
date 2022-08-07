@@ -1,40 +1,100 @@
 import Link from "next/link";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
+import classNames from "utils/classNames";
+import Skeleton from "react-loading-skeleton";
 
-import BasicTable from "components/tables/basicTable";
+import BasicTable from "@/components/tables/basicTable";
+import SelectMenuSimple from "@/components/selectMenus/SelectMenuSimple";
 
 import { FilterIcon } from "@heroicons/react/outline";
+import { RefreshIcon } from "@heroicons/react/solid";
 
 import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import type { ResponseSystemsList } from "@/types/api/responses/ResponseSystemsList";
+import type { KeyedMutator } from "swr";
 
 interface TalkgroupsListProps {
   scrollToTopOfPageOnChange: boolean;
   pageIndex: number;
   // eslint-disable-next-line no-unused-vars
   setPageIndex: (index: number) => void;
+  showFilter?: boolean;
+  isFilterOpen: boolean;
+  onIsFilterOpenChange?: (value: boolean) => void;
+  // onFilterChange;
   talkgroupsAPIData?: ResponseTalkgroupsList;
   talkgroupsAPIError?: any;
   resultsLimit: number;
   pagesToShow: number;
   pagesToShowLeft: number;
   pagesToShowRight: number;
+  systemsData?: ResponseSystemsList;
+  systemsError?: any;
+  systemsMutate?: KeyedMutator<ResponseSystemsList>;
+  selectedSystem?: string;
+  onSelectedSystemChange?: (value: string | undefined) => void;
 }
 
 const TalkgroupsList = ({
   scrollToTopOfPageOnChange,
   pageIndex,
   setPageIndex,
+  showFilter = true,
+  isFilterOpen,
+  onIsFilterOpenChange,
   talkgroupsAPIData,
   talkgroupsAPIError,
   resultsLimit,
   pagesToShow,
   pagesToShowLeft,
   pagesToShowRight,
+  systemsData,
+  systemsError,
+  systemsMutate,
+  selectedSystem,
+  onSelectedSystemChange,
 }: TalkgroupsListProps) => {
   const refTable = useRef<HTMLTableElement>(null);
+  const systemsOptions = useMemo(() => {
+    const noSelection = {
+      title: "--- No System Selected ---",
+      uniqueId: "-1",
+    };
+
+    if (systemsData && systemsData.results) {
+      const resultsMapped = systemsData.results.map((system) => ({
+        title: system.name,
+        uniqueId: system.UUID,
+      }));
+
+      resultsMapped.unshift(noSelection);
+
+      return resultsMapped;
+    } else {
+      return [noSelection];
+    }
+  }, [systemsData]);
 
   const onGoToPage = (page: number) => {
     setPageIndex(page - 1);
+  };
+
+  const onFilterButtonClick = () => {
+    if (onIsFilterOpenChange) {
+      onIsFilterOpenChange(!isFilterOpen);
+    }
+  };
+
+  const onSystemsSelectionChanged = (value: string | undefined) => {
+    if (onSelectedSystemChange) {
+      onSelectedSystemChange(value);
+    }
+  };
+
+  const refreshSystemsData = () => {
+    if (systemsMutate) {
+      systemsMutate();
+    }
   };
 
   const onScrollToTopOfTable = () => {
@@ -53,21 +113,55 @@ const TalkgroupsList = ({
 
   return (
     <>
-      <div className="mb-2">
-        <button
-          type="button"
-          className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-        >
-          <FilterIcon
-            className="-ml-0.5 mr-2 h-4 w-4"
-            aria-hidden="true"
-          />
-          Filter
-        </button>
-      </div>
+      {showFilter && (
+        <>
+          <div className="mb-2">
+            <button
+              type="button"
+              className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+              onClick={onFilterButtonClick}
+            >
+              <FilterIcon
+                className="-ml-0.5 mr-2 h-4 w-4"
+                aria-hidden="true"
+              />
+              Filter
+            </button>
+          </div>
+          {isFilterOpen && (
+            <div className="mb-3">
+              {!systemsData && !systemsError && (
+                <Skeleton
+                  width={200}
+                  baseColor="#ffffff"
+                  highlightColor="#155e75"
+                  className="mb-3"
+                />
+              )}
+              {systemsData && (
+                <>
+                  <div className="flex">
+                    <SelectMenuSimple
+                      srText="Change system"
+                      selectedUniqueId={selectedSystem}
+                      onChangeSelection={onSystemsSelectionChanged}
+                      options={systemsOptions}
+                    />{" "}
+                    {systemsMutate && (
+                      <button onClick={refreshSystemsData}>
+                        <RefreshIcon className="w-5 ml-3" />
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </>
+      )}
       <BasicTable
-        ref={refTable}
-        className="table-fixed"
+        refTable={refTable}
+        className={classNames("table-fixed")}
         Header={
           <>
             <BasicTable.HeaderColumn className="max-w-[150px]">
