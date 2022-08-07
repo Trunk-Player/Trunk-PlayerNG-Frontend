@@ -6,6 +6,7 @@ import PageContentContainer from "components/PageContentContainer";
 import TalkgroupsList from "components/radio/TalkgroupsList";
 
 import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import { useSystemsData } from "@/hooks/api/useSystemsData";
 
 const resultsLimit = 100; // Number of results to show
 const pagesToShowLeft = 3; // Total pages numbers to show on the left of current page
@@ -14,12 +15,47 @@ const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left
 
 const TalkgroupsListPage = () => {
   const [pageIndex, setPageIndex] = useState(0);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
+  const [filterBySystemName, setFilterBySystemName] = useState<
+    string | undefined
+  >(undefined);
+  const {
+    data: systemsData,
+    error: systemsError,
+    mutate: systemsMutate,
+  } = useSystemsData();
   const { data, error } = useSWRImmutable<ResponseTalkgroupsList>(
     `/radio/talkgroup/list?offset=${
       pageIndex * resultsLimit
-    }&ordering=decimal_id&limit=${resultsLimit}`,
+    }&ordering=decimal_id&limit=${resultsLimit}${
+      filterBySystemName ? `&system__name=${filterBySystemName}` : ""
+    }`,
     fetcher
   );
+
+  const onIsFilterOpenChange = (value: boolean) => {
+    setIsFilterOpen(value);
+  };
+
+  const onSelectedSystemChange = (value: string | undefined) => {
+    setSelectedSystem(value);
+    setPageIndex(0);
+    try {
+      if (systemsData) {
+        if (value) {
+          setFilterBySystemName(
+            systemsData.results.find((system) => system.UUID === value)?.name
+          );
+        } else {
+          setFilterBySystemName(undefined);
+        }
+      } else {
+        setFilterBySystemName(undefined);
+      }
+      // eslint-disable-next-line no-empty
+    } catch {}
+  };
 
   return (
     <>
@@ -46,6 +82,13 @@ const TalkgroupsListPage = () => {
               pagesToShow={pagesToShow}
               pagesToShowLeft={pagesToShowLeft}
               pagesToShowRight={pagesToShowRight}
+              isFilterOpen={isFilterOpen}
+              onIsFilterOpenChange={onIsFilterOpenChange}
+              systemsData={systemsData}
+              systemsError={systemsError}
+              systemsMutate={systemsMutate}
+              selectedSystem={selectedSystem}
+              onSelectedSystemChange={onSelectedSystemChange}
             />
           </div>
         </div>

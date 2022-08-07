@@ -1,15 +1,15 @@
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Fragment, useMemo } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/solid";
 import classNames from "utils/classNames";
 
 interface SelectMenuSimpleProps {
   srText?: string;
-  selectedUniqueId: string;
+  selectedUniqueId?: string;
   buttonIcon?: boolean;
   absoluteMenu?: boolean;
-  onChangeSelection: Dispatch<SetStateAction<string | undefined>>;
-  options: {
+  onChangeSelection: (value: string | undefined) => void;
+  options?: {
     uniqueId: string;
     title: string;
   }[];
@@ -23,16 +23,16 @@ const SelectMenuSimple = ({
   onChangeSelection,
   options,
 }: SelectMenuSimpleProps) => {
-  const getDefaultIndex = (): number => {
-    try {
-      return options.findIndex((opt) => opt.uniqueId === selectedUniqueId);
-    } catch {
-      return 0;
+  const selected = useMemo(() => {
+    if (options) {
+      const defaultIndex: number = options.findIndex(
+        (opt) => opt.uniqueId === selectedUniqueId
+      );
+      return options[defaultIndex];
+    } else {
+      return undefined;
     }
-  };
-
-  const defaultIndex: number = getDefaultIndex();
-  const selected = options[defaultIndex];
+  }, [options, selectedUniqueId]);
 
   return (
     <Listbox
@@ -43,21 +43,23 @@ const SelectMenuSimple = ({
         <>
           <Listbox.Label className="sr-only">{srText}</Listbox.Label>
           <div className="relative">
-            <div className="inline-flex shadow-sm rounded-md divide-x divide-cyan-700">
-              <div className="relative z-0 inline-flex shadow-sm rounded-md divide-x divide-cyan-700">
-                <div className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 py-2 pl-3 pr-4 border border-transparent rounded-l-md shadow-sm text-white">
-                  {buttonIcon && (
-                    <CheckIcon
-                      className="h-5 w-5"
-                      aria-hidden="true"
-                    />
-                  )}
-                  <p className="ml-2.5 text-sm font-medium">{selected.title}</p>
-                </div>
-                <Listbox.Button className="relative inline-flex items-center bg-cyan-600 bg-opacity-75 p-2 rounded-l-none rounded-r-md text-sm font-medium text-white hover:bg-cyan-700 hover:bg-opacity-75 focus:outline-none focus:z-10 focus:ring-0 focus:ring-transparent">
+            <div className="inline-flex shadow-sm rounded-md">
+              <div className="relative z-0 inline-flex shadow-sm rounded-md">
+                <Listbox.Button className="relative inline-flex items-center bg-cyan-100 bg-opacity-70 border-[1.5px] border-cyan-500 rounded-md text-sm font-medium text-black hover:bg-opacity-90 focus:outline-none focus:z-10 focus:ring-0 focus:ring-transparent">
+                  <div className="relative inline-flex items-center py-2 px-3 border border-transparent rounded-l-md select-none cursor-pointer">
+                    {buttonIcon && (
+                      <CheckIcon
+                        className="h-5 w-5"
+                        aria-hidden="true"
+                      />
+                    )}
+                    <p className="ml-2.5 text-sm font-medium">
+                      {selected ? selected.title : "--- No System Selected ---"}
+                    </p>
+                  </div>
                   <span className="sr-only">{srText}</span>
                   <ChevronDownIcon
-                    className="h-5 w-5 text-white"
+                    className="h-5 w-5 mr-2.5"
                     aria-hidden="true"
                   />
                 </Listbox.Button>
@@ -78,44 +80,47 @@ const SelectMenuSimple = ({
                   "z-10 mt-2 w-72 rounded-md shadow-lg overflow-hidden bg-white divide-y divide-gray-200 ring-1 ring-black ring-opacity-5 focus:outline-none"
                 )}
               >
-                {options.map((option) => (
-                  <Listbox.Option
-                    key={option.uniqueId}
-                    className={({ active }) =>
-                      classNames(
-                        active ? "text-cyan-100 bg-cyan-600" : "text-gray-900",
-                        "cursor-default select-none relative p-4 text-sm"
-                      )
-                    }
-                    value={option.uniqueId}
-                  >
-                    {({ selected, active }) => (
-                      <div className="flex flex-col">
-                        <div className="flex justify-between">
-                          <p
-                            className={
-                              selected ? "font-semibold" : "font-normal"
-                            }
-                          >
-                            {option.title}
-                          </p>
-                          {selected ? (
-                            <span
+                {options &&
+                  options.map((option) => (
+                    <Listbox.Option
+                      key={option.uniqueId}
+                      className={({ active }) =>
+                        classNames(
+                          active
+                            ? "text-cyan-100 bg-cyan-600"
+                            : "text-gray-900",
+                          "cursor-default select-none relative p-4 text-sm"
+                        )
+                      }
+                      value={option.uniqueId}
+                    >
+                      {({ selected, active }) => (
+                        <div className="flex flex-col">
+                          <div className="flex justify-between">
+                            <p
                               className={
-                                active ? "text-cyan-100" : "text-cyan-600"
+                                selected ? "font-semibold" : "font-normal"
                               }
                             >
-                              <CheckIcon
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          ) : null}
+                              {option.title}
+                            </p>
+                            {selected ? (
+                              <span
+                                className={
+                                  active ? "text-cyan-100" : "text-cyan-600"
+                                }
+                              >
+                                <CheckIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              </span>
+                            ) : null}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </Listbox.Option>
-                ))}
+                      )}
+                    </Listbox.Option>
+                  ))}
               </Listbox.Options>
             </Transition>
           </div>
