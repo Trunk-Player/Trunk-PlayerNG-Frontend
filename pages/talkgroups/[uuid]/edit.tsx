@@ -47,7 +47,7 @@ const EditTalkgroupPage = () => {
   const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
   const [decimalId, setDecimalId] = useState<number | undefined>();
   const [alphaTag, setAlphaTag] = useState<string | undefined>();
-  const [description, setDescription] = useState<string | undefined>();
+  const [description, setDescription] = useState<string | null | undefined>();
   const [mode, setMode] = useState<string | undefined>();
   const [encrypted, setEncrypted] = useState<boolean | undefined>();
 
@@ -276,7 +276,7 @@ const EditTalkgroupPage = () => {
                           {description !== undefined && (
                             <Textbox
                               className="w-2/3"
-                              value={description}
+                              value={description !== null ? description : ""}
                               onChange={(e) => {
                                 setDescription(e.target.value);
                               }}
