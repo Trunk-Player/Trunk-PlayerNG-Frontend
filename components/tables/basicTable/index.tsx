@@ -8,7 +8,7 @@ import RowError from "./RowError";
 import RowSkeleton from "./RowSkeleton";
 
 interface BasicTableProps {
-  ref?: LegacyRef<HTMLTableElement>;
+  refTable?: LegacyRef<HTMLTableElement>;
   Header: ReactNode;
   children: ReactNode;
   Footer: ReactNode;
@@ -25,7 +25,7 @@ type BasicTableComponent = ReactElement & {
 };
 
 const BasicTable = ({
-  ref,
+  refTable,
   Header,
   children,
   Footer,
@@ -33,7 +33,7 @@ const BasicTable = ({
 }: BasicTableProps): BasicTableComponent => {
   return (
     <table
-      ref={ref}
+      ref={refTable}
       className={classNames(
         className ? className : "",
         "min-w-full max-w-6xl divide-y divide-gray-200"
