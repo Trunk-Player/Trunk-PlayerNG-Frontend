@@ -54,7 +54,7 @@
     "@types/cookie": "^0.5.1",
     "@types/luxon": "^3.0.0",
     "@types/react": "^18.0.16",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.32.0",
     "autoprefixer": "^10.4.8",
     "babel-jest": "^28.1.3",
