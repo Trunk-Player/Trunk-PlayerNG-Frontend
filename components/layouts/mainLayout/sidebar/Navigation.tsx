@@ -21,7 +21,7 @@ const Navigation = () => {
 
   return (
     <nav
-      className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto"
+      className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto scrollbar"
       aria-label="Sidebar"
     >
       <div className="px-2 space-y-1">

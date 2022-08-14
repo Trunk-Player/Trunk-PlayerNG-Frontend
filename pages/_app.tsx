@@ -10,6 +10,7 @@ import * as appLib from "lib/app/appLib";
 import type { AppProps } from "next/app";
 
 import "tailwindcss/tailwind.css";
+import "@/styles/scrollbars.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { MainLayout } from "components/layouts";
 
