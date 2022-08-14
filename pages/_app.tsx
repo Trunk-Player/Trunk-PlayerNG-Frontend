@@ -10,6 +10,7 @@ import * as appLib from "lib/app/appLib";
 import type { AppProps } from "next/app";
 
 import "tailwindcss/tailwind.css";
+import "@/styles/scrollbars.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { MainLayout } from "components/layouts";
 
@@ -35,11 +36,6 @@ function App({ Component, pageProps }: AppProps) {
           store.dispatch(handleTokenRefresh(refreshTokens));
           store.dispatch(
             retreiveCurrentUser({ accessToken: refreshTokens.access_token })
-          );
-          authentication.refreshServerTokens(
-            refreshTokens.access_token,
-            refreshTokens.access_token_expiration,
-            refreshTokens.CSRF_TOKEN
           );
           setAuthorized(true);
         }

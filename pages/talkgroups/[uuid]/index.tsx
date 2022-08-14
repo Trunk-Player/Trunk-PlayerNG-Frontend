@@ -1,21 +1,23 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import PageContentContainer from "components/PageContentContainer";
-import Axios from "utils/axios";
 import useSWR from "swr";
-import fetcher from "utils/fetcher";
+import classNames from "utils/classNames";
 import Skeleton from "react-loading-skeleton";
+import fetcher from "utils/fetcher";
+import { getAPIBaseUrl } from "lib/app/appLib";
+
+import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
-import * as appLib from "lib/app/appLib";
-
-import type { GetServerSideProps } from "next";
-import type { TalkGroup } from "types/api/TalkGroup";
-import classNames from "utils/classNames";
-import { useState } from "react";
 import TalkgroupView from "components/radio/TalkgroupView";
+import LinkButton from "components/controls/LinkButton";
+
+import type { TalkGroup } from "types/api/TalkGroup";
+import type { ResponseTransmissionsList } from "types/api/responses/ResponseTransmissionsList";
+import TransmissionPlayer from "components/radio/TransmissionPlayer";
 
 interface Tab {
   id: string;
@@ -33,21 +35,29 @@ const tabs: Tab[] = [
   },
 ];
 
-interface GetTalkgroupPageProps {
-  talkgroup?: TalkGroup;
-}
-
-const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
+const GetTalkgroupPage = () => {
   const router = useRouter();
   const [currentTab, setCurrentTab] = useState("details");
   const { uuid } = router.query;
+
+  const baseAudioUrl = useMemo(() => {
+    return getAPIBaseUrl()?.replace(/(\/api|\/apiv1)$/i, "");
+  }, []);
+
   const {
     data: talkgroupData,
     mutate: talkgroupMutate,
     error: talkgroupError,
-  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher, {
-    fallbackData: talkgroup,
-  });
+  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher);
+
+  const {
+    data: transmissionsData,
+    // mutate: transmissionsMutate,
+    error: transmissionsError,
+  } = useSWR<ResponseTransmissionsList>(
+    `/radio/talkgroup/${uuid}/transmissions?limit=20`,
+    fetcher
+  );
 
   const refreshData = () => {
     talkgroupMutate();
@@ -178,6 +188,38 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
                     </TableDisplay>
                   </BasicCard>
                 )}
+                {currentTab === "transmissions" && (
+                  <BasicCard className="mt-5">
+                    <BasicCard.CardHeader divider>
+                      <span className="flex justify-between">
+                        <span>Last 20 Transmissions</span>
+                        <span className="font-normal text-sm">
+                          <LinkButton
+                            buttonType="secondary"
+                            href={"/"}
+                          >
+                            See More
+                          </LinkButton>
+                        </span>
+                      </span>
+                    </BasicCard.CardHeader>
+                    {transmissionsError && (
+                      <div className="my-5">
+                        Error while getting transmissions!
+                      </div>
+                    )}
+                    <div className="mt-5 flex flex-col gap-y-3">
+                      {transmissionsData &&
+                        transmissionsData.results.map((transmission) => (
+                          <TransmissionPlayer
+                            key={transmission.UUID}
+                            audioBaseUrl={baseAudioUrl}
+                            transmission={transmission}
+                          />
+                        ))}
+                    </div>
+                  </BasicCard>
+                )}
               </>
             )}
           </div>
@@ -188,28 +230,3 @@ const GetTalkgroupPage = ({ talkgroup }: GetTalkgroupPageProps) => {
 };
 
 export default GetTalkgroupPage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  appLib.setServerAPIBaseUrl(context.req);
-
-  try {
-    const { uuid } = context.query;
-    const accessToken = context.req.cookies["accesstoken"];
-    const response = await Axios.get<TalkGroup>(`/radio/talkgroup/${uuid}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    return {
-      props: {
-        talkgroup: response.data,
-      },
-    };
-  } catch (err: any) {
-    console.log("Unable to get talk group on the server-side", err.message);
-    return {
-      props: {},
-    };
-  }
-};

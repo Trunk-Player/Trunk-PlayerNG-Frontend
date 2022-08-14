@@ -8,7 +8,7 @@ export interface TalkGroup {
   system: System;
   decimal_id: number;
   alpha_tag?: string;
-  description?: string;
+  description?: string | null;
   mode: TalkgroupMode;
   encrypted?: boolean;
   agency?: Agencies;

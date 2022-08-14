@@ -1,41 +1,100 @@
-import useSWR from "swr";
-import fetcher from "utils/fetcher";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import { useMemo, useRef } from "react";
+import classNames from "utils/classNames";
+import Skeleton from "react-loading-skeleton";
+
+import BasicTable from "@/components/tables/basicTable";
+import SelectMenuSimple from "@/components/selectMenus/SelectMenuSimple";
 
 import { FilterIcon } from "@heroicons/react/outline";
-import BasicTable from "components/tables/basicTable";
+import { RefreshIcon } from "@heroicons/react/solid";
 
-const resultsLimit = 100; // Number of results to show
-const pagesToShowLeft = 3; // Total pages numbers to show on the left of current page
-const pagesToShowRight = 3; // Total pages numbers to show on the right of current page
-const pagesToShow = pagesToShowLeft + 1 + pagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
+import type { ResponseSystemsList } from "@/types/api/responses/ResponseSystemsList";
+import type { KeyedMutator } from "swr";
 
 interface TalkgroupsListProps {
   scrollToTopOfPageOnChange: boolean;
-  talkgroupsFallback?: ResponseTalkgroupsList;
+  pageIndex: number;
+  // eslint-disable-next-line no-unused-vars
+  setPageIndex: (index: number) => void;
+  showFilter?: boolean;
+  isFilterOpen: boolean;
+  onIsFilterOpenChange?: (value: boolean) => void;
+  // onFilterChange;
+  talkgroupsAPIData?: ResponseTalkgroupsList;
+  talkgroupsAPIError?: any;
+  resultsLimit: number;
+  pagesToShow: number;
+  pagesToShowLeft: number;
+  pagesToShowRight: number;
+  systemsData?: ResponseSystemsList;
+  systemsError?: any;
+  systemsMutate?: KeyedMutator<ResponseSystemsList>;
+  selectedSystem?: string;
+  onSelectedSystemChange?: (value: string | undefined) => void;
 }
 
 const TalkgroupsList = ({
   scrollToTopOfPageOnChange,
-  talkgroupsFallback,
+  pageIndex,
+  setPageIndex,
+  showFilter = true,
+  isFilterOpen,
+  onIsFilterOpenChange,
+  talkgroupsAPIData,
+  talkgroupsAPIError,
+  resultsLimit,
+  pagesToShow,
+  pagesToShowLeft,
+  pagesToShowRight,
+  systemsData,
+  systemsError,
+  systemsMutate,
+  selectedSystem,
+  onSelectedSystemChange,
 }: TalkgroupsListProps) => {
-  const [pageIndex, setPageIndex] = useState(0);
   const refTable = useRef<HTMLTableElement>(null);
-  const { data: talkgroupsData, error: talkgroupsError } =
-    useSWR<ResponseTalkgroupsList>(
-      `/radio/talkgroup/list?offset=${
-        pageIndex * resultsLimit
-      }&ordering=decimal_id&limit=${resultsLimit}`,
-      fetcher,
-      {
-        fallbackData: talkgroupsFallback,
-      }
-    );
+  const systemsOptions = useMemo(() => {
+    const noSelection = {
+      title: "--- No System Selected ---",
+      uniqueId: "-1",
+    };
+
+    if (systemsData && systemsData.results) {
+      const resultsMapped = systemsData.results.map((system) => ({
+        title: system.name,
+        uniqueId: system.UUID,
+      }));
+
+      resultsMapped.unshift(noSelection);
+
+      return resultsMapped;
+    } else {
+      return [noSelection];
+    }
+  }, [systemsData]);
 
   const onGoToPage = (page: number) => {
     setPageIndex(page - 1);
+  };
+
+  const onFilterButtonClick = () => {
+    if (onIsFilterOpenChange) {
+      onIsFilterOpenChange(!isFilterOpen);
+    }
+  };
+
+  const onSystemsSelectionChanged = (value: string | undefined) => {
+    if (onSelectedSystemChange) {
+      onSelectedSystemChange(value);
+    }
+  };
+
+  const refreshSystemsData = () => {
+    if (systemsMutate) {
+      systemsMutate();
+    }
   };
 
   const onScrollToTopOfTable = () => {
@@ -50,31 +109,68 @@ const TalkgroupsList = ({
   };
 
   const skeletonNumberOfRows = 4; // How many rows for the loading skeleton
-  const skeletonNumberOfCols = 4; // How many columns are in the table
+  const skeletonNumberOfCols = 6; // How many columns are in the table
 
   return (
     <>
-      <div className="mb-2">
-        <button
-          type="button"
-          className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-        >
-          <FilterIcon
-            className="-ml-0.5 mr-2 h-4 w-4"
-            aria-hidden="true"
-          />
-          Filter
-        </button>
-      </div>
+      {showFilter && (
+        <>
+          <div className="mb-2">
+            <button
+              type="button"
+              className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+              onClick={onFilterButtonClick}
+            >
+              <FilterIcon
+                className="-ml-0.5 mr-2 h-4 w-4"
+                aria-hidden="true"
+              />
+              Filter
+            </button>
+          </div>
+          {isFilterOpen && (
+            <div className="mb-3">
+              {!systemsData && !systemsError && (
+                <Skeleton
+                  width={200}
+                  baseColor="#ffffff"
+                  highlightColor="#155e75"
+                  className="mb-3"
+                />
+              )}
+              {systemsData && (
+                <>
+                  <div className="flex">
+                    <SelectMenuSimple
+                      srText="Change system"
+                      selectedUniqueId={selectedSystem}
+                      onChangeSelection={onSystemsSelectionChanged}
+                      options={systemsOptions}
+                    />{" "}
+                    {systemsMutate && (
+                      <button onClick={refreshSystemsData}>
+                        <RefreshIcon className="w-5 ml-3" />
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </>
+      )}
       <BasicTable
-        ref={refTable}
+        refTable={refTable}
+        className={classNames("table-fixed")}
         Header={
           <>
-            <BasicTable.HeaderColumn>
-              <span className="block md:hidden">
+            <BasicTable.HeaderColumn className="max-w-[150px]">
+              <span className="table-cell md:hidden">
                 Alpha Tag / ID / Description
               </span>
-              <span className="hidden md:block">Alpha Tag / Description</span>
+              <span className="hidden md:table-cell">
+                Alpha Tag / Description
+              </span>
             </BasicTable.HeaderColumn>
             <BasicTable.HeaderColumn
               alignment="center"
@@ -107,10 +203,10 @@ const TalkgroupsList = ({
         }
         Footer={
           <td colSpan={100}>
-            {talkgroupsData && (
+            {talkgroupsAPIData && (
               <BasicTable.Pagination
                 currentPage={pageIndex + 1}
-                count={talkgroupsData.count}
+                count={talkgroupsAPIData.count}
                 limit={resultsLimit}
                 onGoToPage={onGoToPage}
                 onScrollToTopOfTable={onScrollToTopOfTable}
@@ -122,25 +218,26 @@ const TalkgroupsList = ({
           </td>
         }
       >
-        {talkgroupsError && (
+        {talkgroupsAPIError && (
           <BasicTable.RowError>
             There was a problem requesting talk groups from the server.
           </BasicTable.RowError>
         )}
-        {!talkgroupsError && !talkgroupsData && (
+        {!talkgroupsAPIError && !talkgroupsAPIData && (
           <BasicTable.RowSkeleton
             rows={skeletonNumberOfRows}
             cols={skeletonNumberOfCols}
           />
         )}
-        {talkgroupsData &&
-          talkgroupsData.results.map((talkgroup, i) => (
+        {talkgroupsAPIData &&
+          talkgroupsAPIData.results.map((talkgroup, i) => (
             <BasicTable.Row key={talkgroup.UUID}>
               <BasicTable.RowCell
                 textSize="none"
                 striped={i % 2 === 1}
                 grayText={false}
                 alignment="none"
+                className="max-w-[150px]"
               >
                 <div className="flex items-center">
                   <Link
@@ -153,7 +250,7 @@ const TalkgroupsList = ({
                         : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
                     </a>
                   </Link>
-                  <span className="block md:hidden ml-2 text-[0.65rem] text-gray-500">
+                  <span className="table-cell md:hidden ml-2 text-[0.65rem] text-gray-500">
                     DEC: {talkgroup.decimal_id}
                   </span>
                 </div>

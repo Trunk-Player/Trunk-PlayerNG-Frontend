@@ -17,11 +17,6 @@ export const loginUser = createAsyncThunk(
     const data = await Authentication.doLogin(email, password);
 
     if (data.access_token) {
-      Authentication.refreshServerTokens(
-        data.access_token,
-        data.access_token_expiration,
-        "--unused--"
-      );
       dispatch(retreiveCurrentUser({ accessToken: data.access_token }));
     }
 

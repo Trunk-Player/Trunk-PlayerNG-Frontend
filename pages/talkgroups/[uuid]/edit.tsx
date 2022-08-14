@@ -1,55 +1,53 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import PageContentContainer from "components/PageContentContainer";
 import Axios from "utils/axios";
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Skeleton from "react-loading-skeleton";
+
+import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
 import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
-import * as appLib from "lib/app/appLib";
 import SelectMenuSimple from "components/selectMenus/SelectMenuSimple";
 import NumberInput from "components/controls/NumberInput";
 import Textbox from "components/controls/Textbox";
 import TalkgroupModeSelection from "components/controls/radio/TalkgroupModeSelection";
+import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
+import Button from "components/controls/Button";
+import LinkButton from "components/controls/LinkButton";
 
 import { RefreshIcon } from "@heroicons/react/solid";
 
-import type { GetServerSideProps } from "next";
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
-import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
+import type { AxiosError } from "axios";
+import { useAppDispatch } from "state/store/hooks";
+import {
+  addOrUpdateAppNotification,
+  removeAppNotification,
+} from "state/slices/appNotificationsSlice";
 
-interface EditTalkgroupPageProps {
-  talkgroup?: TalkGroup;
-  systems?: ResponseSystemsList;
-}
-
-const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
+const EditTalkgroupPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { uuid } = router.query;
   const {
     data: talkgroupData,
     mutate: talkgroupMutate,
     error: talkgroupError,
-  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher, {
-    fallbackData: talkgroup,
-  });
+  } = useSWR<TalkGroup>(`/radio/talkgroup/${uuid}`, fetcher);
   const {
     data: systemsData,
     mutate: systemsMutate,
     error: systemsError,
-  } = useSWR<ResponseSystemsList>("/radio/system/list", fetcher, {
-    fallbackData: systems,
-  });
+  } = useSWR<ResponseSystemsList>("/radio/system/list", fetcher);
 
   const [selectedSystem, setSelectedSystem] = useState<string | undefined>();
   const [decimalId, setDecimalId] = useState<number | undefined>();
   const [alphaTag, setAlphaTag] = useState<string | undefined>();
-  const [description, setDescription] = useState<string | undefined>();
+  const [description, setDescription] = useState<string | null | undefined>();
   const [mode, setMode] = useState<string | undefined>();
   const [encrypted, setEncrypted] = useState<boolean | undefined>();
 
@@ -59,6 +57,88 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
 
   const refreshSystems = () => {
     systemsMutate();
+  };
+
+  const saveData = async () => {
+    const talkgroupModifications: any = {};
+
+    if (selectedSystem !== talkgroupData?.system.UUID) {
+      talkgroupModifications["system"] = selectedSystem;
+    }
+
+    if (decimalId !== talkgroupData?.decimal_id) {
+      talkgroupModifications["decimal_id"] = decimalId;
+    }
+
+    if (alphaTag !== talkgroupData?.alpha_tag) {
+      talkgroupModifications["alpha_tag"] = alphaTag;
+    }
+
+    if (description !== talkgroupData?.description) {
+      talkgroupModifications["description"] = description;
+    }
+
+    if (mode !== talkgroupData?.mode) {
+      talkgroupModifications["mode"] = mode;
+    }
+
+    if (encrypted !== talkgroupData?.encrypted) {
+      talkgroupModifications["encrypted"] = encrypted;
+    }
+
+    try {
+      dispatch(removeAppNotification("EDITTALKGROUPSAVE"));
+      const response = await Axios.put(
+        `/radio/talkgroup/${uuid}`,
+        talkgroupModifications
+      );
+
+      if (response.status !== 200) {
+        console.log("Edit Talk Group Server Response", response);
+        dispatch(
+          addOrUpdateAppNotification({
+            uniqueId: "EDITTALKGROUPSAVE",
+            title: "Error while trying to update talk group",
+            titleBold: true,
+            description:
+              "The server did not return an okay status code while trying to update the talk group.",
+            notificationType: "Error",
+            dismissable: true,
+            hasBorder: true,
+            hasIcon: true,
+          })
+        );
+        globalThis.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        return;
+      }
+      router.push(`/talkgroups/${uuid}`);
+    } catch (ex) {
+      const err = ex as AxiosError;
+      console.log("Error", err);
+      dispatch(
+        addOrUpdateAppNotification({
+          uniqueId: "EDITTALKGROUPSAVE",
+          title: "Error while trying to update talk group",
+          titleBold: true,
+          description:
+            "The server returned an error while trying to update the talk group.",
+          extraInformation: `${err.message}${
+            err.response?.data && ` - ${JSON.stringify(err.response.data)}`
+          }`,
+          notificationType: "Error",
+          dismissable: true,
+          hasBorder: true,
+          hasIcon: true,
+        })
+      );
+      globalThis.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
@@ -180,7 +260,7 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           {alphaTag !== undefined && (
                             <Textbox
                               className="w-2/3"
-                              value={mode}
+                              value={alphaTag}
                               onChange={(e) => {
                                 setAlphaTag(e.target.value);
                               }}
@@ -196,7 +276,7 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           {description !== undefined && (
                             <Textbox
                               className="w-2/3"
-                              value={description}
+                              value={description !== null ? description : ""}
                               onChange={(e) => {
                                 setDescription(e.target.value);
                               }}
@@ -228,36 +308,21 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
                           )}
                         </TableDisplay.Column>
                       </TableDisplay.Row>
-                    </TableDisplay.Container>
-                  </TableDisplay>
-                </BasicCard>
-                <BasicCard className="mt-5">
-                  <BasicCard.CardHeader divider>Agencies</BasicCard.CardHeader>
-                  <TableDisplay>
-                    <TableDisplay.Container>
-                      {talkgroupData.agency &&
-                      talkgroupData.agency.length > 0 ? (
-                        talkgroupData.agency.map((agency) => (
-                          <TableDisplay.Row
-                            key={agency.UUID}
-                            hasUpdate
-                          >
-                            <TableDisplay.Column
-                              heading
-                              className="font-medium text-cyan-600 hover:text-cyan-500 hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                      <TableDisplay.Row hasUpdate>
+                        <TableDisplay.Column heading></TableDisplay.Column>
+                        <TableDisplay.Column>
+                          <div className="flex justify-end w-full">
+                            <LinkButton
+                              buttonType="secondary"
+                              className="mr-3"
+                              href={`/talkgroups/${uuid}`}
                             >
-                              <Link href={`/agencies/${agency.UUID}`}>
-                                {agency.name}
-                              </Link>
-                            </TableDisplay.Column>
-                            <TableDisplay.Column>
-                              {agency.description}
-                            </TableDisplay.Column>
-                          </TableDisplay.Row>
-                        ))
-                      ) : (
-                        <TableDisplay.Row>No Agencies</TableDisplay.Row>
-                      )}
+                              Cancel
+                            </LinkButton>
+                            <Button onClick={saveData}>Save</Button>
+                          </div>
+                        </TableDisplay.Column>
+                      </TableDisplay.Row>
                     </TableDisplay.Container>
                   </TableDisplay>
                 </BasicCard>
@@ -271,41 +336,3 @@ const EditTalkgroupPage = ({ talkgroup, systems }: EditTalkgroupPageProps) => {
 };
 
 export default EditTalkgroupPage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  appLib.setServerAPIBaseUrl(context.req);
-
-  try {
-    const { uuid } = context.query;
-    const accessToken = context.req.cookies["accesstoken"];
-    const response = await Axios.get<TalkGroup>(`/radio/talkgroup/${uuid}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const responseSystems = await Axios.get<ResponseSystemsList>(
-      "/radio/system/list",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    return {
-      props: {
-        talkgroup: response.data,
-        systems: responseSystems.data,
-      },
-    };
-  } catch (err: any) {
-    console.log(
-      "Unable to get talk group or systems on the server-side",
-      err.message
-    );
-    return {
-      props: {},
-    };
-  }
-};

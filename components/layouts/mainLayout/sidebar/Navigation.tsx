@@ -17,11 +17,12 @@ const Navigation = () => {
   const isCurrentHref = (href: string, exact: boolean) =>
     exact ? router.asPath === href : router.asPath.startsWith(href);
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   useEffect(() => {}, [currentUser]); // Dummy effect to rerender navigation.
 
   return (
     <nav
-      className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto"
+      className="mt-5 flex-1 flex flex-col divide-y divide-cyan-800 overflow-y-auto scrollbar"
       aria-label="Sidebar"
     >
       <div className="px-2 space-y-1">

@@ -1,5 +1,5 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["eslint:recommended", "next/core-web-vitals"],
   "rules": {
     "@next/next/no-img-element": "off",
     "semi": ["error", "always"],
@@ -7,5 +7,34 @@
     "no-debugger": "error",
     "no-unused-vars": "warn",
     "comma-dangle": ["error", "only-multiline"]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "env": { "browser": true, "es6": true, "node": true },
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended"
+      ],
+      "plugins": ["@typescript-eslint"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaFeatures": { "jsx": true },
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "@next/next/no-img-element": "off",
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"],
+        "no-debugger": "error",
+        "comma-dangle": ["error", "only-multiline"],
+        "no-empty": "warn",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-function": "warn"
+      }
+    }
+  ]
 }
