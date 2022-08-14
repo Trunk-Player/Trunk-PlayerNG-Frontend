@@ -17,6 +17,7 @@ const Navigation = () => {
   const isCurrentHref = (href: string, exact: boolean) =>
     exact ? router.asPath === href : router.asPath.startsWith(href);
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   useEffect(() => {}, [currentUser]); // Dummy effect to rerender navigation.
 
   return (
