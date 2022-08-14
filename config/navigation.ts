@@ -14,6 +14,7 @@ import {
 export const getPrimaryNavigation = (): Navigation => [
   { name: "Dashboard", href: "/", icon: HomeIcon, exact: true },
   { name: "Reports", href: "/reports", icon: ChartBarIcon, exact: false },
+  { name: "Systems", href: "/systems", icon: FolderIcon, exact: false },
   { name: "Scanners", href: "/scanners", icon: FolderIcon, exact: false },
   { name: "Scan Lists", href: "#", icon: InboxIcon, exact: false },
   { name: "Talk Groups", href: "/talkgroups", icon: InboxIcon, exact: false },
