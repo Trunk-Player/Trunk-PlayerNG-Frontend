@@ -2,6 +2,9 @@ import Head from "next/head";
 import { useSystemsData } from "@/hooks/api/useSystemsData";
 
 import PageContentContainer from "@/components/PageContentContainer";
+import EmptySystems from "@/components/radio/systems/EmptySystems";
+import SystemsList from "@/components/radio/systems/SystemsList";
+import SystemsListItem from "@/components/radio/systems/SystemsListItem";
 
 const SystemsListPage = () => {
   const {
@@ -31,7 +34,7 @@ const SystemsListPage = () => {
             </h2>
             {!systemsData && !systemsError && <div>Loading Systems</div>}
             {systemsError && (
-              <div>
+              <div className="mb-8">
                 Error while getting systems.{" "}
                 <button
                   className="text-blue-600 underline"
@@ -41,12 +44,21 @@ const SystemsListPage = () => {
                 </button>
               </div>
             )}
-            {systemsData && (
-              <div>
+            {systemsData && systemsData.results.length === 0 && (
+              <EmptySystems />
+            )}
+            {systemsData && systemsData.results.length > 0 && (
+              // TODO: Check if systems query is limited, and, if so,
+              // handle more than the default limit for the returned results.
+              <SystemsList>
                 {systemsData.results.map((system) => (
-                  <div key={system.UUID}>{system.name}</div>
+                  <SystemsListItem
+                    key={system.UUID}
+                    UUID={system.UUID}
+                    name={system.name}
+                  />
                 ))}
-              </div>
+              </SystemsList>
             )}
           </div>
         </div>
