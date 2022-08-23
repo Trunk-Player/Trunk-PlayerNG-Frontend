@@ -11,7 +11,7 @@ const SystemsListItem = ({ UUID, name }: SystemsListItemProps) => {
     <div
       className={classNames(
         "relative rounded-lg border border-gray-300 bg-white px-6 py-5",
-        "shadow-sm flex items-center space-x-3 hover:border-gray-400",
+        "shadow-sm flex items-center space-x-3 hover:ring-2 hover:ring-cyan-600",
         "focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-cyan-500"
       )}
     >
