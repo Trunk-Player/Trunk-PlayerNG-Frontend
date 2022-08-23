@@ -26,7 +26,6 @@ const SystemsListItem = ({ UUID, name }: SystemsListItemProps) => {
               aria-hidden="true"
             />
             <p className="text-sm font-medium text-gray-900">{name}</p>
-            {/* <p className="text-sm text-gray-500 truncate">{person.role}</p> */}
           </a>
         </Link>
       </div>
