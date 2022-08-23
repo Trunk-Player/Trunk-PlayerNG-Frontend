@@ -1,3 +1,6 @@
+const { pathsToModuleNameMapper } = require("ts-jest");
+const { compilerOptions } = require("./tsconfig.json");
+
 module.exports = {
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
@@ -17,6 +20,7 @@ module.exports = {
             https://jestjs.io/docs/webpack#handling-static-assets */
     "^.+\\.(jpg|jpeg|png|gif|webp|avif|svg)$":
       "<rootDir>/__mocks__/fileMock.js",
+    ...pathsToModuleNameMapper(compilerOptions.paths),
   },
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
   testPathIgnorePatterns: [
