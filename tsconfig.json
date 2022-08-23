@@ -3,36 +3,16 @@
     "target": "es5",
     "baseUrl": "./",
     "paths": {
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/config/*": [
-        "config/*"
-      ],
-      "@/hooks/*": [
-        "hooks/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/state/*": [
-        "state/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/types/*": [
-        "types/*"
-      ],
-      "@/utils/*": [
-        "utils/*"
-      ]
+      "@/components/*": ["components/*"],
+      "@/config/*": ["config/*"],
+      "@/hooks/*": ["hooks/*"],
+      "@/lib/*": ["lib/*"],
+      "@/state/*": ["state/*"],
+      "@/styles/*": ["styles/*"],
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"]
     },
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -46,12 +26,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
