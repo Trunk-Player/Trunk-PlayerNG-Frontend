@@ -4,9 +4,10 @@ import Link from "next/link";
 export interface SystemsListItemProps {
   UUID: string;
   name: string;
+  notes?: string;
 }
 
-const SystemsListItem = ({ UUID, name }: SystemsListItemProps) => {
+const SystemsListItem = ({ UUID, name, notes }: SystemsListItemProps) => {
   return (
     <div
       className={classNames(
@@ -26,6 +27,8 @@ const SystemsListItem = ({ UUID, name }: SystemsListItemProps) => {
               aria-hidden="true"
             />
             <p className="text-sm font-medium text-gray-900">{name}</p>
+            {/* TODO: Change out notes for a short description field. */}
+            {notes && <p className="mt-1 text-xs text-gray-600">{notes}</p>}
           </a>
         </Link>
       </div>
