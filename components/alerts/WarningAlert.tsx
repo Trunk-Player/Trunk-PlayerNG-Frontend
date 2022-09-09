@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { classNames } from "utils/classNames";
 
-import { XCircleIcon } from "@heroicons/react/solid";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
 interface WarningAlertProps {
   title?: string;

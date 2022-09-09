@@ -1,6 +1,6 @@
 import SwitchWithIcon from "../SwitchWithIcon";
 
-import { LockOpenIcon, LockClosedIcon } from "@heroicons/react/solid";
+import { LockOpenIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 
 import type { Dispatch, SetStateAction } from "react";
 

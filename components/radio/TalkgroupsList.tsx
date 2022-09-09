@@ -6,8 +6,8 @@ import Skeleton from "react-loading-skeleton";
 import BasicTable from "@/components/tables/basicTable";
 import SelectMenuSimple from "@/components/selectMenus/SelectMenuSimple";
 
-import { FilterIcon } from "@heroicons/react/outline";
-import { RefreshIcon } from "@heroicons/react/solid";
+import { FunnelIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 import type { ResponseTalkgroupsList } from "types/api/responses/ResponseTalkgroupsList";
 import type { ResponseSystemsList } from "@/types/api/responses/ResponseSystemsList";
@@ -121,7 +121,7 @@ const TalkgroupsList = ({
               className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
               onClick={onFilterButtonClick}
             >
-              <FilterIcon
+              <FunnelIcon
                 className="-ml-0.5 mr-2 h-4 w-4"
                 aria-hidden="true"
               />
@@ -149,7 +149,7 @@ const TalkgroupsList = ({
                     />{" "}
                     {systemsMutate && (
                       <button onClick={refreshSystemsData}>
-                        <RefreshIcon className="w-5 ml-3" />
+                        <ArrowPathIcon className="w-5 ml-3" />
                       </button>
                     )}
                   </div>
