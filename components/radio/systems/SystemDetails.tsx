@@ -1,6 +1,6 @@
 import LinkButton from "@/components/controls/LinkButton";
 
-import { ScissorsIcon, PencilIcon } from "@heroicons/react/solid";
+import { ScissorsIcon, PencilIcon } from "@heroicons/react/24/solid";
 
 export interface SystemDetailsProps {
   UUID: string;
