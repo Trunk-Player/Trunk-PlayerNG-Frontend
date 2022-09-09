@@ -17,10 +17,10 @@ import classNames from "utils/classNames";
 import {
   PlayIcon,
   PauseIcon,
-  VolumeUpIcon,
-  DownloadIcon,
+  SpeakerWaveIcon,
+  ArrowDownTrayIcon,
   StopIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 
 import type { TransmissionUnits } from "types/api/TransmissionUnit";
 
@@ -177,7 +177,7 @@ const AudioPlayer = ({
             <span className="grow border mx-5"></span>
             {hasVolumeControl && (
               <button onClick={doPlayAudio}>
-                <VolumeUpIcon className="w-6 text-cyan-600 text-opacity-60 hover:text-cyan-700" />
+                <SpeakerWaveIcon className="w-6 text-cyan-600 text-opacity-60 hover:text-cyan-700" />
               </button>
             )}
             {hasDownloadLink && (
@@ -185,7 +185,7 @@ const AudioPlayer = ({
                 href={src}
                 download
               >
-                <DownloadIcon className="w-6 text-cyan-600 text-opacity-60 hover:text-cyan-700" />
+                <ArrowDownTrayIcon className="w-6 text-cyan-600 text-opacity-60 hover:text-cyan-700" />
               </a>
             )}
           </>

@@ -7,7 +7,7 @@ import {
   setMobileNavbarOpen,
 } from "state/slices/layoutSlice";
 
-import { XIcon } from "@heroicons/react/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface SidebarMobileProps {
   children: ReactNode;
@@ -68,7 +68,7 @@ const SidebarMobile = ({ children }: SidebarMobileProps) => {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <span className="sr-only">Close sidebar</span>
-                  <XIcon
+                  <XMarkIcon
                     className="h-6 w-6 text-white"
                     aria-hidden="true"
                   />
