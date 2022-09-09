@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "state/store/hooks";
 import { selectCurrentUser } from "state/slices/userSlice";
 
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 
 const DashboardHeader = () => {
   const user = useAppSelector(selectCurrentUser);

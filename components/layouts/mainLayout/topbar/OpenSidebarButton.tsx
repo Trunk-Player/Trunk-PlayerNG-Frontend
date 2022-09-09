@@ -1,4 +1,4 @@
-import { MenuAlt1Icon } from "@heroicons/react/outline";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { MouseEventHandler } from "react";
 
 interface OpenSidebarButtonProps {
@@ -13,7 +13,7 @@ const OpenSidebarButton = ({ onClick }: OpenSidebarButtonProps) => {
       onClick={onClick}
     >
       <span className="sr-only">Open sidebar</span>
-      <MenuAlt1Icon
+      <Bars3Icon
         className="h-6 w-6"
         aria-hidden="true"
       />

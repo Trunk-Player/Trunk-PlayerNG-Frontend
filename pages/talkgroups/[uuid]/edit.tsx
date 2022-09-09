@@ -18,7 +18,7 @@ import EncryptedSwitch from "components/switches/radio/EncryptedSwitch";
 import Button from "components/controls/Button";
 import LinkButton from "components/controls/LinkButton";
 
-import { RefreshIcon } from "@heroicons/react/solid";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseSystemsList } from "types/api/responses/ResponseSystemsList";
@@ -230,7 +230,7 @@ const EditTalkgroupPage = () => {
                                   )}
                                 />{" "}
                                 <button onClick={refreshSystems}>
-                                  <RefreshIcon className="w-5 ml-3" />
+                                  <ArrowPathIcon className="w-5 ml-3" />
                                 </button>
                               </div>
                             </>

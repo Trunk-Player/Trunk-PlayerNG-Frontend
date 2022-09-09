@@ -2,12 +2,12 @@ import Link from "next/link";
 import LinkButton from "components/controls/LinkButton";
 
 import {
-  DatabaseIcon,
+  CircleStackIcon,
   FingerPrintIcon,
   LockClosedIcon,
   LockOpenIcon,
   PencilIcon,
-} from "@heroicons/react/solid";
+} from "@heroicons/react/24/solid";
 import { TalkGroup } from "types/api/TalkGroup";
 
 interface TalkgroupViewProps {
@@ -60,7 +60,7 @@ const TalkgroupView = ({
             {data.decimal_id.toString(16).toUpperCase()}
           </div>
           <div className="mt-2 flex items-center text-sm text-gray-600 text-opacity-70 hover:text-opacity-100">
-            <DatabaseIcon
+            <CircleStackIcon
               className="flex-shrink-0 mr-1.5 h-5 w-5 text-grays-500 text-opacity-70 hover:text-opacity-100"
               aria-hidden="true"
             />

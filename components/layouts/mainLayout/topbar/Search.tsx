@@ -1,4 +1,4 @@
-import { SearchIcon } from "@heroicons/react/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const Search = () => {
   return (
@@ -19,7 +19,7 @@ const Search = () => {
             className="absolute inset-y-0 left-0 flex items-center pointer-events-none"
             aria-hidden="true"
           >
-            <SearchIcon
+            <MagnifyingGlassIcon
               className="h-5 w-5"
               aria-hidden="true"
             />

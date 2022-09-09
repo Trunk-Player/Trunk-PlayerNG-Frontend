@@ -4,7 +4,7 @@ import { classNames } from "utils/classNames";
 import { selectCurrentUser } from "state/slices/userSlice";
 import { useAppDispatch, useAppSelector } from "state/store/hooks";
 
-import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { logoutUser } from "state/slices/authenticationSlice";
 

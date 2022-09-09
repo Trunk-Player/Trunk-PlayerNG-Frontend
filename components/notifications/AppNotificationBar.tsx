@@ -2,13 +2,13 @@ import { SVGProps, useMemo } from "react";
 import classNames from "utils/classNames";
 
 import {
-  ExclamationIcon,
+  ExclamationCircleIcon,
   XCircleIcon,
   InformationCircleIcon,
   CheckCircleIcon,
   BeakerIcon,
-  XIcon,
-} from "@heroicons/react/solid";
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 import type { AppNotification } from "types/AppNotification";
 
@@ -61,7 +61,7 @@ const AppNotificationBar = ({ appNotification }: AppNotificationBarProps) => {
       case "Warning":
         styles.borderColor = "border-yellow-400";
         styles.backgroundColor = "bg-yellow-50";
-        styles.Icon = ExclamationIcon;
+        styles.Icon = ExclamationCircleIcon;
         styles.iconColor = "text-yellow-400";
         styles.titleColor = "text-yellow-800";
         styles.descriptionColor = "text-yellow-700";
@@ -154,7 +154,7 @@ const AppNotificationBar = ({ appNotification }: AppNotificationBarProps) => {
               className={`inline-flex rounded-md p-1.5 ${styling.closeButtonColor} ${styling.closeButtonHoverColor} focus:outline-none focus:ring-2 focus:ring-offset-2 ${styling.closeButtonRingOffsetColor} ${styling.closeButtonRingColor}`}
             >
               <span className="sr-only">Dismiss</span>
-              <XIcon
+              <XMarkIcon
                 className="h-5 w-5"
                 aria-hidden="true"
               />
