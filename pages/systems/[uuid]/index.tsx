@@ -7,11 +7,13 @@ import classNames from "@/utils/classNames";
 import PageContentContainer from "@/components/PageContentContainer";
 import SystemDetails from "@/components/radio/systems/SystemDetails";
 
-import { PlusIcon } from "@heroicons/react/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 import type { Tabs } from "@/types/ui/Tab";
 import BasicCard from "@/components/cards";
 import TableDisplay from "@/components/tables/tableDisplay";
+import TalkgroupsList from "@/components/radio/TalkgroupsList";
+import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
 
 const tabs: Tabs = [
   {
@@ -19,23 +21,47 @@ const tabs: Tabs = [
     name: "Details",
   },
   {
+    id: "talkgroups",
+    name: "Talk Groups",
+  },
+  {
     id: "transmissions",
     name: "Transmissions",
   },
 ];
 
+const tgListResultsLimit = 100; // Number of results to show
+const tgListPagesToShowLeft = 3; // Total pages numbers to show on the left of current page
+const tgListPagesToShowRight = 3; // Total pages numbers to show on the right of current page
+const tgListPagesToShow = tgListPagesToShowLeft + 1 + tgListPagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+
 const SystemDetailsPage = () => {
   const router = useRouter();
   const { uuid } = router.query;
   const [currentTab, setCurrentTab] = useState("details");
+  const [tgListPageIndex, setTgListPageIndex] = useState(0);
+  const [tgListIsFilterOpen, setTgListIsFilterOpen] = useState(false);
   const {
     data: systemData,
     error: systemError,
     mutate: systemMutate,
   } = useSystemData(uuid);
+  const {
+    data: talkgroupsData,
+    error: talkgroupsError,
+    mutate: talkgroupsMutate,
+  } = useTalkgroupsData({
+    pageIndex: tgListPageIndex,
+    resultsLimit: tgListResultsLimit,
+    systemUUID: uuid as string,
+  });
 
   const refreshSystem = () => {
     systemMutate();
+  };
+
+  const onTgListIsFilterOpenChange = (value: boolean) => {
+    setTgListIsFilterOpen(value);
   };
 
   return (
@@ -136,24 +162,6 @@ const SystemDetailsPage = () => {
                     <BasicCard className="mt-5">
                       <BasicCard.CardHeader divider>
                         <div className="flex justify-between items-center">
-                          <div>Talk Groups</div>
-                          <div>
-                            <PlusIcon
-                              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-600"
-                              aria-hidden="true"
-                            />
-                          </div>
-                        </div>
-                      </BasicCard.CardHeader>
-                      <TableDisplay>
-                        <TableDisplay.Container>
-                          <TableDisplay.Row>No Talk Groups</TableDisplay.Row>
-                        </TableDisplay.Container>
-                      </TableDisplay>
-                    </BasicCard>
-                    <BasicCard className="mt-5">
-                      <BasicCard.CardHeader divider>
-                        <div className="flex justify-between items-center">
                           <div>Agencies</div>
                           <div>
                             <PlusIcon
@@ -170,6 +178,24 @@ const SystemDetailsPage = () => {
                       </TableDisplay>
                     </BasicCard>
                   </>
+                )}
+                {currentTab === "talkgroups" && (
+                  <div className="mt-6">
+                    <TalkgroupsList
+                      scrollToTopOfPageOnChange={true}
+                      pageIndex={tgListPageIndex}
+                      setPageIndex={setTgListPageIndex}
+                      talkgroupsAPIData={talkgroupsData}
+                      talkgroupsAPIError={talkgroupsError}
+                      resultsLimit={tgListResultsLimit}
+                      pagesToShow={tgListPagesToShow}
+                      pagesToShowLeft={tgListPagesToShowLeft}
+                      pagesToShowRight={tgListPagesToShowRight}
+                      showFilter={false}
+                      isFilterOpen={tgListIsFilterOpen}
+                      onIsFilterOpenChange={onTgListIsFilterOpenChange}
+                    />
+                  </div>
                 )}
               </>
             )}
