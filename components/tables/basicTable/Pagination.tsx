@@ -130,16 +130,17 @@ const Pagination = ({
                   />
                 </span>
               )}
-              {totalPages > pagesToShow && currentPage > pagesToShowLeft + 1 && (
-                <>
-                  <Page
-                    pageNumber={1}
-                    active={currentPage === 1}
-                    onGoToPage={goToPage}
-                  />
-                  {currentPage > pagesToShowLeft + 2 && <Separator />}
-                </>
-              )}
+              {totalPages > pagesToShow &&
+                currentPage > pagesToShowLeft + 1 && (
+                  <>
+                    <Page
+                      pageNumber={1}
+                      active={currentPage === 1}
+                      onGoToPage={goToPage}
+                    />
+                    {currentPage > pagesToShowLeft + 2 && <Separator />}
+                  </>
+                )}
               {totalPages <= pagesToShow &&
                 [...Array(totalPages)].map((_, i) => (
                   <Page
@@ -149,43 +150,45 @@ const Pagination = ({
                     onGoToPage={goToPage}
                   />
                 ))}
-              {totalPages > pagesToShow && currentPage <= pagesToShowLeft + 1 && (
-                <>
-                  {[...Array(pagesToShow)].map((_, i) => (
-                    <Page
-                      key={i + 1}
-                      pageNumber={i + 1}
-                      active={currentPage === i + 1}
-                      onGoToPage={goToPage}
-                    />
-                  ))}
-                </>
-              )}
-              {totalPages > pagesToShow && currentPage > pagesToShowLeft + 1 && (
-                <>
-                  {[...Array(pagesToShowLeft)].map((_, i) => {
-                    const iCorrected = i + 1;
-
-                    return (
+              {totalPages > pagesToShow &&
+                currentPage <= pagesToShowLeft + 1 && (
+                  <>
+                    {[...Array(pagesToShow)].map((_, i) => (
                       <Page
-                        key={(currentPage - i - 2 - currentPage) * -1}
-                        title={iCorrected}
-                        pageNumber={currentPage + i - pagesToShowLeft}
-                        active={
-                          currentPage ===
-                          (currentPage - i - 2 - currentPage) * -1
-                        }
+                        key={i + 1}
+                        pageNumber={i + 1}
+                        active={currentPage === i + 1}
                         onGoToPage={goToPage}
                       />
-                    );
-                  })}
-                  <Page
-                    pageNumber={currentPage}
-                    active={true}
-                    onGoToPage={goToPage}
-                  />
-                </>
-              )}
+                    ))}
+                  </>
+                )}
+              {totalPages > pagesToShow &&
+                currentPage > pagesToShowLeft + 1 && (
+                  <>
+                    {[...Array(pagesToShowLeft)].map((_, i) => {
+                      const iCorrected = i + 1;
+
+                      return (
+                        <Page
+                          key={(currentPage - i - 2 - currentPage) * -1}
+                          title={iCorrected}
+                          pageNumber={currentPage + i - pagesToShowLeft}
+                          active={
+                            currentPage ===
+                            (currentPage - i - 2 - currentPage) * -1
+                          }
+                          onGoToPage={goToPage}
+                        />
+                      );
+                    })}
+                    <Page
+                      pageNumber={currentPage}
+                      active={true}
+                      onGoToPage={goToPage}
+                    />
+                  </>
+                )}
               {totalPages > pagesToShow &&
                 !(currentPage <= pagesToShowLeft + 1) &&
                 currentPage < totalPages - pagesToShowRight && (
