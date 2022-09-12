@@ -56,6 +56,8 @@ const SystemsListPage = () => {
                     key={system.UUID}
                     UUID={system.UUID}
                     name={system.name}
+                    // TODO: Change out notes for a short description field.
+                    notes={system.notes}
                   />
                 ))}
               </SystemsList>
