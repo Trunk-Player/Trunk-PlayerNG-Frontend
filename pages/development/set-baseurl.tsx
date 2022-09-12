@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -63,7 +64,7 @@ const SetBaseURLPage = () => {
               Set API Base Url
             </h2>
             <p className="mt-2 text-center text-gray-500">
-              It appears the server does not have a base API url set.
+              The base url wasn't set when Trunk-Player was built.
               <br />
               Please provide one before continuing.
             </p>
