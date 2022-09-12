@@ -14,17 +14,13 @@ import BasicCard from "components/cards";
 import TableDisplay from "components/tables/tableDisplay";
 import TalkgroupView from "components/radio/TalkgroupView";
 import LinkButton from "components/controls/LinkButton";
+import TransmissionPlayer from "components/radio/TransmissionPlayer";
 
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseTransmissionsList } from "types/api/responses/ResponseTransmissionsList";
-import TransmissionPlayer from "components/radio/TransmissionPlayer";
+import type { Tabs } from "@/types/ui/Tab";
 
-interface Tab {
-  id: string;
-  name: string;
-}
-
-const tabs: Tab[] = [
+const tabs: Tabs = [
   {
     id: "details",
     name: "Details",

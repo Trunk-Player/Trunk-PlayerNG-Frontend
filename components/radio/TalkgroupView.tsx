@@ -28,7 +28,7 @@ const TalkgroupView = ({
   return (
     <div className="flex flex-col sm:flex-row sm:justify-between items-center sm:items-start">
       <div className="flex flex-col items-center sm:items-start">
-        <h1 className="mt-8 text-4xl leading-6 font-bold text-gray-900">
+        <h1 className="text-4xl leading-6 font-bold text-gray-900">
           {data.alpha_tag ? data.alpha_tag : data.decimal_id}
         </h1>
         <div className="pt-4 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
@@ -85,7 +85,7 @@ const TalkgroupView = ({
       </div>
 
       {(showEdit || showDelete) && (
-        <div className="mb-8 sm:mb-0 sm:mt-8 flex">
+        <div className="mb-8 sm:mb-0 flex">
           {showDelete && (
             <LinkButton
               href={allowEdit ? `/talkgroups/${data.UUID}/delete` : undefined}
