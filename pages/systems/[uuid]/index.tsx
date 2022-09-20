@@ -1,9 +1,5 @@
 import Head from "next/head";
 import classNames from "@/utils/classNames";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { useSystemData } from "@/hooks/api/useSystemsData";
-import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
 import {
   systemDetailsTabs as tabs,
   tgListPagesToShow,
@@ -11,6 +7,12 @@ import {
   tgListPagesToShowRight,
   tgListResultsLimit,
 } from "@/config/systemDetailsPageConsts";
+
+import { usePageTab } from "@/hooks/usePageTab";
+import { useSystemData } from "@/hooks/api/useSystemsData";
+import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
+import { useRouterUUIDParam } from "@/hooks/useRouterUUIDParam";
+import { useTgList } from "@/hooks/components/useTgList";
 
 import PageContentContainer from "@/components/PageContentContainer";
 import SystemDetails from "@/components/radio/systems/SystemDetails";
@@ -21,29 +23,20 @@ import TalkgroupsList from "@/components/radio/TalkgroupsList";
 import { PlusIcon } from "@heroicons/react/24/solid";
 
 const SystemDetailsPage = () => {
-  const router = useRouter();
-  const { uuid } = router.query;
-  const [currentTab, setCurrentTab] = useState("details");
-  const [tgListPageIndex, setTgListPageIndex] = useState(0);
-  const [tgListIsFilterOpen, setTgListIsFilterOpen] = useState(false);
+  const [currentTab, onChangeCurrentTab] = usePageTab("details");
+  const uuid = useRouterUUIDParam();
+  const [tgListIsFilterOpen, onTgListIsFilterOpenChange] = useTgList(false);
   const {
     data: systemData,
     error: systemError,
-    mutate: systemMutate,
+    onRefreshSystem,
   } = useSystemData(uuid);
-  const { data: talkgroupsData, error: talkgroupsError } = useTalkgroupsData({
+  const {
+    data: talkgroupsData,
+    error: talkgroupsError,
     pageIndex: tgListPageIndex,
-    resultsLimit: tgListResultsLimit,
-    systemUUID: uuid as string,
-  });
-
-  const refreshSystem = () => {
-    systemMutate();
-  };
-
-  const onTgListIsFilterOpenChange = (value: boolean) => {
-    setTgListIsFilterOpen(value);
-  };
+    onPageIndexChange: onChangeTgListPageIndex,
+  } = useTalkgroupsData(0, uuid);
 
   return (
     <>
@@ -67,7 +60,7 @@ const SystemDetailsPage = () => {
                 Error while getting system data.{" "}
                 <button
                   className="text-blue-600 underline"
-                  onClick={refreshSystem}
+                  onClick={onRefreshSystem}
                 >
                   Try Again
                 </button>
@@ -125,7 +118,7 @@ const SystemDetailsPage = () => {
                                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
                                 "w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                               )}
-                              onClick={() => setCurrentTab(tab.id)}
+                              onClick={onChangeCurrentTab(tab.id)}
                               aria-current={
                                 tab.id === currentTab ? "page" : undefined
                               }
@@ -165,7 +158,7 @@ const SystemDetailsPage = () => {
                     <TalkgroupsList
                       scrollToTopOfPageOnChange={true}
                       pageIndex={tgListPageIndex}
-                      setPageIndex={setTgListPageIndex}
+                      setPageIndex={onChangeTgListPageIndex}
                       talkgroupsAPIData={talkgroupsData}
                       talkgroupsAPIError={talkgroupsError}
                       resultsLimit={tgListResultsLimit}
