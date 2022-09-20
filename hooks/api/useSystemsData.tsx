@@ -15,9 +15,14 @@ export const useSystemData = (
   UUID: ParsedUrlQuery,
   config: SWRConfiguration | undefined = undefined
 ) => {
-  return useSWR<System>(
+  const { data, error, mutate } = useSWR<System>(
     typeof UUID === "string" ? `/radio/system/${UUID}` : undefined,
     fetcher,
     config
   );
+  const onRefreshSystem = () => {
+    mutate();
+  };
+
+  return { data, error, onRefreshSystem };
 };

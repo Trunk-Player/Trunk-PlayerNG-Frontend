@@ -1,68 +1,42 @@
 import Head from "next/head";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { useSystemData } from "@/hooks/api/useSystemsData";
 import classNames from "@/utils/classNames";
+import {
+  systemDetailsTabs as tabs,
+  tgListPagesToShow,
+  tgListPagesToShowLeft,
+  tgListPagesToShowRight,
+  tgListResultsLimit,
+} from "@/config/systemDetailsPageConsts";
+
+import { usePageTab } from "@/hooks/usePageTab";
+import { useSystemData } from "@/hooks/api/useSystemsData";
+import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
+import { useRouterUUIDParam } from "@/hooks/useRouterUUIDParam";
+import { useTgList } from "@/hooks/components/useTgList";
 
 import PageContentContainer from "@/components/PageContentContainer";
 import SystemDetails from "@/components/radio/systems/SystemDetails";
-
-import { PlusIcon } from "@heroicons/react/24/solid";
-
-import type { Tabs } from "@/types/ui/Tab";
 import BasicCard from "@/components/cards";
 import TableDisplay from "@/components/tables/tableDisplay";
 import TalkgroupsList from "@/components/radio/TalkgroupsList";
-import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
 
-const tabs: Tabs = [
-  {
-    id: "details",
-    name: "Details",
-  },
-  {
-    id: "talkgroups",
-    name: "Talk Groups",
-  },
-  {
-    id: "transmissions",
-    name: "Transmissions",
-  },
-];
-
-const tgListResultsLimit = 100; // Number of results to show
-const tgListPagesToShowLeft = 3; // Total pages numbers to show on the left of current page
-const tgListPagesToShowRight = 3; // Total pages numbers to show on the right of current page
-const tgListPagesToShow = tgListPagesToShowLeft + 1 + tgListPagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const SystemDetailsPage = () => {
-  const router = useRouter();
-  const { uuid } = router.query;
-  const [currentTab, setCurrentTab] = useState("details");
-  const [tgListPageIndex, setTgListPageIndex] = useState(0);
-  const [tgListIsFilterOpen, setTgListIsFilterOpen] = useState(false);
+  const [currentTab, onChangeCurrentTab] = usePageTab("details");
+  const uuid = useRouterUUIDParam();
+  const [tgListIsFilterOpen, onTgListIsFilterOpenChange] = useTgList(false);
   const {
     data: systemData,
     error: systemError,
-    mutate: systemMutate,
+    onRefreshSystem,
   } = useSystemData(uuid);
   const {
     data: talkgroupsData,
     error: talkgroupsError,
-    mutate: talkgroupsMutate,
-  } = useTalkgroupsData({
     pageIndex: tgListPageIndex,
-    resultsLimit: tgListResultsLimit,
-    systemUUID: uuid as string,
-  });
-
-  const refreshSystem = () => {
-    systemMutate();
-  };
-
-  const onTgListIsFilterOpenChange = (value: boolean) => {
-    setTgListIsFilterOpen(value);
-  };
+    onPageIndexChange: onChangeTgListPageIndex,
+  } = useTalkgroupsData(0, uuid);
 
   return (
     <>
@@ -86,7 +60,7 @@ const SystemDetailsPage = () => {
                 Error while getting system data.{" "}
                 <button
                   className="text-blue-600 underline"
-                  onClick={refreshSystem}
+                  onClick={onRefreshSystem}
                 >
                   Try Again
                 </button>
@@ -144,7 +118,7 @@ const SystemDetailsPage = () => {
                                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
                                 "w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                               )}
-                              onClick={() => setCurrentTab(tab.id)}
+                              onClick={onChangeCurrentTab(tab.id)}
                               aria-current={
                                 tab.id === currentTab ? "page" : undefined
                               }
@@ -184,7 +158,7 @@ const SystemDetailsPage = () => {
                     <TalkgroupsList
                       scrollToTopOfPageOnChange={true}
                       pageIndex={tgListPageIndex}
-                      setPageIndex={setTgListPageIndex}
+                      setPageIndex={onChangeTgListPageIndex}
                       talkgroupsAPIData={talkgroupsData}
                       talkgroupsAPIError={talkgroupsError}
                       resultsLimit={tgListResultsLimit}
