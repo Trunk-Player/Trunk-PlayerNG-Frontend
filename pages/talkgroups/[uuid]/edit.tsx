@@ -5,6 +5,7 @@ import Axios from "utils/axios";
 import useSWR from "swr";
 import fetcher from "utils/fetcher";
 import Skeleton from "react-loading-skeleton";
+import { useRouterUUIDParam } from "@/hooks/useRouterUUIDParam";
 
 import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
@@ -32,7 +33,7 @@ import {
 const EditTalkgroupPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { uuid } = router.query;
+  const uuid = useRouterUUIDParam();
   const {
     data: talkgroupData,
     mutate: talkgroupMutate,
