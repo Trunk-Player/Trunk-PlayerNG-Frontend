@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
@@ -7,6 +6,7 @@ import classNames from "utils/classNames";
 import Skeleton from "react-loading-skeleton";
 import fetcher from "utils/fetcher";
 import { getAPIBaseUrl } from "lib/app/appLib";
+import { useRouterUUIDParam } from "@/hooks/useRouterUUIDParam";
 
 import PageContentContainer from "components/PageContentContainer";
 import WarningAlert from "components/alerts/WarningAlert";
@@ -32,9 +32,8 @@ const tabs: Tabs = [
 ];
 
 const GetTalkgroupPage = () => {
-  const router = useRouter();
+  const uuid = useRouterUUIDParam();
   const [currentTab, setCurrentTab] = useState("details");
-  const { uuid } = router.query;
 
   const baseAudioUrl = useMemo(() => {
     return getAPIBaseUrl()?.replace(/(\/api|\/apiv1)$/i, "");
