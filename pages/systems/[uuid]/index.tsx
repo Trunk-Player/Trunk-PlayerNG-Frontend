@@ -1,39 +1,24 @@
 import Head from "next/head";
+import classNames from "@/utils/classNames";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useSystemData } from "@/hooks/api/useSystemsData";
-import classNames from "@/utils/classNames";
+import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
+import {
+  systemDetailsTabs as tabs,
+  tgListPagesToShow,
+  tgListPagesToShowLeft,
+  tgListPagesToShowRight,
+  tgListResultsLimit,
+} from "@/config/systemDetailsPageConsts";
 
 import PageContentContainer from "@/components/PageContentContainer";
 import SystemDetails from "@/components/radio/systems/SystemDetails";
-
-import { PlusIcon } from "@heroicons/react/24/solid";
-
-import type { Tabs } from "@/types/ui/Tab";
 import BasicCard from "@/components/cards";
 import TableDisplay from "@/components/tables/tableDisplay";
 import TalkgroupsList from "@/components/radio/TalkgroupsList";
-import { useTalkgroupsData } from "@/hooks/api/useTalkgroupData";
 
-const tabs: Tabs = [
-  {
-    id: "details",
-    name: "Details",
-  },
-  {
-    id: "talkgroups",
-    name: "Talk Groups",
-  },
-  {
-    id: "transmissions",
-    name: "Transmissions",
-  },
-];
-
-const tgListResultsLimit = 100; // Number of results to show
-const tgListPagesToShowLeft = 3; // Total pages numbers to show on the left of current page
-const tgListPagesToShowRight = 3; // Total pages numbers to show on the right of current page
-const tgListPagesToShow = tgListPagesToShowLeft + 1 + tgListPagesToShowRight; // Pages on the left, current page, pages on the right (does not count previous/next or first/last page numbers)
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const SystemDetailsPage = () => {
   const router = useRouter();
@@ -46,11 +31,7 @@ const SystemDetailsPage = () => {
     error: systemError,
     mutate: systemMutate,
   } = useSystemData(uuid);
-  const {
-    data: talkgroupsData,
-    error: talkgroupsError,
-    mutate: talkgroupsMutate,
-  } = useTalkgroupsData({
+  const { data: talkgroupsData, error: talkgroupsError } = useTalkgroupsData({
     pageIndex: tgListPageIndex,
     resultsLimit: tgListResultsLimit,
     systemUUID: uuid as string,
