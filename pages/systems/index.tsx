@@ -5,6 +5,10 @@ import PageContentContainer from "@/components/PageContentContainer";
 import EmptySystems from "@/components/radio/systems/EmptySystems";
 import SystemsList from "@/components/radio/systems/SystemsList";
 import SystemsListItem from "@/components/radio/systems/SystemsListItem";
+import LinkButton from "@/components/controls/LinkButton";
+import Breadcrumbs from "@/components/Breadcrumbs";
+
+import type { BreadCrumbItems } from "@/types/components/BreadCrumbItem";
 
 const SystemsListPage = () => {
   const {
@@ -17,6 +21,10 @@ const SystemsListPage = () => {
     systemsMutate();
   };
 
+  const crumbs: BreadCrumbItems = [
+    { name: "Systems", href: "/systems", current: true },
+  ];
+
   return (
     <>
       <Head>
@@ -27,11 +35,24 @@ const SystemsListPage = () => {
         />
       </Head>
       <PageContentContainer>
-        <div className="mt-8">
+        <div className="mt-4">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="my-8 text-lg leading-6 font-medium text-gray-900">
-              Systems
-            </h2>
+            <div className="mb-8">
+              <Breadcrumbs items={crumbs} />
+            </div>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-lg leading-6 font-medium text-gray-900">
+                Systems
+              </h2>
+              <div>
+                <LinkButton
+                  buttonType="secondary"
+                  href="/systems/create"
+                >
+                  Create System
+                </LinkButton>
+              </div>
+            </div>
             {!systemsData && !systemsError && <div>Loading Systems</div>}
             {systemsError && (
               <div className="mb-8">
