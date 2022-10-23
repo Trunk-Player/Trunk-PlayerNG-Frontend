@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useWizardSteps } from "@/hooks/components/useWizardSteps";
+import { useCreateSystemData } from "@/hooks/pages/useCreateSystemData";
 import { getWizardItemState } from "@/utils/components/wizardHeaderUtils";
 
 import PageContentContainer from "@/components/PageContentContainer";
@@ -7,11 +8,13 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import BasicCard from "@/components/cards";
 import WizardHeadingSteps from "@/components/wizards/WizardHeadingSteps";
 import Button from "@/components/controls/Button";
+import Textbox from "@/components/controls/Textbox";
 
 import type { BreadCrumbItems } from "@/types/components/BreadCrumbItem";
 import type { WizardHeaderItems } from "@/types/components/WizardHeaderItem";
 
 const CreateSystemPage = () => {
+  const { systemName, changeSystemName } = useCreateSystemData();
   const { currentStep, nextStep, previousStep, canGoNext, canGoPrevious } =
     useWizardSteps({
       maxSteps: 3,
@@ -59,6 +62,23 @@ const CreateSystemPage = () => {
                 items={headerItems}
                 className="flex justify-center items-center"
               />
+              {currentStep === 1 && (
+                <>
+                  <div className="mt-10 flex justify-center items-center text-2xl font-medium">
+                    What do you want to call this system?
+                  </div>
+                  <div className="mt-5 flex justify-center items-center">
+                    <Textbox
+                      className="w-96"
+                      placeholder="System Name"
+                      value={systemName}
+                      onChange={(e) => {
+                        changeSystemName(e.target.value);
+                      }}
+                    />
+                  </div>
+                </>
+              )}
               <div className="flex justify-around mt-10">
                 <Button
                   enabled={canGoPrevious}
