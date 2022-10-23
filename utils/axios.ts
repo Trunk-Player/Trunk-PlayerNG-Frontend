@@ -52,7 +52,7 @@ Axios.interceptors.response.use(
             retreiveCurrentUser({ accessToken: response.access_token })
           );
         }
-        return Axios(error.config);
+        return Axios(error.config ? error.config : apiConfig);
       }
     }
     return Promise.reject(error);
