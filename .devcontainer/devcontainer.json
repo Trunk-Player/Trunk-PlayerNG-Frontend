@@ -4,9 +4,11 @@
   "name": "Trunk-Player Frontend",
   "service": "dev",
   "dockerComposeFile": "docker-compose.yml",
-  "forwardPorts": [8080, 3000],
+  "forwardPorts": [
+    8080,
+    3000
+  ],
   "workspaceFolder": "/workspace",
-
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "[javascript]": {
@@ -31,7 +33,6 @@
       "*.env.*.local": "env"
     }
   },
-
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "dbaeumer.vscode-eslint",
@@ -48,18 +49,14 @@
     "atlassian.atlascode",
     "ritwickdey.liveserver"
   ],
-
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   //"appPort": ["3000:3000"],
-
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "brew install pre-commit && pre-commit install && pre-commit install --hook-type commit-msg && npm install",
-
   // Environment Variables
   "remoteEnv": {
-    "NEXT_PUBLIC_RECOMMENDEDBASEAPIURL": "https://dev-api.trunkplayer.io/apiv1"
+    "NEXT_PUBLIC_RECOMMENDEDBASEAPIURL": "https://dev-api.trunkplayer.io/api/v1"
   },
-
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node",
   "features": {
