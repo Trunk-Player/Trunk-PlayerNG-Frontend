@@ -19,8 +19,11 @@ import SystemDetails from "@/components/radio/systems/SystemDetails";
 import BasicCard from "@/components/cards";
 import TableDisplay from "@/components/tables/tableDisplay";
 import TalkgroupsList from "@/components/radio/TalkgroupsList";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 import { PlusIcon } from "@heroicons/react/24/solid";
+
+import type { BreadCrumbItems } from "@/types/components/BreadCrumbItem";
 
 const SystemDetailsPage = () => {
   const [currentTab, onChangeCurrentTab] = usePageTab("details");
@@ -38,6 +41,11 @@ const SystemDetailsPage = () => {
     onPageIndexChange: onChangeTgListPageIndex,
   } = useTalkgroupsData(0, uuid);
 
+  const crumbs: BreadCrumbItems = [
+    { name: "Systems", href: "/systems", current: false },
+    { name: systemData ? systemData.name : "System", current: true },
+  ];
+
   return (
     <>
       <Head>
@@ -52,8 +60,11 @@ const SystemDetailsPage = () => {
         />
       </Head>
       <PageContentContainer>
-        <div className="mt-8">
+        <div className="mt-4">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8">
+              <Breadcrumbs items={crumbs} />
+            </div>
             {!systemData && !systemError && <div>Loading System</div>}
             {systemError && (
               <div className="mb-8">
