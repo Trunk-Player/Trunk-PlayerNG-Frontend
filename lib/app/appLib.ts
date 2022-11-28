@@ -20,6 +20,33 @@ export const getAPIBaseUrl = (): string | null => {
   }
 };
 
+const apiRemoveRegex = /api\/v1/i;
+
+export const getSocketIoBaseUrl = (): string | null => {
+  const envBaseSocketUrl = process.env.NEXT_PUBLIC_BASESOCKETURL;
+  const envBaseApiUrl = process.env.NEXT_PUBLIC_BASEAPIURL;
+
+  if (envBaseSocketUrl) {
+    return envBaseSocketUrl;
+  }
+
+  if (envBaseApiUrl) {
+    return envBaseApiUrl.replace(apiRemoveRegex, "");
+  }
+
+  try {
+    const baseapiurl = localStorage.getItem("baseapiurl");
+
+    if (baseapiurl && baseapiurl !== "" && baseapiurl.length > 0) {
+      return decodeURIComponent(baseapiurl).replace(apiRemoveRegex, "");
+    } else {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+};
+
 export const saveAPIBaseUrl = async (baseApiUrl: string) => {
   let checkedBaseApiUrl = baseApiUrl;
 

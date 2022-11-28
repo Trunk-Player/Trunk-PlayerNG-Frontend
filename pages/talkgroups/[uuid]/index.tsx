@@ -1,5 +1,5 @@
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Head from "next/head";
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import classNames from "utils/classNames";
@@ -15,10 +15,12 @@ import TableDisplay from "components/tables/tableDisplay";
 import TalkgroupView from "components/radio/TalkgroupView";
 import LinkButton from "components/controls/LinkButton";
 import TransmissionPlayer from "components/radio/TransmissionPlayer";
+import { useSocket } from "@/hooks/useSocket";
 
 import type { TalkGroup } from "types/api/TalkGroup";
 import type { ResponseTransmissionsList } from "types/api/responses/ResponseTransmissionsList";
 import type { Tabs } from "@/types/ui/Tab";
+import type { SocketTransmission } from "@/types/socket/SocketTransmission";
 
 const tabs: Tabs = [
   {
@@ -26,13 +28,14 @@ const tabs: Tabs = [
     name: "Details",
   },
   {
-    id: "transmissions",
-    name: "Transmissions",
+    id: "history",
+    name: "History",
   },
 ];
 
 const GetTalkgroupPage = () => {
   const uuid = useRouterUUIDParam();
+  const socket = useSocket();
   const [currentTab, setCurrentTab] = useState("details");
 
   const baseAudioUrl = useMemo(() => {
@@ -57,6 +60,27 @@ const GetTalkgroupPage = () => {
   const refreshData = () => {
     talkgroupMutate();
   };
+
+  const onNewMessage = useCallback(
+    (msg: SocketTransmission) => {
+      if (
+        msg.parents.some(
+          (m) => m.type === "talkgroup" && m.uuid.some((u) => u === uuid)
+        )
+      ) {
+        console.log("Found Transmission", msg);
+      }
+    },
+    [uuid]
+  );
+
+  useEffect(() => {
+    socket?.on("transmission_party_bus", onNewMessage);
+
+    return () => {
+      socket?.off("transmission_party_bus", onNewMessage);
+    };
+  }, [onNewMessage, socket]);
 
   return (
     <>
@@ -183,7 +207,7 @@ const GetTalkgroupPage = () => {
                     </TableDisplay>
                   </BasicCard>
                 )}
-                {currentTab === "transmissions" && (
+                {currentTab === "history" && (
                   <BasicCard className="mt-5">
                     <BasicCard.CardHeader divider>
                       <span className="flex justify-between">

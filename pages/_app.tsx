@@ -1,20 +1,23 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import store from "state/store";
-import { handleTokenRefresh } from "state/slices/authenticationSlice";
-import { retreiveCurrentUser } from "state/slices/userSlice";
-import * as authentication from "lib/auth/authentication";
-import * as appLib from "lib/app/appLib";
-
-import type { AppProps } from "next/app";
-
+import store from "@/state/store";
+import { handleTokenRefresh } from "@/state/slices/authenticationSlice";
+import { retreiveCurrentUser } from "@/state/slices/userSlice";
+import * as authentication from "@/lib/auth/authentication";
+import * as appLib from "@/lib/app/appLib";
+import { useSocketIoClient } from "@/hooks/useSocketIoClient";
+import { SocketIOContext } from "@/lib/app/socketClient";
 import "tailwindcss/tailwind.css";
 import "@/styles/scrollbars.css";
 import "react-loading-skeleton/dist/skeleton.css";
+
 import { MainLayout } from "components/layouts";
 
+import type { AppProps } from "next/app";
+
 function App({ Component, pageProps }: AppProps) {
+  const [socketContext] = useSocketIoClient();
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
 
@@ -80,9 +83,11 @@ function App({ Component, pageProps }: AppProps) {
   }, []); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   return (
-    <Provider store={store}>
-      <MainLayout>{authorized && <Component {...pageProps} />}</MainLayout>
-    </Provider>
+    <SocketIOContext.Provider value={socketContext}>
+      <Provider store={store}>
+        <MainLayout>{authorized && <Component {...pageProps} />}</MainLayout>
+      </Provider>
+    </SocketIOContext.Provider>
   );
 }
 

@@ -6,9 +6,7 @@ import * as appLib from "lib/app/appLib";
 import { getAccessToken, refreshAuthToken } from "lib/auth/authentication";
 
 const apiConfig: AxiosRequestConfig = {
-  baseURL: appLib?.getAPIBaseUrl
-    ? appLib.getAPIBaseUrl() ?? undefined
-    : undefined,
+  baseURL: appLib.getAPIBaseUrl() ?? undefined,
   timeout: 10000,
   withCredentials: true,
 };
@@ -16,9 +14,11 @@ const apiConfig: AxiosRequestConfig = {
 const Axios = axios.create(apiConfig);
 const refreshTokenAxios = axios.create(apiConfig);
 
+let accessToken: string | undefined;
+
 Axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    const accessToken = getAccessToken();
+    accessToken = getAccessToken();
 
     if (!config.headers) {
       config.headers = {};
@@ -63,5 +63,5 @@ const changeBaseApiUrl = (baseApiUrl: string) => {
   Axios.defaults.baseURL = baseApiUrl;
 };
 
-export { refreshTokenAxios, changeBaseApiUrl };
+export { refreshTokenAxios, changeBaseApiUrl, accessToken };
 export default Axios;
