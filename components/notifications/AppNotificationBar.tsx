@@ -1,4 +1,4 @@
-import { SVGProps, useMemo } from "react";
+import { useMemo } from "react";
 import classNames from "utils/classNames";
 
 import {
@@ -20,7 +20,7 @@ interface StylesObj {
   borderColor: string;
   backgroundColor: string;
   // eslint-disable-next-line no-unused-vars
-  Icon?: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+  Icon?: any;
   iconColor: string;
   titleColor: string;
   descriptionColor: string;

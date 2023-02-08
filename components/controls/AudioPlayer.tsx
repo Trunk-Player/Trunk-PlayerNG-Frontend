@@ -242,18 +242,14 @@ const AudioPlayer = ({
                     ) : (
                       <Link
                         href={`/units/${tunit.unit.UUID}`}
-                        passHref
+                        className={classNames(
+                          tunit.emergency ? "font-bold text-red-600" : "",
+                          "underline"
+                        )}
                       >
-                        <a
-                          className={classNames(
-                            tunit.emergency ? "font-bold text-red-600" : "",
-                            "underline"
-                          )}
-                        >
-                          {tunit.unit.description
-                            ? tunit.unit?.description
-                            : displayText}
-                        </a>
+                        {tunit.unit.description
+                          ? tunit.unit?.description
+                          : displayText}
                       </Link>
                     )}
                   </span>

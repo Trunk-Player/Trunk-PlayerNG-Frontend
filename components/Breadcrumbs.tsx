@@ -22,15 +22,13 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
           <div>
             <Link
               href="/"
-              passHref
+              className="text-gray-400 hover:text-gray-500"
             >
-              <a className="text-gray-400 hover:text-gray-500">
-                <HomeIcon
-                  className="h-5 w-5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span className="sr-only">Dashboard</span>
-              </a>
+              <HomeIcon
+                className="h-5 w-5 flex-shrink-0"
+                aria-hidden="true"
+              />
+              <span className="sr-only">Dashboard</span>
             </Link>
           </div>
         </li>
@@ -44,14 +42,10 @@ const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
               {page.href && !page.current ? (
                 <Link
                   href={page.href}
-                  passHref
+                  className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                  aria-current={page.current ? "page" : undefined}
                 >
-                  <a
-                    className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                    aria-current={page.current ? "page" : undefined}
-                  >
-                    {page.name}
-                  </a>
+                  {page.name}
                 </Link>
               ) : (
                 <span
