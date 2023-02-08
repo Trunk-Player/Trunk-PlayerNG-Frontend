@@ -66,11 +66,9 @@ const TalkgroupView = ({
             />
             <Link
               href={`/systems/${data.system.UUID}`}
-              passHref
+              className="underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
             >
-              <a className="underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
-                {data.system.name}
-              </a>
+              {data.system.name}
             </Link>
           </div>
         </div>

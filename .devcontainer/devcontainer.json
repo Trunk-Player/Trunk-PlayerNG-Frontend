@@ -4,68 +4,61 @@
   "name": "Trunk-Player Frontend",
   "service": "dev",
   "dockerComposeFile": "docker-compose.yml",
-  "forwardPorts": [8080, 3000],
+  "forwardPorts": [
+    3000
+  ],
   "workspaceFolder": "/workspace",
-
-  // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "[javascript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "editor.formatOnSave": true,
-    "workbench.iconTheme": "vscode-icons",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "vsicons.dontShowNewVersionMessage": true,
-    "git.autofetch": true,
-    "git.confirmSync": false,
-    "git.suggestSmartCommit": false,
-    "files.associations": {
-      "*.env.*": "env",
-      "*.env.development": "env",
-      "*.env.test": "env",
-      "*.env.production": "env",
-      "*.env.local": "env",
-      "*.env.*.local": "env"
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "editor.formatOnSave": true,
+        "workbench.iconTheme": "vscode-icons",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "vsicons.dontShowNewVersionMessage": true,
+        "git.autofetch": true,
+        "git.confirmSync": false,
+        "git.suggestSmartCommit": false,
+        "files.associations": {
+          "*.env.*": "env",
+          "*.env.development": "env",
+          "*.env.test": "env",
+          "*.env.production": "env",
+          "*.env.local": "env",
+          "*.env.*.local": "env"
+        }
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "irongeek.vscode-env",
+        "ecmel.vscode-html-css",
+        "zignd.html-css-class-completion",
+        "bradlc.vscode-tailwindcss",
+        "austenc.tailwind-docs",
+        "eamodio.gitlens",
+        "formulahendry.auto-rename-tag",
+        "vscode-icons-team.vscode-icons"
+      ]
     }
   },
-
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "irongeek.vscode-env",
-    "github.vscode-pull-request-github",
-    "ecmel.vscode-html-css",
-    "zignd.html-css-class-completion",
-    "bradlc.vscode-tailwindcss",
-    "austenc.tailwind-docs",
-    "netcorext.uuid-generator",
-    "eamodio.gitlens",
-    "formulahendry.auto-rename-tag",
-    "atlassian.atlascode",
-    "ritwickdey.liveserver"
-  ],
-
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   //"appPort": ["3000:3000"],
-
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "brew install pre-commit && pre-commit install && pre-commit install --hook-type commit-msg && npm install",
-
+  "postCreateCommand": "npm install",
   // Environment Variables
   "remoteEnv": {
     "NEXT_PUBLIC_RECOMMENDEDBASEAPIURL": "https://dev-api.trunkplayer.io/apiv1"
   },
-
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node",
   "features": {
-    "git": "os-provided",
-    "git-lfs": "latest",
-    "github-cli": "latest",
-    "homebrew": "latest"
+    "git": "os-provided"
   }
 }

@@ -47,20 +47,16 @@ const LinkButton = ({
   return enabled && href ? (
     <Link
       href={href}
-      passHref
+      className={classNames(
+        className ?? "",
+        defaultPadding ? "px-3 py-2" : "",
+        defaultFontSize ? "text-sm" : "",
+        getButtonStyle(),
+        "inline-flex items-center leading-4 font-medium rounded-md"
+      )}
+      onClick={onClick}
     >
-      <a
-        className={classNames(
-          className ?? "",
-          defaultPadding ? "px-3 py-2" : "",
-          defaultFontSize ? "text-sm" : "",
-          getButtonStyle(),
-          "inline-flex items-center leading-4 font-medium rounded-md"
-        )}
-        onClick={onClick}
-      >
-        {children}
-      </a>
+      {children}
     </Link>
   ) : (
     <span
