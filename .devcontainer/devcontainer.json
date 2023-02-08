@@ -4,9 +4,7 @@
   "name": "Trunk-Player Frontend",
   "service": "dev",
   "dockerComposeFile": "docker-compose.yml",
-  "forwardPorts": [
-    3000
-  ],
+  "forwardPorts": [3000],
   "workspaceFolder": "/workspace",
   "customizations": {
     "vscode": {
