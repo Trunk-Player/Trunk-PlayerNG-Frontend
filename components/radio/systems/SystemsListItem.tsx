@@ -19,17 +19,15 @@ const SystemsListItem = ({ UUID, name, notes }: SystemsListItemProps) => {
       <div className="flex-1 min-w-0">
         <Link
           href={`/systems/${UUID}`}
-          passHref
+          className="focus:outline-none"
         >
-          <a className="focus:outline-none">
-            <span
-              className="absolute inset-0"
-              aria-hidden="true"
-            />
-            <p className="text-sm font-medium text-gray-900">{name}</p>
-            {/* TODO: Change out notes for a short description field. */}
-            {notes && <p className="mt-1 text-xs text-gray-600">{notes}</p>}
-          </a>
+          <span
+            className="absolute inset-0"
+            aria-hidden="true"
+          />
+          <p className="text-sm font-medium text-gray-900">{name}</p>
+          {/* TODO: Change out notes for a short description field. */}
+          {notes && <p className="mt-1 text-xs text-gray-600">{notes}</p>}
         </Link>
       </div>
     </div>

@@ -242,13 +242,11 @@ const TalkgroupsList = ({
                 <div className="flex items-center">
                   <Link
                     href={`/talkgroups/${talkgroup.UUID}`}
-                    passHref
+                    className="text-sm font-medium text-gray-900 underline"
                   >
-                    <a className="text-sm font-medium text-gray-900 underline">
-                      {talkgroup.alpha_tag
-                        ? talkgroup.alpha_tag
-                        : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
-                    </a>
+                    {talkgroup.alpha_tag
+                      ? talkgroup.alpha_tag
+                      : `{ No Tag; Dec ID: ${talkgroup.decimal_id} }`}
                   </Link>
                   <span className="table-cell md:hidden ml-2 text-[0.65rem] text-gray-500">
                     DEC: {talkgroup.decimal_id}
@@ -283,11 +281,9 @@ const TalkgroupsList = ({
               <BasicTable.RowCell striped={i % 2 === 1}>
                 <Link
                   href={`/systems/${talkgroup.system.UUID}`}
-                  passHref
+                  className="text-sm text-gray-600 underline"
                 >
-                  <a className="text-sm text-gray-600 underline">
-                    {talkgroup.system.name}
-                  </a>
+                  {talkgroup.system.name}
                 </Link>
               </BasicTable.RowCell>
             </BasicTable.Row>

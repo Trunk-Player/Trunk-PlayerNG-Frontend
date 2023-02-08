@@ -30,27 +30,23 @@ const Navigation = () => {
           <Link
             key={item.name}
             href={item.href}
-            passHref
+            className={classNames(
+              isCurrentHref(item.href, item.exact)
+                ? "bg-cyan-900 text-white"
+                : "text-white hover:text-white hover:bg-cyan-900",
+              "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
+            )}
+            aria-current={
+              isCurrentHref(item.href, item.exact) ? "page" : undefined
+            }
           >
-            <a
-              className={classNames(
-                isCurrentHref(item.href, item.exact)
-                  ? "bg-cyan-900 text-white"
-                  : "text-white hover:text-white hover:bg-cyan-900",
-                "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-              )}
-              aria-current={
-                isCurrentHref(item.href, item.exact) ? "page" : undefined
-              }
-            >
-              {item.icon && (
-                <item.icon
-                  className="mr-4 flex-shrink-0 h-6 w-6 text-white"
-                  aria-hidden="true"
-                />
-              )}
-              {item.name}
-            </a>
+            {item.icon && (
+              <item.icon
+                className="mr-4 flex-shrink-0 h-6 w-6 text-white"
+                aria-hidden="true"
+              />
+            )}
+            {item.name}
           </Link>
         ))}
       </div>
@@ -60,24 +56,20 @@ const Navigation = () => {
             <Link
               key={item.name}
               href={item.href}
-              passHref
+              className={classNames(
+                isCurrentHref(item.href, item.exact)
+                  ? "bg-cyan-900 text-white"
+                  : "text-white hover:text-white hover:bg-cyan-900",
+                "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
+              )}
             >
-              <a
-                className={classNames(
-                  isCurrentHref(item.href, item.exact)
-                    ? "bg-cyan-900 text-white"
-                    : "text-white hover:text-white hover:bg-cyan-900",
-                  "group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-                )}
-              >
-                {item.icon && (
-                  <item.icon
-                    className="mr-4 h-6 w-6 text-white"
-                    aria-hidden="true"
-                  />
-                )}
-                {item.name}
-              </a>
+              {item.icon && (
+                <item.icon
+                  className="mr-4 h-6 w-6 text-white"
+                  aria-hidden="true"
+                />
+              )}
+              {item.name}
             </Link>
           ))}
         </div>

@@ -17,12 +17,8 @@ const Axios = axios.create(apiConfig);
 const refreshTokenAxios = axios.create(apiConfig);
 
 Axios.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     const accessToken = getAccessToken();
-
-    if (!config.headers) {
-      config.headers = {};
-    }
 
     config.headers["Accept"] = "application/json";
 
