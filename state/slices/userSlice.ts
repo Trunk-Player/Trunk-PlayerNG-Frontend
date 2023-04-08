@@ -1,7 +1,8 @@
-import { User } from "types/api/User";
-import Axios from "utils/axios";
+import Axios from "@/utils/axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserState } from "types/state/UserState";
+
+import type { UserState } from "@/types/state/UserState";
+import type { User } from "@/types/api/User";
 import type { AppState } from "../store";
 
 interface GetUserParams {

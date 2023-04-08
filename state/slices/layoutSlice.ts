@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LayoutState } from "types/state/LayoutState";
+import { LayoutState } from "@/types/state/LayoutState";
+
 import type { AppState } from "../store";
 
 const initialState: LayoutState = {

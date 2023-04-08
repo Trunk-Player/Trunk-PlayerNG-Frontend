@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { AppState } from "state/store";
+import { AppState } from "@/state/store";
 
-import type { AppNotification } from "types/AppNotification";
+import type { AppNotification } from "@/types/AppNotification";
 
 const appNotificationsAdapter = createEntityAdapter<AppNotification>({
   selectId: (notification) => notification.uniqueId,

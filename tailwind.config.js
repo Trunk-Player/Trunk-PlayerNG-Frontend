@@ -1,22 +1,20 @@
 const colors = require("tailwindcss/colors");
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: "jit",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./hooks/**/*.{js,ts,jsx,tsx}",
+    "./config/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: "class", // or 'media' or 'class'
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        rose: colors.rose,
         cyan: colors.cyan,
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [require("@headlessui/tailwindcss"), require("@tailwindcss/forms")],
 };

@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { AppState } from "../store";
 import { retreiveCurrentUser } from "./userSlice";
-import * as Authentication from "lib/auth/authentication";
+import * as Authentication from "@/lib/auth/authentication";
 
-import { AuthenticationState } from "types/state/AuthenticationState";
-import { ResponseRefreshToken } from "types/api/responses/ResponseRefreshToken";
+import type { AuthenticationState } from "@/types/state/AuthenticationState";
+import type { ResponseRefreshToken } from "@/types/api/responses/ResponseRefreshToken";
 
 interface LoginParams {
   email: string;
