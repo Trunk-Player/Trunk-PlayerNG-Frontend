@@ -11,14 +11,14 @@ export const layoutSlice = createSlice({
   name: "layout",
   initialState,
   reducers: {
-    toggleMobileNavbar: (state) => {
+    toggleMobileNavbar: state => {
       state.mobileNavigationOpen = !state.mobileNavigationOpen;
     },
     setMobileNavbarOpen: (state, action: PayloadAction<boolean>) => {
       state.mobileNavigationOpen = action.payload;
     },
   },
-  extraReducers: (_builder) => {},
+  extraReducers: _builder => {},
 });
 
 export const { toggleMobileNavbar, setMobileNavbarOpen } = layoutSlice.actions;
