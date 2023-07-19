@@ -80,3 +80,5 @@ jobs:
             if (eslintErrorRegex.test(eslintOutput) || jestOutput.numFailedTests > 0) {
               core.setFailed('ESLint errors or failed unit tests detected');
             }
+      - name: Run Build
+        run: npm run build
