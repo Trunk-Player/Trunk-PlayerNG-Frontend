@@ -1,3 +1,5 @@
+"use client";
+
 import type { ChangeEvent } from "react";
 import { useEffect, useRef } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -6,6 +8,7 @@ import type { AppDispatch, AppState } from "./index";
 
 export const useForm =
   <TContent>(defaultValues: TContent) =>
+  // eslint-disable-next-line no-unused-vars
   (handler: (content: TContent) => void) =>
   async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -14,7 +17,7 @@ export const useForm =
     const form = event.target as HTMLFormElement;
     const elements = Array.from(form.elements) as HTMLInputElement[];
     const data = elements
-      .filter((element) => element.hasAttribute("name"))
+      .filter(element => element.hasAttribute("name"))
       .reduce(
         (object, element) => ({
           ...object,

@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "2TrunkPlayer-NG2",
+    "description": "2A project to play back recorded radio transmissions used on site.2"
+  },
+  "notImplemented": {
+    "page": "2This page has not been implemented yet!2",
+    "component": "2This component has not been implemented yet!2"
+  },
+  "loginPage": {
+    "header": "2Login to Trunk-Player2",
+    "emailAddress": "2Email address2",
+    "emailRequired": "2Email address is required!2",
+    "emailInvalid": "2Invalid email address!2",
+    "password": "2Password2",
+    "passwordRequired": "2Password is required!2",
+    "register": "2Register2",
+    "login": "2Login2"
+  }
+}
