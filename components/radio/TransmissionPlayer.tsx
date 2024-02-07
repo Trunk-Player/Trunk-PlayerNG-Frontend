@@ -19,32 +19,20 @@ const TransmissionPlayer = ({
     [audioBaseUrl, transmission.audio_file]
   );
 
+  
+
   return (
     <div>
-      {audioUrl ? (
+  
         <AudioPlayer
           size="minimal"
-          src={audioUrl}
+          src={transmission.audio_file}
           start={transmission.start_time}
           end={transmission.end_time}
           units={transmission.units}
+          talkgroup={transmission.talkgroup}
         />
-      ) : (
-        // <audio
-        //   src={audioUrl}
-        //   controls={true}
-        // >
-        //   <a
-        //     href={audioUrl}
-        //     rel="noreferrer"
-        //     target="_blank"
-        //     className="text-blue-600 underline"
-        //   >
-        //     {audioUrl}
-        //   </a>
-        // </audio>
-        <span>Invalid Audio Url</span>
-      )}
+    
     </div>
   );
 };

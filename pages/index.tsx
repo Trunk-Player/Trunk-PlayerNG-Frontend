@@ -3,11 +3,37 @@ import Head from "next/head";
 import PageHeader from "components/headers";
 import DashboardHeader from "components/headers/DashboardHeader";
 import PageContentContainer from "components/PageContentContainer";
+import BasicCard from "components/cards";
+import LinkButton from "components/controls/LinkButton";
+import TransmissionPlayer from "components/radio/TransmissionPlayer";
+// import { getAPIBaseUrl } from "lib/app/appLib";
+
+import useSWR from "swr";
+import fetcher from "utils/fetcher";
+
+import type { ResponseTransmissionsList } from "types/api/responses/ResponseTransmissionsList";
+import { Transmission } from "@/types/api/Transmission";
+
+
 // import CreateNewScanner from "components/ui/CreateNewScanner";
 // import CallCard from "components/radio/CallCard";
 // import { dataEmergency, dataNormal } from "config/sampleData";
 
 const Home = () => {
+  const {
+    data: transmissionsData,
+    // mutate: transmissionsMutate,
+    error: transmissionsError,
+  } = useSWR<ResponseTransmissionsList>(
+    "/radio/transmission/list?limit=50",
+    fetcher
+  );
+
+  const baseAudioUrl = "";
+  // useMemo(() => {
+    //   return getAPIBaseUrl()?.replace(/(\/api|\/apiv1)$/i, "");
+    // }, []);
+
   return (
     <>
       {/* <MainLayout> */}
@@ -41,10 +67,43 @@ const Home = () => {
                 <CallCard data={dataEmergency} />
               </div>
             </div> */}
+             {
+
+                <BasicCard className="mt-5"  >
+                <BasicCard.CardHeader divider >
+                  <span className="flex justify-between">
+                    <span>Last 50 Transmissions</span>
+                    <span className="font-normal text-sm">
+                      <LinkButton
+                        buttonType="secondary"
+                        href={"/"}
+                      >
+                        See More
+                      </LinkButton>
+                    </span>
+                  </span>
+                </BasicCard.CardHeader>
+                {transmissionsError && (
+                  <div className="my-5">
+                    Error while getting transmissions!
+                  </div>
+                )}
+                <div className="mt-5 flex flex-col gap-y-3">
+                  {transmissionsData &&
+                    transmissionsData.results.map((transmission: Transmission) => (
+                      <TransmissionPlayer
+                        key={transmission.UUID}
+                        audioBaseUrl={baseAudioUrl}
+                        transmission={transmission}
+                      />
+                    ))}
+                </div>
+                </BasicCard>
+                }
           </div>
         </div>
       </PageContentContainer>
-      {/* </MainLayout> */}
+     
     </>
   );
 };

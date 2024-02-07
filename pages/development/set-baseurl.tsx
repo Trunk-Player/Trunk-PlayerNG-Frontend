@@ -25,7 +25,7 @@ const SetBaseURLPage = () => {
     "baseapiurl",
     {
       required: { value: true, message: "Base API Url is required" },
-      value: process.env.NEXT_PUBLIC_RECOMMENDEDBASEAPIURL ?? "https://",
+      value: process.env.NEXT_PUBLIC_RECOMMENDEDBASEAPIURL ?? "https://psern.trunkplayer.io/api/v1",
     }
   );
 

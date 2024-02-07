@@ -40,7 +40,7 @@ const LoginPage = () => {
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
       message: "Invalid email address",
     },
-    value: "test@test.com",
+    value: "test@chaos.corp",
   });
 
   const { ref: regPasswordRef, ...regPasswordRest } = register("password", {

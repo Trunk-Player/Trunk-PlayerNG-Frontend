@@ -23,6 +23,8 @@ import {
 } from "@heroicons/react/24/solid";
 
 import type { TransmissionUnits } from "types/api/TransmissionUnit";
+import type { Transmissions } from "types/api/Transmission";
+import type { TalkGroup } from "types/api/TalkGroup";
 
 dayjs.extend(advancedFormat);
 dayjs.extend(timezone);
@@ -46,6 +48,7 @@ export interface AudioPlayerProps {
   hasDownloadLink?: boolean;
   hasPlaybackSpeed?: boolean;
   units?: TransmissionUnits;
+  talkgroup: TalkGroup;
 }
 
 type AudioState = "Stopped" | "Playing" | "Paused";
@@ -66,6 +69,7 @@ const AudioPlayer = ({
   hasVolumeControl = true,
   hasDownloadLink = true,
   // hasPlaybackSpeed = true,
+  talkgroup,
   units,
 }: AudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -89,6 +93,9 @@ const AudioPlayer = ({
       // audioRef.current.on
     }
   }, []);
+
+
+  
 
   const onAudioChange = (e: SyntheticEvent<HTMLAudioElement, Event>) => {
     let currentState: AudioState = "Stopped";
@@ -209,6 +216,7 @@ const AudioPlayer = ({
         {/* {audioComponent} */}
       </div>
       {units && (
+        
         <div className="mt-2 text-xs text-gray-400 flex justify-between">
           <div>
             <span>Units:</span>{" "}
@@ -257,6 +265,24 @@ const AudioPlayer = ({
               })}
             </span>
           </div>
+          
+          
+          <br />
+          <div>
+              <span>
+                <span>Talkgroup:</span>
+                <span key={talkgroup.UUID + new Date()}>
+                    {<Link
+                      href={`/talkgroups/${talkgroup.UUID}`}
+                    >
+                      { `${talkgroup.alpha_tag}  - ${talkgroup.description} - ${ (talkgroup.agency ? talkgroup.agency.map((agency,i) =>{{i > 0 && ", ";} agency.name;} ) : "")}` }
+                    </Link>}
+                </span>
+              </span>
+            </div>
+          
+           
+
           <div>
             <span>
               {dayjs(start).format(
