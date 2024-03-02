@@ -18,7 +18,7 @@ export const OPTIONS: AuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      authorize: async credentials => {
+      authorize: async (credentials) => {
         try {
           if (!credentials) {
             return null;
