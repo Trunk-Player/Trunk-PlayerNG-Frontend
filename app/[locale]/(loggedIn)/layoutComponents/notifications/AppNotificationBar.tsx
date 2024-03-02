@@ -158,7 +158,10 @@ const AppNotificationBar = ({
               className={`inline-flex rounded-md p-1.5 ${styling.closeButtonColor} ${styling.closeButtonHoverColor} focus:outline-none focus:ring-2 focus:ring-offset-2 ${styling.closeButtonRingOffsetColor} ${styling.closeButtonRingColor}`}
             >
               <span className="sr-only">Dismiss</span>
-              <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+              <XMarkIcon
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </div>

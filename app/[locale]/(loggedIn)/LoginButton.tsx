@@ -9,7 +9,11 @@ const LoginButton = () => {
   };
 
   return (
-    <button type="button" style={{ marginRight: 10 }} onClick={handleLogin}>
+    <button
+      type="button"
+      style={{ marginRight: 10 }}
+      onClick={handleLogin}
+    >
       Login
     </button>
   );

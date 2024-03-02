@@ -18,7 +18,7 @@ const Navigation = () => {
       aria-label="Sidebar"
     >
       <div className="px-2 space-y-1">
-        {primaryNavigation.map(item => (
+        {primaryNavigation.map((item) => (
           <Link
             key={item.name}
             href={item.href}
@@ -44,7 +44,7 @@ const Navigation = () => {
       </div>
       <div className="mt-6 pt-6">
         <div className="px-2 space-y-1">
-          {secondaryNavigation.map(item => (
+          {secondaryNavigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}

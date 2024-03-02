@@ -1,7 +1,6 @@
 "use client";
 
-import type { ChangeEvent } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ChangeEvent } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import type { AppDispatch, AppState } from "./index";
@@ -17,7 +16,7 @@ export const useForm =
     const form = event.target as HTMLFormElement;
     const elements = Array.from(form.elements) as HTMLInputElement[];
     const data = elements
-      .filter(element => element.hasAttribute("name"))
+      .filter((element) => element.hasAttribute("name"))
       .reduce(
         (object, element) => ({
           ...object,

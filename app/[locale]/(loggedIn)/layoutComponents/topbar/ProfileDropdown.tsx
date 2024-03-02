@@ -13,7 +13,10 @@ const ProfileDropdown = () => {
   };
 
   return (
-    <Menu as="div" className="ml-3 relative">
+    <Menu
+      as="div"
+      className="ml-3 relative"
+    >
       <div>
         <Menu.Button className="max-w-xs bg-white rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 lg:p-2 lg:rounded-md lg:hover:bg-gray-50">
           <span className="hidden ml-3 text-gray-700 text-sm font-medium lg:block">

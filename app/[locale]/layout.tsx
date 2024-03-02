@@ -52,9 +52,18 @@ export default async function RootLayout({
   }
 
   return (
-    <html className="h-full" lang={locale}>
-      <body className="h-full" suppressHydrationWarning={true}>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+    <html
+      className="h-full"
+      lang={locale}
+    >
+      <body
+        className="h-full"
+        suppressHydrationWarning={true}
+      >
+        <NextIntlClientProvider
+          locale={locale}
+          messages={messages}
+        >
           <ReduxProvider>{children}</ReduxProvider>
         </NextIntlClientProvider>
       </body>

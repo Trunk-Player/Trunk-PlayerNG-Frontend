@@ -24,7 +24,10 @@ const SidebarMobile = ({ children }: SidebarMobileProps) => {
   };
 
   return (
-    <Transition.Root show={sidebarOpen} as={Fragment}>
+    <Transition.Root
+      show={sidebarOpen}
+      as={Fragment}
+    >
       <Dialog
         as="div"
         className="fixed inset-0 flex z-40 lg:hidden"
@@ -77,7 +80,10 @@ const SidebarMobile = ({ children }: SidebarMobileProps) => {
             {children}
           </div>
         </Transition.Child>
-        <div className="flex-shrink-0 w-14" aria-hidden="true">
+        <div
+          className="flex-shrink-0 w-14"
+          aria-hidden="true"
+        >
           {/* Dummy element to force sidebar to shrink to fit close icon */}
         </div>
       </Dialog>
