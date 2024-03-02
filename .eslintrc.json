@@ -1,5 +1,6 @@
 {
-  "extends": ["next/core-web-vitals"],
+  "extends": ["eslint:recommended", "next/core-web-vitals"],
+  "plugins": ["react", "react-hooks"],
   "env": {
     "node": true,
     "jest": true
@@ -8,11 +9,26 @@
     "React": true
   },
   "rules": {
+    "no-console": "error",
     "no-unused-vars": [
       "warn",
       {
-        "argsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
       }
+    ],
+    "no-undef": "error",
+    "no-duplicate-imports": "error",
+    "react/no-unescaped-entities": [
+      "error",
+      {
+        "forbid": [">", "}"]
+      }
+    ],
+    "react/jsx-no-literals": [
+      "warn",
+      { "noStrings": true, "ignoreProps": true }
     ]
   }
 }
