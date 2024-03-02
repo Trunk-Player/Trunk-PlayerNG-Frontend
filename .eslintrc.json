@@ -6,7 +6,8 @@
     "jest": true
   },
   "globals": {
-    "React": true
+    "React": true,
+    "NodeJS": true
   },
   "rules": {
     "no-console": "error",
