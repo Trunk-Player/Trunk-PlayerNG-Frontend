@@ -1,16 +1,17 @@
 import React, { ReactElement } from "react";
-import { NextIntlProvider } from "next-intl";
 import { render, RenderOptions } from "@testing-library/react";
 import messages from "@/messages/en.json";
 
+import { NextIntlClientProvider } from "next-intl";
+
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
-    <NextIntlProvider
+    <NextIntlClientProvider
       locale="en"
       messages={messages}
     >
       {children}
-    </NextIntlProvider>
+    </NextIntlClientProvider>
   );
 };
 
