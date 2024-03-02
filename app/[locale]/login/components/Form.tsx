@@ -59,6 +59,8 @@ const Form = ({ callbackUrl }: { callbackUrl?: string }) => {
 
       setLoading(false);
     } catch (error) {
+      // TODO: Implement error handling and display
+      // eslint-disable-next-line no-console
       console.error("Error signing in:", error);
     }
   };
