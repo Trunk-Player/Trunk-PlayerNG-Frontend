@@ -1,5 +1,9 @@
 {
-  "extends": ["eslint:recommended", "next/core-web-vitals"],
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "plugin:storybook/recommended"
+  ],
   "plugins": ["react", "react-hooks"],
   "env": {
     "node": true,
@@ -29,7 +33,10 @@
     ],
     "react/jsx-no-literals": [
       "warn",
-      { "noStrings": true, "ignoreProps": true }
+      {
+        "noStrings": true,
+        "ignoreProps": true
+      }
     ]
   }
 }
