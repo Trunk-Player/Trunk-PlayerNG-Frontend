@@ -24,9 +24,11 @@ const config: StorybookConfig = {
     if (config?.resolve?.alias) {
       config.resolve.alias = {
         ...config.resolve.alias,
-        "@/utils": path.resolve(__dirname, "../utils"),
+        "@/components": path.resolve(__dirname, "../components"),
         "@/config": path.resolve(__dirname, "../config"),
+        "@/lib": path.resolve(__dirname, "../lib"),
         "@/messages": path.resolve(__dirname, "../messages"),
+        "@/utils": path.resolve(__dirname, "../utils"),
       };
     }
     return config;
